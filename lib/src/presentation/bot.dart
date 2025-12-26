@@ -1,7 +1,7 @@
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 import 'dart:async';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:dotenv/dotenv.dart';
 
 import '../domain/usecases/get_user_settings.dart';
 import '../domain/usecases/save_user_settings.dart';
@@ -31,8 +31,8 @@ class FundingRateBot {
   });
 
   Future<void> start() async {
-    await dotenv.load(fileName: ".env");
-    final botToken = dotenv.env['TELEGRAM_BOT_TOKEN']!;
+    final env = DotEnv(includePlatformEnvironment: true)..load();
+    final botToken = env['TELEGRAM_BOT_TOKEN']!;
     final username = (await Telegram(botToken).getMe()).username;
     teledart = TeleDart(botToken, Event(username!));
 

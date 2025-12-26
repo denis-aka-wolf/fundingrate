@@ -16,14 +16,14 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
 
   @override
   Future<List<TradingPair>> getTradingPairs() async {
-    final response = await client.get(Uri.parse('$_baseUrl/v2/public/symbols'));
+    final response = await client
+        .get(Uri.parse('$_baseUrl/v5/market/tickers?category=linear'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final List<dynamic> symbols = data['result'];
+      final List<dynamic> symbols = data['result']['list'];
       return symbols
-          .where((s) => s['quote_currency'] == 'USDT' && s['name'].endsWith('USDT'))
-          .map((symbol) => TradingPair(symbol: symbol['name']))
+          .map((symbol) => TradingPair(symbol: symbol['symbol']))
           .toList();
     } else {
       throw Exception('Failed to load trading pairs');
@@ -32,16 +32,17 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
 
   @override
   Future<List<FundingRate>> getFundingRates() async {
-    final response = await client.get(Uri.parse('$_baseUrl/v2/public/tickers'));
+    final response = await client
+        .get(Uri.parse('$_baseUrl/v5/market/tickers?category=linear'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final List<dynamic> tickers = data['result'];
+      final List<dynamic> tickers = data['result']['list'];
       return tickers
-          .where((ticker) => ticker['funding_rate'] != null)
+          .where((ticker) => ticker['fundingRate'] != null && ticker['nextFundingTime'] != null)
           .map((ticker) => FundingRate(
                 symbol: ticker['symbol'],
-                fundingRate: double.parse(ticker['funding_rate']),
-                fundingTime: ticker['next_funding_time_ms'] ?? DateTime.now().millisecondsSinceEpoch,
+                fundingRate: double.parse(ticker['fundingRate']),
+                fundingTime: int.parse(ticker['nextFundingTime']),
               ))
           .toList();
     } else {
