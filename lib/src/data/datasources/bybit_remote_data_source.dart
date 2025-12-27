@@ -41,7 +41,7 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
           .where((ticker) => ticker['fundingRate'] != null && ticker['nextFundingTime'] != null)
           .map((ticker) => FundingRate(
                 symbol: ticker['symbol'],
-                fundingRate: double.parse(ticker['fundingRate']),
+                fundingRate: double.tryParse(ticker['fundingRate'] ?? '0.0') ?? 0.0,
                 fundingTime: int.parse(ticker['nextFundingTime']),
               ))
           .toList();

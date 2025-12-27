@@ -39,9 +39,12 @@ class UserSettings {
 
   @override
   String toString() {
+    final pairsString = pairs.length > 10
+        ? '${pairs.take(10).join(', ')}... and ${pairs.length - 10} more'
+        : pairs.join(', ');
     return '''
 UserSettings for $userId:
-  Pairs: ${pairs.join(', ')}
+  Pairs: $pairsString
   Funding Rate Threshold: $fundingRateThreshold
   Minutes Before Expiration: $minutesBeforeExpiration
   Check Interval (minutes): $checkIntervalMinutes
