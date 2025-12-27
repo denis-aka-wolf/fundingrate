@@ -10,7 +10,6 @@ class CheckFundingRates {
     final notifications = <FundingRate>[];
 
     for (final rate in rates) {
-      if (!settings.pairs.contains(rate.symbol)) continue;
 
       final fundingTime = DateTime.fromMillisecondsSinceEpoch(rate.fundingTime, isUtc: true);
       final difference = fundingTime.difference(now);

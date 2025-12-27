@@ -21,7 +21,6 @@ void main() {
   final tUserId = '1';
   final tUserSettings = UserSettings(
     userId: tUserId,
-    pairs: ['BTCUSDT'],
     fundingRateThreshold: 0.01,
     minutesBeforeExpiration: 30,
     checkIntervalMinutes: 10,

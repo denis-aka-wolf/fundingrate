@@ -6,7 +6,6 @@ import 'package:fundingrate/src/data/repositories/user_settings_repository_impl.
 import 'package:fundingrate/src/domain/usecases/check_funding_rates.dart';
 import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart';
 import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart';
-import 'package:fundingrate/src/domain/usecases/get_trading_pairs.dart';
 import 'package:fundingrate/src/domain/usecases/get_user_settings.dart';
 import 'package:fundingrate/src/domain/usecases/save_user_settings.dart';
 import 'package:fundingrate/src/presentation/bot.dart';
@@ -24,7 +23,6 @@ void main(List<String> arguments) {
       localDataSource: userSettingsLocalDataSource);
 
   // Domain layer
-  final getTradingPairs = GetTradingPairs(bybitRepository);
   final getFundingRates = GetFundingRates(bybitRepository);
   final getUserSettings = GetUserSettings(userSettingsRepository);
   final saveUserSettings = SaveUserSettings(userSettingsRepository);
@@ -33,7 +31,6 @@ void main(List<String> arguments) {
 
   // Presentation layer
   final bot = FundingRateBot(
-    getTradingPairs: getTradingPairs,
     getFundingRates: getFundingRates,
     getUserSettings: getUserSettings,
     saveUserSettings: saveUserSettings,

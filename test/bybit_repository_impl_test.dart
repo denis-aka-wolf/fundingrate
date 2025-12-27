@@ -1,7 +1,6 @@
 import 'package:fundingrate/src/data/datasources/bybit_remote_data_source.dart';
 import 'package:fundingrate/src/data/repositories/bybit_repository_impl.dart';
 import 'package:fundingrate/src/domain/entities/funding_rate.dart';
-import 'package:fundingrate/src/domain/entities/trading_pair.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -16,24 +15,6 @@ void main() {
   setUp(() {
     mockRemoteDataSource = MockBybitRemoteDataSource();
     repository = BybitRepositoryImpl(remoteDataSource: mockRemoteDataSource);
-  });
-
-  group('getTradingPairs', () {
-    test('should return a list of trading pairs from the data source',
-        () async {
-      // Arrange
-      final tPairs = [TradingPair(symbol: 'BTCUSDT')];
-      when(mockRemoteDataSource.getTradingPairs())
-          .thenAnswer((_) async => tPairs);
-
-      // Act
-      final result = await repository.getTradingPairs();
-
-      // Assert
-      expect(result, tPairs);
-      verify(mockRemoteDataSource.getTradingPairs());
-      verifyNoMoreInteractions(mockRemoteDataSource);
-    });
   });
 
   group('getFundingRates', () {
@@ -54,6 +35,19 @@ void main() {
       expect(result, tRates);
       verify(mockRemoteDataSource.getFundingRates());
       verifyNoMoreInteractions(mockRemoteDataSource);
+    });
+
+    test('should throw an exception when the data source throws an exception',
+        () async {
+      // Arrange
+      when(mockRemoteDataSource.getFundingRates())
+          .thenThrow(Exception('Failed to fetch rates'));
+
+      // Act
+      final call = repository.getFundingRates;
+
+      // Assert
+      expect(() => call(), throwsA(isA<Exception>()));
     });
   });
 }

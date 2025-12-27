@@ -16,7 +16,6 @@ void main() {
     // Arrange
     final settings = UserSettings(
       userId: '1',
-      pairs: ['BTCUSDT', 'ETHUSDT'],
       fundingRateThreshold: 0.01,
       minutesBeforeExpiration: 30,
       checkIntervalMinutes: 10,
@@ -48,5 +47,65 @@ void main() {
     expect(result.length, 2);
     expect(result[0].symbol, 'BTCUSDT');
     expect(result[1].symbol, 'ETHUSDT');
+  });
+
+  test('should return an empty list when no rates meet the threshold', () {
+    // Arrange
+    final settings = UserSettings(
+      userId: '1',
+      fundingRateThreshold: 0.03,
+      minutesBeforeExpiration: 30,
+      checkIntervalMinutes: 10,
+      lastUpdated: DateTime.now(),
+    );
+
+    final rates = [
+      FundingRate(
+        symbol: 'BTCUSDT',
+        fundingRate: 0.015,
+        fundingTime: DateTime.now().add(const Duration(minutes: 15)).millisecondsSinceEpoch,
+      ),
+      FundingRate(
+        symbol: 'ETHUSDT',
+        fundingRate: -0.02,
+        fundingTime: DateTime.now().add(const Duration(minutes: 25)).millisecondsSinceEpoch,
+      ),
+    ];
+
+    // Act
+    final result = usecase(rates: rates, settings: settings);
+
+    // Assert
+    expect(result.isEmpty, isTrue);
+  });
+
+  test('should return an empty list when no rates are within the time window', () {
+    // Arrange
+    final settings = UserSettings(
+      userId: '1',
+      fundingRateThreshold: 0.01,
+      minutesBeforeExpiration: 10,
+      checkIntervalMinutes: 10,
+      lastUpdated: DateTime.now(),
+    );
+
+    final rates = [
+      FundingRate(
+        symbol: 'BTCUSDT',
+        fundingRate: 0.015,
+        fundingTime: DateTime.now().add(const Duration(minutes: 15)).millisecondsSinceEpoch,
+      ),
+      FundingRate(
+        symbol: 'ETHUSDT',
+        fundingRate: -0.02,
+        fundingTime: DateTime.now().add(const Duration(minutes: 25)).millisecondsSinceEpoch,
+      ),
+    ];
+
+    // Act
+    final result = usecase(rates: rates, settings: settings);
+
+    // Assert
+    expect(result.isEmpty, isTrue);
   });
 }

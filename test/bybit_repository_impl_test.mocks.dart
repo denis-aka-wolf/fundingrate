@@ -7,8 +7,7 @@ import 'dart:async' as _i3;
 
 import 'package:fundingrate/src/data/datasources/bybit_remote_data_source.dart'
     as _i2;
-import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i5;
-import 'package:fundingrate/src/domain/entities/trading_pair.dart' as _i4;
+import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -36,22 +35,12 @@ class MockBybitRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i3.Future<List<_i4.TradingPair>> getTradingPairs() =>
-      (super.noSuchMethod(
-            Invocation.method(#getTradingPairs, []),
-            returnValue: _i3.Future<List<_i4.TradingPair>>.value(
-              <_i4.TradingPair>[],
-            ),
-          )
-          as _i3.Future<List<_i4.TradingPair>>);
-
-  @override
-  _i3.Future<List<_i5.FundingRate>> getFundingRates() =>
+  _i3.Future<List<_i4.FundingRate>> getFundingRates() =>
       (super.noSuchMethod(
             Invocation.method(#getFundingRates, []),
-            returnValue: _i3.Future<List<_i5.FundingRate>>.value(
-              <_i5.FundingRate>[],
+            returnValue: _i3.Future<List<_i4.FundingRate>>.value(
+              <_i4.FundingRate>[],
             ),
           )
-          as _i3.Future<List<_i5.FundingRate>>);
+          as _i3.Future<List<_i4.FundingRate>>);
 }
