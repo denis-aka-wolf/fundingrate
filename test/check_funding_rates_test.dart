@@ -20,6 +20,7 @@ void main() {
       minutesBeforeExpiration: 30,
       checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
+      languageCode: 'en',
     );
 
     final rates = [
@@ -57,6 +58,7 @@ void main() {
       minutesBeforeExpiration: 30,
       checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
+      languageCode: 'en',
     );
 
     final rates = [
@@ -87,6 +89,7 @@ void main() {
       minutesBeforeExpiration: 10,
       checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
+      languageCode: 'en',
     );
 
     final rates = [

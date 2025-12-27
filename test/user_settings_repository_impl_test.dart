@@ -25,6 +25,7 @@ void main() {
     minutesBeforeExpiration: 30,
     checkIntervalMinutes: 10,
     lastUpdated: DateTime.now(),
+    languageCode: 'en',
   );
 
   group('getSettings', () {

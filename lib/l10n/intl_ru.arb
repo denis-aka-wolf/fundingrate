@@ -1,0 +1,11 @@
+{
+  "@@locale": "ru",
+  "welcomeMessage": "Добро пожаловать! Я буду уведомлять вас о ставках финансирования.",
+  "welcomeBackMessage": "С возвращением! Вы уже настроены.",
+  "settingsNotFound": "Настройки не найдены. Пожалуйста, используйте команду /start, чтобы начать.",
+  "fundingRateAlert": "Оповещение о ставке финансирования для {symbol}: {rate}",
+  "botStatus": "Я жив и работаю!",
+  "languageChanged": "Язык изменен на {lang}",
+  "unsupportedLanguage": "Неподдерживаемый язык.",
+  "langUsage": "Использование: /lang <language_code>"
+}

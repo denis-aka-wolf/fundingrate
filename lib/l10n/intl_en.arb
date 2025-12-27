@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "welcomeMessage": "Welcome! I will notify you about funding rates.",
+  "welcomeBackMessage": "Welcome back! You are already set up.",
+  "settingsNotFound": "Settings not found. Please use the /start command to begin.",
+  "fundingRateAlert": "Funding Rate Alert for {symbol}: {rate}",
+  "botStatus": "I am alive and running!",
+  "languageChanged": "Language changed to {lang}",
+  "unsupportedLanguage": "Unsupported language.",
+  "langUsage": "Usage: /lang <language_code>"
+}

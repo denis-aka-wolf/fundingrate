@@ -4,6 +4,7 @@ class UserSettings {
   final int minutesBeforeExpiration;
   final int checkIntervalMinutes;
   final DateTime lastUpdated;
+  final String languageCode;
 
   UserSettings({
     required this.userId,
@@ -11,6 +12,7 @@ class UserSettings {
     required this.minutesBeforeExpiration,
     required this.checkIntervalMinutes,
     required this.lastUpdated,
+    required this.languageCode,
   });
 
   factory UserSettings.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserSettings {
       minutesBeforeExpiration: json['minutes_before_expiration'],
       checkIntervalMinutes: json['check_interval_minutes'],
       lastUpdated: DateTime.parse(json['last_updated']),
+      languageCode: json['language_code'] ?? 'en',
     );
   }
 
@@ -30,6 +33,7 @@ class UserSettings {
       'minutes_before_expiration': minutesBeforeExpiration,
       'check_interval_minutes': checkIntervalMinutes,
       'last_updated': lastUpdated.toIso8601String(),
+      'language_code': languageCode,
     };
   }
 
@@ -41,6 +45,7 @@ UserSettings for $userId:
   Minutes Before Expiration: $minutesBeforeExpiration
   Check Interval (minutes): $checkIntervalMinutes
   Last Updated: $lastUpdated
+  Language: $languageCode
 ''';
   }
 }
