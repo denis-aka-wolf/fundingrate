@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:fundingrate/generated/l10n.dart';
 import 'package:fundingrate/src/domain/entities/user_settings.dart';
 import 'package:fundingrate/src/presentation/bot.dart';
@@ -93,7 +92,7 @@ void main() {
       teledart: fakeTeleDart,
     );
 
-    await S.load(const Locale('en'));
+    await S.load('en');
     
     // Call start to register handlers
     await bot.start();

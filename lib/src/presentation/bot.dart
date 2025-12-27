@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:teledart/teledart.dart';
 import 'package:teledart/telegram.dart';
 import 'dart:async';
@@ -41,8 +40,6 @@ class FundingRateBot {
       teledart = TeleDart(botToken, Event(username!));
     }
 
-    // In a real scenario, teledart.start() is called.
-    // In tests, we manually control the streams.
     if (_injectedTeleDart == null) {
       teledart.start();
     }
@@ -70,10 +67,10 @@ class FundingRateBot {
           languageCode: lang,
         );
         await saveUserSettings(settings);
-        await S.load(Locale(settings.languageCode));
+        await S.load(settings.languageCode);
         await message.reply(S.current.welcomeMessage);
       } else {
-        await S.load(Locale(settings.languageCode));
+        await S.load(settings.languageCode);
         await message.reply(S.current.welcomeBackMessage);
       }
     });
@@ -81,12 +78,10 @@ class FundingRateBot {
     teledart.onCommand('settings').listen((message) async {
       final userId = message.chat.id.toString();
       final settings = await getUserSettings(userId);
-
       if (settings != null) {
-        await S.load(Locale(settings.languageCode));
         await message.reply(settings.toString());
       } else {
-        await S.load(Locale(message.from?.languageCode ?? 'en'));
+        await S.load(message.from?.languageCode ?? 'en');
         await message.reply(S.current.settingsNotFound);
       }
     });
@@ -94,7 +89,7 @@ class FundingRateBot {
     teledart.onCommand('status').listen((message) async {
       final userId = message.chat.id.toString();
       final settings = await getUserSettings(userId);
-      await S.load(Locale(settings?.languageCode ?? message.from?.languageCode ?? 'en'));
+      await S.load(settings?.languageCode ?? message.from?.languageCode ?? 'en');
       await message.reply(S.current.botStatus);
     });
 
@@ -107,7 +102,7 @@ class FundingRateBot {
         final parts = text.split(' ');
         if (parts.length == 2) {
           final lang = parts[1];
-          if (S.delegate.supportedLocales.any((l) => l.languageCode == lang)) {
+          if (S.delegate.supportedLocales.contains(lang)) {
             final newSettings = UserSettings(
               userId: settings.userId,
               fundingRateThreshold: settings.fundingRateThreshold,
@@ -117,14 +112,14 @@ class FundingRateBot {
               languageCode: lang,
             );
             await saveUserSettings(newSettings);
-            await S.load(Locale(lang));
+            await S.load(lang);
             await message.reply(S.current.languageChanged(lang));
           } else {
-            await S.load(Locale(settings.languageCode));
+            await S.load(settings.languageCode);
             await message.reply(S.current.unsupportedLanguage);
           }
         } else {
-          await S.load(Locale(settings.languageCode));
+          await S.load(settings.languageCode);
           await message.reply(S.current.langUsage);
         }
       }
@@ -139,7 +134,7 @@ class FundingRateBot {
       for (final userId in userIds) {
         final settings = await getUserSettings(userId);
         if (settings != null) {
-          await S.load(Locale(settings.languageCode));
+          await S.load(settings.languageCode);
           final notifications = checkFundingRates(
             rates: rates,
             settings: settings,

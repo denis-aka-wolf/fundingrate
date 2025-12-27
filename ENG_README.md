@@ -26,6 +26,8 @@ To generate localization files, run the following command:
 dart run intl_utils:generate
 ```
 
+**Important:** `intl_utils` generates code with a dependency on Flutter. Since this is a console application, you must manually edit the generated files `lib/generated/l10n.dart` and `lib/generated/intl/messages_all.dart` to remove the Flutter dependency after each generation.
+
 ## Mocks
 
 To regenerate mock files for tests, run the following command:
