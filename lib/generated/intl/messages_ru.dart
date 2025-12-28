@@ -28,11 +28,29 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "botStatus": MessageLookupByLibrary.simpleMessage("Я жив и работаю!"),
+    "checkIntervalUpdated": MessageLookupByLibrary.simpleMessage(
+      "Интервал проверки обновлен.",
+    ),
+    "checkIntervalUsage": MessageLookupByLibrary.simpleMessage(
+      "Использование: /set_check_interval <value>",
+    ),
     "fundingRateAlert": m0,
+    "fundingRateThresholdUpdated": MessageLookupByLibrary.simpleMessage(
+      "Порог ставки финансирования обновлен.",
+    ),
+    "fundingRateThresholdUsage": MessageLookupByLibrary.simpleMessage(
+      "Использование: /set_funding_rate_threshold <value>",
+    ),
     "langUsage": MessageLookupByLibrary.simpleMessage(
       "Использование: /lang <language_code>",
     ),
     "languageChanged": m1,
+    "minutesBeforeExpirationUpdated": MessageLookupByLibrary.simpleMessage(
+      "Количество минут до истечения срока обновлено.",
+    ),
+    "minutesBeforeExpirationUsage": MessageLookupByLibrary.simpleMessage(
+      "Использование: /set_minutes_before_expiration <value>",
+    ),
     "settingsNotFound": MessageLookupByLibrary.simpleMessage(
       "Настройки не найдены. Пожалуйста, используйте команду /start, чтобы начать.",
     ),

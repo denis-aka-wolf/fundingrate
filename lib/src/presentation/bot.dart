@@ -124,6 +124,84 @@ class FundingRateBot {
         }
       }
     });
+
+    _createSettingsCommandHandler<double>(
+      command: 'set_funding_rate_threshold',
+      parser: double.parse,
+      updater: (settings, value) => UserSettings(
+        userId: settings.userId,
+        fundingRateThreshold: value,
+        minutesBeforeExpiration: settings.minutesBeforeExpiration,
+        checkIntervalMinutes: settings.checkIntervalMinutes,
+        lastUpdated: DateTime.now(),
+        languageCode: settings.languageCode,
+      ),
+      successMessage: S.current.fundingRateThresholdUpdated,
+      usageMessage: S.current.fundingRateThresholdUsage,
+    );
+
+    _createSettingsCommandHandler<int>(
+      command: 'set_minutes_before_expiration',
+      parser: int.parse,
+      updater: (settings, value) => UserSettings(
+        userId: settings.userId,
+        fundingRateThreshold: settings.fundingRateThreshold,
+        minutesBeforeExpiration: value,
+        checkIntervalMinutes: settings.checkIntervalMinutes,
+        lastUpdated: DateTime.now(),
+        languageCode: settings.languageCode,
+      ),
+      successMessage: S.current.minutesBeforeExpirationUpdated,
+      usageMessage: S.current.minutesBeforeExpirationUsage,
+    );
+
+    _createSettingsCommandHandler<int>(
+      command: 'set_check_interval',
+      parser: int.parse,
+      updater: (settings, value) => UserSettings(
+        userId: settings.userId,
+        fundingRateThreshold: settings.fundingRateThreshold,
+        minutesBeforeExpiration: settings.minutesBeforeExpiration,
+        checkIntervalMinutes: value,
+        lastUpdated: DateTime.now(),
+        languageCode: settings.languageCode,
+      ),
+      successMessage: S.current.checkIntervalUpdated,
+      usageMessage: S.current.checkIntervalUsage,
+    );
+  }
+
+  void _createSettingsCommandHandler<T>({
+    required String command,
+    required T Function(String) parser,
+    required UserSettings Function(UserSettings, T) updater,
+    required String successMessage,
+    required String usageMessage,
+  }) {
+    teledart.onCommand(command).listen((message) async {
+      final userId = message.chat.id.toString();
+      final settings = await getUserSettings(userId);
+      final text = message.text;
+
+      if (settings != null && text != null) {
+        final parts = text.split(' ');
+        if (parts.length == 2) {
+          try {
+            final value = parser(parts[1]);
+            final newSettings = updater(settings, value);
+            await saveUserSettings(newSettings);
+            await S.load(newSettings.languageCode);
+            await message.reply(successMessage);
+          } catch (e) {
+            await S.load(settings.languageCode);
+            await message.reply(usageMessage);
+          }
+        } else {
+          await S.load(settings.languageCode);
+          await message.reply(usageMessage);
+        }
+      }
+    });
   }
 
   void _startFundingRateChecker() {

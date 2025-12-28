@@ -29,11 +29,29 @@ class MessageLookup extends MessageLookupByLibrary {
     "botStatus": MessageLookupByLibrary.simpleMessage(
       "I am alive and running!",
     ),
+    "checkIntervalUpdated": MessageLookupByLibrary.simpleMessage(
+      "Check interval updated.",
+    ),
+    "checkIntervalUsage": MessageLookupByLibrary.simpleMessage(
+      "Usage: /set_check_interval <value>",
+    ),
     "fundingRateAlert": m0,
+    "fundingRateThresholdUpdated": MessageLookupByLibrary.simpleMessage(
+      "Funding rate threshold updated.",
+    ),
+    "fundingRateThresholdUsage": MessageLookupByLibrary.simpleMessage(
+      "Usage: /set_funding_rate_threshold <value>",
+    ),
     "langUsage": MessageLookupByLibrary.simpleMessage(
       "Usage: /lang <language_code>",
     ),
     "languageChanged": m1,
+    "minutesBeforeExpirationUpdated": MessageLookupByLibrary.simpleMessage(
+      "Minutes before expiration updated.",
+    ),
+    "minutesBeforeExpirationUsage": MessageLookupByLibrary.simpleMessage(
+      "Usage: /set_minutes_before_expiration <value>",
+    ),
     "settingsNotFound": MessageLookupByLibrary.simpleMessage(
       "Settings not found. Please use the /start command to begin.",
     ),

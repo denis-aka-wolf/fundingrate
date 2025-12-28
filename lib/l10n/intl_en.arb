@@ -7,5 +7,11 @@
   "botStatus": "I am alive and running!",
   "languageChanged": "Language changed to {lang}",
   "unsupportedLanguage": "Unsupported language.",
-  "langUsage": "Usage: /lang <language_code>"
+  "langUsage": "Usage: /lang <language_code>",
+  "fundingRateThresholdUpdated": "Funding rate threshold updated.",
+  "fundingRateThresholdUsage": "Usage: /set_funding_rate_threshold <value>",
+  "minutesBeforeExpirationUpdated": "Minutes before expiration updated.",
+  "minutesBeforeExpirationUsage": "Usage: /set_minutes_before_expiration <value>",
+  "checkIntervalUpdated": "Check interval updated.",
+  "checkIntervalUsage": "Usage: /set_check_interval <value>"
 }

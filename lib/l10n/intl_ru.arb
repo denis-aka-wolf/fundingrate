@@ -7,5 +7,11 @@
   "botStatus": "Я жив и работаю!",
   "languageChanged": "Язык изменен на {lang}",
   "unsupportedLanguage": "Неподдерживаемый язык.",
-  "langUsage": "Использование: /lang <language_code>"
+  "langUsage": "Использование: /lang <language_code>",
+  "fundingRateThresholdUpdated": "Порог ставки финансирования обновлен.",
+  "fundingRateThresholdUsage": "Использование: /set_funding_rate_threshold <value>",
+  "minutesBeforeExpirationUpdated": "Количество минут до истечения срока обновлено.",
+  "minutesBeforeExpirationUsage": "Использование: /set_minutes_before_expiration <value>",
+  "checkIntervalUpdated": "Интервал проверки обновлен.",
+  "checkIntervalUsage": "Использование: /set_check_interval <value>"
 }

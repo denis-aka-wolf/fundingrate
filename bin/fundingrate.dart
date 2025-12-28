@@ -10,8 +10,12 @@ import 'package:fundingrate/src/domain/usecases/get_user_settings.dart';
 import 'package:fundingrate/src/domain/usecases/save_user_settings.dart';
 import 'package:fundingrate/src/presentation/bot.dart';
 import 'package:http/http.dart' as http;
+import 'package:fundingrate/generated/l10n.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
+  // Load default locale
+  await S.load('en');
+
   // Data layer
   final client = http.Client();
   final bybitRemoteDataSource = BybitRemoteDataSourceImpl(client);

@@ -27,8 +27,7 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(String locale) {
-    final name = locale;
-    final localeName = Intl.canonicalizedLocale(name);
+    final localeName = Intl.canonicalizedLocale(locale);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
@@ -36,6 +35,19 @@ class S {
 
       return instance;
     });
+  }
+
+  static S of(dynamic context) {
+    final instance = S.maybeOf(context);
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
+    return instance!;
+  }
+
+  static S? maybeOf(dynamic context) {
+    return null;
   }
 
   /// `Welcome! I will notify you about funding rates.`
@@ -113,6 +125,66 @@ class S {
     return Intl.message(
       'Usage: /lang <language_code>',
       name: 'langUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Funding rate threshold updated.`
+  String get fundingRateThresholdUpdated {
+    return Intl.message(
+      'Funding rate threshold updated.',
+      name: 'fundingRateThresholdUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usage: /set_funding_rate_threshold <value>`
+  String get fundingRateThresholdUsage {
+    return Intl.message(
+      'Usage: /set_funding_rate_threshold <value>',
+      name: 'fundingRateThresholdUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Minutes before expiration updated.`
+  String get minutesBeforeExpirationUpdated {
+    return Intl.message(
+      'Minutes before expiration updated.',
+      name: 'minutesBeforeExpirationUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usage: /set_minutes_before_expiration <value>`
+  String get minutesBeforeExpirationUsage {
+    return Intl.message(
+      'Usage: /set_minutes_before_expiration <value>',
+      name: 'minutesBeforeExpirationUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check interval updated.`
+  String get checkIntervalUpdated {
+    return Intl.message(
+      'Check interval updated.',
+      name: 'checkIntervalUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Usage: /set_check_interval <value>`
+  String get checkIntervalUsage {
+    return Intl.message(
+      'Usage: /set_check_interval <value>',
+      name: 'checkIntervalUsage',
       desc: '',
       args: [],
     );

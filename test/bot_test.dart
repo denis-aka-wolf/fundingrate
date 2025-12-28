@@ -147,4 +147,72 @@ void main() {
       verifyNever(mockSaveUserSettings(any));
     });
   });
+
+  group('Settings commands', () {
+    late UserSettings existingSettings;
+
+    setUp(() {
+      existingSettings = UserSettings(
+        userId: '123',
+        fundingRateThreshold: 0.01,
+        minutesBeforeExpiration: 30,
+        checkIntervalMinutes: 10,
+        lastUpdated: DateTime.now(),
+        languageCode: 'en',
+      );
+      when(mockGetUserSettings('123')).thenAnswer((_) async => existingSettings);
+      when(mockSaveUserSettings(any)).thenAnswer((_) async {});
+    });
+
+    test('should update funding rate threshold on /set_funding_rate_threshold', () async {
+      // Arrange
+      final mockMessage = createMockMessage(123, 'en', text: '/set_funding_rate_threshold 0.05');
+
+      // Act
+      fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
+
+      // Assert
+      await untilCalled(mockMessage.reply(S.current.fundingRateThresholdUpdated));
+      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
+      expect(captured.fundingRateThreshold, 0.05);
+    });
+
+    test('should reply with usage on invalid /set_funding_rate_threshold', () async {
+      // Arrange
+      final mockMessage = createMockMessage(123, 'en', text: '/set_funding_rate_threshold invalid');
+
+      // Act
+      fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
+
+      // Assert
+      await untilCalled(mockMessage.reply(S.current.fundingRateThresholdUsage));
+      verifyNever(mockSaveUserSettings(any));
+    });
+
+    test('should update minutes before expiration on /set_minutes_before_expiration', () async {
+      // Arrange
+      final mockMessage = createMockMessage(123, 'en', text: '/set_minutes_before_expiration 60');
+
+      // Act
+      fakeTeleDart.sendCommand('set_minutes_before_expiration', mockMessage);
+
+      // Assert
+      await untilCalled(mockMessage.reply(S.current.minutesBeforeExpirationUpdated));
+      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
+      expect(captured.minutesBeforeExpiration, 60);
+    });
+
+    test('should update check interval on /set_check_interval', () async {
+      // Arrange
+      final mockMessage = createMockMessage(123, 'en', text: '/set_check_interval 5');
+
+      // Act
+      fakeTeleDart.sendCommand('set_check_interval', mockMessage);
+
+      // Assert
+      await untilCalled(mockMessage.reply(S.current.checkIntervalUpdated));
+      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
+      expect(captured.checkIntervalMinutes, 5);
+    });
+  });
 }
