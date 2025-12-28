@@ -18,6 +18,20 @@ A Telegram bot that allows tracking funding rates from Binance for various crypt
 - Notifications when funding rate thresholds are exceeded
 - Multi-language support
 
+## Environment Setup
+
+To run the bot, you need to create a `.env` file in the root directory of the project and add the following variables:
+
+```shell
+TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
+SAVE_BYBIT_RESPONSE=true
+CONSOLE_OUTPUT=true
+```
+
+- `TELEGRAM_BOT_TOKEN` - your Telegram bot token.
+- `SAVE_BYBIT_RESPONSE` - if `true`, responses from Bybit will be saved to the `bybit_responses` directory.
+- `CONSOLE_OUTPUT` - if `true`, responses from Bybit will be printed to the console.
+
 ## Localization
 
 To generate localization files, run the following command:
