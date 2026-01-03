@@ -50,7 +50,6 @@ class FakeTeleDart implements TeleDart {
   }
 }
 
-
 @GenerateMocks([
   GetUserSettings,
   SaveUserSettings,
@@ -135,7 +134,7 @@ void main() {
     test('should send welcome back message to existing user', () async {
       // Arrange
       final mockMessage = createMockMessage(123, 'en');
-      final existingSettings = UserSettings(userId: '123', fundingRateThreshold: 0, minutesBeforeExpiration: 0, checkIntervalMinutes: 0, lastUpdated: DateTime.now(), languageCode: 'en');
+      final existingSettings = UserSettings(userId: '123', fundingRateThreshold: 0, minutesBeforeExpiration: 0, lastUpdated: DateTime.now(), languageCode: 'en');
       when(mockGetUserSettings('123')).thenAnswer((_) async => existingSettings);
 
       // Act
@@ -156,7 +155,6 @@ void main() {
         userId: '123',
         fundingRateThreshold: 0.01,
         minutesBeforeExpiration: 30,
-        checkIntervalMinutes: 10,
         lastUpdated: DateTime.now(),
         languageCode: 'en',
       );
@@ -202,17 +200,5 @@ void main() {
       expect(captured.minutesBeforeExpiration, 60);
     });
 
-    test('should update check interval on /set_check_interval', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en', text: '/set_check_interval 5');
-
-      // Act
-      fakeTeleDart.sendCommand('set_check_interval', mockMessage);
-
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.checkIntervalUpdated));
-      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
-      expect(captured.checkIntervalMinutes, 5);
-    });
   });
 }

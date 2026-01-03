@@ -17,6 +17,7 @@ class FundingRateBot {
   final GetAllUserIds getAllUserIds;
   final GetFundingRates getFundingRates;
   final CheckFundingRates checkFundingRates;
+  final int checkIntervalMinutes;
 
   late TeleDart teledart;
   final TeleDart? _injectedTeleDart;
@@ -27,6 +28,7 @@ class FundingRateBot {
     required this.getAllUserIds,
     required this.getFundingRates,
     required this.checkFundingRates,
+    this.checkIntervalMinutes = 10,
     TeleDart? teledart,
   }) : _injectedTeleDart = teledart;
 
@@ -62,7 +64,6 @@ class FundingRateBot {
           userId: userId,
           fundingRateThreshold: 0.01,
           minutesBeforeExpiration: 30,
-          checkIntervalMinutes: 10,
           lastUpdated: DateTime.now(),
           languageCode: lang,
         );
@@ -107,7 +108,6 @@ class FundingRateBot {
               userId: settings.userId,
               fundingRateThreshold: settings.fundingRateThreshold,
               minutesBeforeExpiration: settings.minutesBeforeExpiration,
-              checkIntervalMinutes: settings.checkIntervalMinutes,
               lastUpdated: DateTime.now(),
               languageCode: lang,
             );
@@ -132,7 +132,6 @@ class FundingRateBot {
         userId: settings.userId,
         fundingRateThreshold: value,
         minutesBeforeExpiration: settings.minutesBeforeExpiration,
-        checkIntervalMinutes: settings.checkIntervalMinutes,
         lastUpdated: DateTime.now(),
         languageCode: settings.languageCode,
       ),
@@ -147,7 +146,6 @@ class FundingRateBot {
         userId: settings.userId,
         fundingRateThreshold: settings.fundingRateThreshold,
         minutesBeforeExpiration: value,
-        checkIntervalMinutes: settings.checkIntervalMinutes,
         lastUpdated: DateTime.now(),
         languageCode: settings.languageCode,
       ),
@@ -155,20 +153,6 @@ class FundingRateBot {
       usageMessage: S.current.minutesBeforeExpirationUsage,
     );
 
-    _createSettingsCommandHandler<int>(
-      command: 'set_check_interval',
-      parser: int.parse,
-      updater: (settings, value) => UserSettings(
-        userId: settings.userId,
-        fundingRateThreshold: settings.fundingRateThreshold,
-        minutesBeforeExpiration: settings.minutesBeforeExpiration,
-        checkIntervalMinutes: value,
-        lastUpdated: DateTime.now(),
-        languageCode: settings.languageCode,
-      ),
-      successMessage: S.current.checkIntervalUpdated,
-      usageMessage: S.current.checkIntervalUsage,
-    );
   }
 
   void _createSettingsCommandHandler<T>({
@@ -205,7 +189,12 @@ class FundingRateBot {
   }
 
   void _startFundingRateChecker() {
-    Timer.periodic(const Duration(minutes: 1), (timer) async {
+    _checkRates();
+  }
+
+  void _checkRates() async {
+    print('Starting funding rate check...');
+    try {
       final userIds = await getAllUserIds();
       final rates = await getFundingRates();
 
@@ -229,6 +218,11 @@ class FundingRateBot {
           }
         }
       }
-    });
+    } catch (e, s) {
+      print('Error during funding rate check: $e');
+      print(s);
+    } finally {
+      Future.delayed(Duration(minutes: checkIntervalMinutes), _checkRates);
+    }
   }
 }

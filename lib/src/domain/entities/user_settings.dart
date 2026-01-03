@@ -2,7 +2,6 @@ class UserSettings {
   final String userId;
   final double fundingRateThreshold;
   final int minutesBeforeExpiration;
-  final int checkIntervalMinutes;
   final DateTime lastUpdated;
   final String languageCode;
 
@@ -10,7 +9,6 @@ class UserSettings {
     required this.userId,
     required this.fundingRateThreshold,
     required this.minutesBeforeExpiration,
-    required this.checkIntervalMinutes,
     required this.lastUpdated,
     required this.languageCode,
   });
@@ -20,7 +18,6 @@ class UserSettings {
       userId: json['user_id'],
       fundingRateThreshold: (json['funding_rate_threshold'] as num).toDouble(),
       minutesBeforeExpiration: json['minutes_before_expiration'],
-      checkIntervalMinutes: json['check_interval_minutes'],
       lastUpdated: DateTime.parse(json['last_updated']),
       languageCode: json['language_code'] ?? 'en',
     );
@@ -31,7 +28,6 @@ class UserSettings {
       'user_id': userId,
       'funding_rate_threshold': fundingRateThreshold,
       'minutes_before_expiration': minutesBeforeExpiration,
-      'check_interval_minutes': checkIntervalMinutes,
       'last_updated': lastUpdated.toIso8601String(),
       'language_code': languageCode,
     };
@@ -43,7 +39,6 @@ class UserSettings {
 UserSettings for $userId:
   Funding Rate Threshold: $fundingRateThreshold
   Minutes Before Expiration: $minutesBeforeExpiration
-  Check Interval (minutes): $checkIntervalMinutes
   Last Updated: $lastUpdated
   Language: $languageCode
 ''';

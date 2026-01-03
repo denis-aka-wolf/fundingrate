@@ -18,7 +18,6 @@ void main() {
       userId: '1',
       fundingRateThreshold: 0.01,
       minutesBeforeExpiration: 30,
-      checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
       languageCode: 'en',
     );
@@ -56,7 +55,6 @@ void main() {
       userId: '1',
       fundingRateThreshold: 0.03,
       minutesBeforeExpiration: 30,
-      checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
       languageCode: 'en',
     );
@@ -87,7 +85,6 @@ void main() {
       userId: '1',
       fundingRateThreshold: 0.01,
       minutesBeforeExpiration: 10,
-      checkIntervalMinutes: 10,
       lastUpdated: DateTime.now(),
       languageCode: 'en',
     );

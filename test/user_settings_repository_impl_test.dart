@@ -23,7 +23,6 @@ void main() {
     userId: tUserId,
     fundingRateThreshold: 0.01,
     minutesBeforeExpiration: 30,
-    checkIntervalMinutes: 10,
     lastUpdated: DateTime.now(),
     languageCode: 'en',
   );

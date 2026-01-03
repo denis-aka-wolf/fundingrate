@@ -9,16 +9,20 @@ import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart';
 import 'package:fundingrate/src/domain/usecases/get_user_settings.dart';
 import 'package:fundingrate/src/domain/usecases/save_user_settings.dart';
 import 'package:fundingrate/src/presentation/bot.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:fundingrate/generated/l10n.dart';
+import 'package:dotenv/dotenv.dart';
 
 void main(List<String> arguments) async {
+  // Load environment variables
+  final env = DotEnv(includePlatformEnvironment: true)..load();
+
   // Load default locale
   await S.load('en');
 
   // Data layer
-  final client = http.Client();
-  final bybitRemoteDataSource = BybitRemoteDataSourceImpl(client);
+  final dio = Dio();
+  final bybitRemoteDataSource = BybitRemoteDataSourceImpl(dio);
   final userSettingsLocalDataSource =
       UserSettingsLocalDataSourceImpl(Directory('settings'));
   final bybitRepository =
@@ -34,12 +38,14 @@ void main(List<String> arguments) async {
   final checkFundingRates = CheckFundingRates();
 
   // Presentation layer
+  final checkInterval = int.tryParse(env['CHECK_INTERVAL_MINUTES'] ?? '10') ?? 10;
   final bot = FundingRateBot(
     getFundingRates: getFundingRates,
     getUserSettings: getUserSettings,
     saveUserSettings: saveUserSettings,
     getAllUserIds: getAllUserIds,
     checkFundingRates: checkFundingRates,
+    checkIntervalMinutes: checkInterval,
   );
 
   bot.start();

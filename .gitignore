@@ -10,3 +10,4 @@ build/
 *.iws
 .vscode/
 /settings
+/bybit_responses
