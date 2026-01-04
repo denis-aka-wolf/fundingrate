@@ -6,6 +6,7 @@ import 'package:fundingrate/src/domain/usecases/save_user_settings.dart';
 import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart';
 import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart';
 import 'package:fundingrate/src/domain/usecases/check_funding_rates.dart';
+import 'package:fundingrate/src/domain/usecases/config_and_roles_usecases.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:teledart/model.dart';
@@ -26,7 +27,9 @@ class FakeTeleDart implements TeleDart {
   @override
   Stream<TeleDartMessage> onCommand([dynamic command]) {
     if (command is String) {
-      return _commandControllers.putIfAbsent(command, () => StreamController<TeleDartMessage>()).stream;
+      return _commandControllers
+          .putIfAbsent(command, () => StreamController<TeleDartMessage>())
+          .stream;
     }
     // This case is for onMessage without a specific command, which we are not testing here.
     return Stream.empty();
@@ -35,7 +38,7 @@ class FakeTeleDart implements TeleDart {
   void sendCommand(String command, TeleDartMessage message) {
     _commandControllers[command]?.add(message);
   }
-  
+
   @override
   Future<bool> start() async => true;
 
@@ -50,19 +53,27 @@ class FakeTeleDart implements TeleDart {
   }
 }
 
-@GenerateMocks([
-  GetUserSettings,
-  SaveUserSettings,
-  GetAllUserIds,
-  GetFundingRates,
-  CheckFundingRates,
-  Telegram,
-  Message,
-  Chat,
-  User,
-], customMocks: [
-  MockSpec<TeleDartMessage>(as: #MockTeleDartMessage),
-])
+@GenerateMocks(
+  [
+    GetUserSettings,
+    SaveUserSettings,
+    GetAllUserIds,
+    GetFundingRates,
+    CheckFundingRates,
+    GetConfig,
+    SetConfig,
+    GetRole,
+    AddRole,
+    RemoveRole,
+    GetAdminIds,
+    GetModeratorIds,
+    Telegram,
+    Message,
+    Chat,
+    User,
+  ],
+  customMocks: [MockSpec<TeleDartMessage>(as: #MockTeleDartMessage)],
+)
 void main() {
   late FundingRateBot bot;
   late MockGetUserSettings mockGetUserSettings;
@@ -70,6 +81,13 @@ void main() {
   late MockGetAllUserIds mockGetAllUserIds;
   late MockGetFundingRates mockGetFundingRates;
   late MockCheckFundingRates mockCheckFundingRates;
+  late MockGetConfig mockGetConfig;
+  late MockSetConfig mockSetConfig;
+  late MockGetRole mockGetRole;
+  late MockAddRole mockAddRole;
+  late MockRemoveRole mockRemoveRole;
+  late MockGetAdminIds mockGetAdminIds;
+  late MockGetModeratorIds mockGetModeratorIds;
   late FakeTeleDart fakeTeleDart;
   late MockTelegram mockTelegram;
 
@@ -79,8 +97,23 @@ void main() {
     mockGetAllUserIds = MockGetAllUserIds();
     mockGetFundingRates = MockGetFundingRates();
     mockCheckFundingRates = MockCheckFundingRates();
+    mockGetConfig = MockGetConfig();
+    mockSetConfig = MockSetConfig();
+    mockGetRole = MockGetRole();
+    mockAddRole = MockAddRole();
+    mockRemoveRole = MockRemoveRole();
+    mockGetAdminIds = MockGetAdminIds();
+    mockGetModeratorIds = MockGetModeratorIds();
     mockTelegram = MockTelegram();
     fakeTeleDart = FakeTeleDart(mockTelegram);
+
+    when(mockGetConfig()).thenAnswer(
+      (_) async => {
+        "SAVE_BYBIT_RESPONSE": false,
+        "CONSOLE_OUTPUT": true,
+        "CHECK_INTERVAL_MINUTES": 5,
+      },
+    );
 
     bot = FundingRateBot(
       getUserSettings: mockGetUserSettings,
@@ -88,20 +121,31 @@ void main() {
       getAllUserIds: mockGetAllUserIds,
       getFundingRates: mockGetFundingRates,
       checkFundingRates: mockCheckFundingRates,
+      getConfig: mockGetConfig,
+      setConfig: mockSetConfig,
+      getRole: mockGetRole,
+      addRole: mockAddRole,
+      removeRole: mockRemoveRole,
+      getAdminIds: mockGetAdminIds,
+      getModeratorIds: mockGetModeratorIds,
       teledart: fakeTeleDart,
     );
 
     await S.load('en');
-    
+
     // Call start to register handlers
     await bot.start();
   });
 
-  MockTeleDartMessage createMockMessage(int chatId, String langCode, {String? text}) {
+  MockTeleDartMessage createMockMessage(
+    int chatId,
+    String langCode, {
+    String? text,
+  }) {
     final mockMessage = MockTeleDartMessage();
     final mockChat = MockChat();
     final mockUser = MockUser();
-    
+
     when(mockMessage.chat).thenReturn(mockChat);
     when(mockChat.id).thenReturn(chatId);
     when(mockMessage.from).thenReturn(mockUser);
@@ -110,7 +154,7 @@ void main() {
       when(mockMessage.text).thenReturn(text);
     }
     when(mockMessage.reply(any)).thenAnswer((_) async => mockMessage);
-    
+
     return mockMessage;
   }
 
@@ -123,19 +167,29 @@ void main() {
 
       // Act
       fakeTeleDart.sendCommand('start', mockMessage);
-      
+
       // Assert
       await untilCalled(mockMessage.reply(S.current.welcomeMessage));
       verify(mockGetUserSettings('123')).called(1);
-      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
+      final captured =
+          verify(mockSaveUserSettings(captureAny)).captured.single
+              as UserSettings;
       expect(captured.userId, '123');
     });
 
     test('should send welcome back message to existing user', () async {
       // Arrange
       final mockMessage = createMockMessage(123, 'en');
-      final existingSettings = UserSettings(userId: '123', fundingRateThreshold: 0, minutesBeforeExpiration: 0, lastUpdated: DateTime.now(), languageCode: 'en');
-      when(mockGetUserSettings('123')).thenAnswer((_) async => existingSettings);
+      final existingSettings = UserSettings(
+        userId: '123',
+        fundingRateThreshold: 0,
+        minutesBeforeExpiration: 0,
+        lastUpdated: DateTime.now(),
+        languageCode: 'en',
+      );
+      when(
+        mockGetUserSettings('123'),
+      ).thenAnswer((_) async => existingSettings);
 
       // Act
       fakeTeleDart.sendCommand('start', mockMessage);
@@ -158,47 +212,79 @@ void main() {
         lastUpdated: DateTime.now(),
         languageCode: 'en',
       );
-      when(mockGetUserSettings('123')).thenAnswer((_) async => existingSettings);
+      when(
+        mockGetUserSettings('123'),
+      ).thenAnswer((_) async => existingSettings);
       when(mockSaveUserSettings(any)).thenAnswer((_) async {});
     });
 
-    test('should update funding rate threshold on /set_funding_rate_threshold', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en', text: '/set_funding_rate_threshold 0.05');
+    test(
+      'should update funding rate threshold on /set_funding_rate_threshold',
+      () async {
+        // Arrange
+        final mockMessage = createMockMessage(
+          123,
+          'en',
+          text: '/set_funding_rate_threshold 0.05',
+        );
 
-      // Act
-      fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
+        // Act
+        fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
 
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.fundingRateThresholdUpdated));
-      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
-      expect(captured.fundingRateThreshold, 0.05);
-    });
+        // Assert
+        await untilCalled(
+          mockMessage.reply(S.current.fundingRateThresholdUpdated),
+        );
+        final captured =
+            verify(mockSaveUserSettings(captureAny)).captured.single
+                as UserSettings;
+        expect(captured.fundingRateThreshold, 0.05);
+      },
+    );
 
-    test('should reply with usage on invalid /set_funding_rate_threshold', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en', text: '/set_funding_rate_threshold invalid');
+    test(
+      'should reply with usage on invalid /set_funding_rate_threshold',
+      () async {
+        // Arrange
+        final mockMessage = createMockMessage(
+          123,
+          'en',
+          text: '/set_funding_rate_threshold invalid',
+        );
 
-      // Act
-      fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
+        // Act
+        fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
 
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.fundingRateThresholdUsage));
-      verifyNever(mockSaveUserSettings(any));
-    });
+        // Assert
+        await untilCalled(
+          mockMessage.reply(S.current.fundingRateThresholdUsage),
+        );
+        verifyNever(mockSaveUserSettings(any));
+      },
+    );
 
-    test('should update minutes before expiration on /set_minutes_before_expiration', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en', text: '/set_minutes_before_expiration 60');
+    test(
+      'should update minutes before expiration on /set_minutes_before_expiration',
+      () async {
+        // Arrange
+        final mockMessage = createMockMessage(
+          123,
+          'en',
+          text: '/set_minutes_before_expiration 60',
+        );
 
-      // Act
-      fakeTeleDart.sendCommand('set_minutes_before_expiration', mockMessage);
+        // Act
+        fakeTeleDart.sendCommand('set_minutes_before_expiration', mockMessage);
 
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.minutesBeforeExpirationUpdated));
-      final captured = verify(mockSaveUserSettings(captureAny)).captured.single as UserSettings;
-      expect(captured.minutesBeforeExpiration, 60);
-    });
-
+        // Assert
+        await untilCalled(
+          mockMessage.reply(S.current.minutesBeforeExpirationUpdated),
+        );
+        final captured =
+            verify(mockSaveUserSettings(captureAny)).captured.single
+                as UserSettings;
+        expect(captured.minutesBeforeExpiration, 60);
+      },
+    );
   });
 }

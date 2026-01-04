@@ -24,10 +24,11 @@ class S {
     return _current!;
   }
 
-  static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
+  static const List<String> supportedLocales = ['en', 'ru'];
 
   static Future<S> load(String locale) {
-    final localeName = Intl.canonicalizedLocale(locale);
+    final name = supportedLocales.contains(locale) ? locale : 'en';
+    final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
       final instance = S();
@@ -37,63 +38,40 @@ class S {
     });
   }
 
-  static S of(dynamic context) {
-    final instance = S.maybeOf(context);
-    assert(
-      instance != null,
-      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
-    );
-    return instance!;
-  }
-
-  static S? maybeOf(dynamic context) {
-    return null;
-  }
-
-  /// `Welcome! I will notify you about funding rates.`
+  /// `Welcome! I will notify you about high funding rates.`
   String get welcomeMessage {
     return Intl.message(
-      'Welcome! I will notify you about funding rates.',
+      'Welcome! I will notify you about high funding rates.',
       name: 'welcomeMessage',
       desc: '',
       args: [],
     );
   }
 
-  /// `Welcome back! You are already set up.`
+  /// `Welcome back!`
   String get welcomeBackMessage {
     return Intl.message(
-      'Welcome back! You are already set up.',
+      'Welcome back!',
       name: 'welcomeBackMessage',
       desc: '',
       args: [],
     );
   }
 
-  /// `Settings not found. Please use the /start command to begin.`
+  /// `Settings not found. Please use /start to initialize your settings.`
   String get settingsNotFound {
     return Intl.message(
-      'Settings not found. Please use the /start command to begin.',
+      'Settings not found. Please use /start to initialize your settings.',
       name: 'settingsNotFound',
       desc: '',
       args: [],
     );
   }
 
-  /// `Funding Rate Alert for {symbol}: {rate}`
-  String fundingRateAlert(Object symbol, Object rate) {
-    return Intl.message(
-      'Funding Rate Alert for $symbol: $rate',
-      name: 'fundingRateAlert',
-      desc: '',
-      args: [symbol, rate],
-    );
-  }
-
-  /// `I am alive and running!`
+  /// `Bot is running.`
   String get botStatus {
     return Intl.message(
-      'I am alive and running!',
+      'Bot is running.',
       name: 'botStatus',
       desc: '',
       args: [],
@@ -170,47 +148,174 @@ class S {
     );
   }
 
-  /// `Check interval updated.`
-  String get checkIntervalUpdated {
+  /// `High funding rate for {symbol}: {fundingRate}`
+  String fundingRateAlert(Object symbol, Object fundingRate) {
     return Intl.message(
-      'Check interval updated.',
-      name: 'checkIntervalUpdated',
+      'High funding rate for $symbol: $fundingRate',
+      name: 'fundingRateAlert',
+      desc: '',
+      args: [symbol, fundingRate],
+    );
+  }
+
+  /// `Access denied.`
+  String get accessDenied {
+    return Intl.message(
+      'Access denied.',
+      name: 'accessDenied',
       desc: '',
       args: [],
     );
   }
 
-  /// `Usage: /set_check_interval <value>`
-  String get checkIntervalUsage {
+  /// `User {userId} is now an admin.`
+  String userPromotedToAdmin(Object userId) {
     return Intl.message(
-      'Usage: /set_check_interval <value>',
-      name: 'checkIntervalUsage',
+      'User $userId is now an admin.',
+      name: 'userPromotedToAdmin',
+      desc: '',
+      args: [userId],
+    );
+  }
+
+  /// `User {userId} is now a moderator.`
+  String userPromotedToModerator(Object userId) {
+    return Intl.message(
+      'User $userId is now a moderator.',
+      name: 'userPromotedToModerator',
+      desc: '',
+      args: [userId],
+    );
+  }
+
+  /// `User {userId} is no longer an admin.`
+  String userDemotedFromAdmin(Object userId) {
+    return Intl.message(
+      'User $userId is no longer an admin.',
+      name: 'userDemotedFromAdmin',
+      desc: '',
+      args: [userId],
+    );
+  }
+
+  /// `User {userId} is no longer a moderator.`
+  String userDemotedFromModerator(Object userId) {
+    return Intl.message(
+      'User $userId is no longer a moderator.',
+      name: 'userDemotedFromModerator',
+      desc: '',
+      args: [userId],
+    );
+  }
+
+  /// `Please specify a user ID or reply to a message.`
+  String get specifyUser {
+    return Intl.message(
+      'Please specify a user ID or reply to a message.',
+      name: 'specifyUser',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Admins: {userIds}`
+  String adminsList(Object userIds) {
+    return Intl.message(
+      'Admins: $userIds',
+      name: 'adminsList',
+      desc: '',
+      args: [userIds],
+    );
+  }
+
+  /// `Moderators: {userIds}`
+  String moderatorsList(Object userIds) {
+    return Intl.message(
+      'Moderators: $userIds',
+      name: 'moderatorsList',
+      desc: '',
+      args: [userIds],
+    );
+  }
+
+  /// `Setting {key} updated to {value}.`
+  String settingUpdated(Object key, Object value) {
+    return Intl.message(
+      'Setting $key updated to $value.',
+      name: 'settingUpdated',
+      desc: '',
+      args: [key, value],
+    );
+  }
+
+  /// `Failed to update setting {key}.`
+  String settingUpdateFailed(Object key) {
+    return Intl.message(
+      'Failed to update setting $key.',
+      name: 'settingUpdateFailed',
+      desc: '',
+      args: [key],
+    );
+  }
+
+  /// `Usage: /set <KEY> <VALUE>`
+  String get setUsage {
+    return Intl.message(
+      'Usage: /set <KEY> <VALUE>',
+      name: 'setUsage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.`
+  String get welcomeMessageDetailed {
+    return Intl.message(
+      'Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.',
+      name: 'welcomeMessageDetailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available commands:`
+  String get availableCommands {
+    return Intl.message(
+      'Available commands:',
+      name: 'availableCommands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- /start - Start the bot\n- /settings - View current settings\n- /status - Check bot status\n- /lang <language_code> - Change language\n- /set_funding_rate_threshold <value> - Set funding rate threshold\n- /set_minutes_before_expiration <value> - Set minutes before expiration`
+  String get userCommands {
+    return Intl.message(
+      '- /start - Start the bot\n- /settings - View current settings\n- /status - Check bot status\n- /lang <language_code> - Change language\n- /set_funding_rate_threshold <value> - Set funding rate threshold\n- /set_minutes_before_expiration <value> - Set minutes before expiration',
+      name: 'userCommands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- /add_admin <user_id> - Promote user to admin\n- /add_moderator <user_id> - Promote user to moderator\n- /del_admin <user_id> - Demote user from admin\n- /del_moderator <user_id> - Demote user from moderator\n- /users_admin - List all admins\n- /users_moderator - List all moderators`
+  String get adminCommands {
+    return Intl.message(
+      '- /add_admin <user_id> - Promote user to admin\n- /add_moderator <user_id> - Promote user to moderator\n- /del_admin <user_id> - Demote user from admin\n- /del_moderator <user_id> - Demote user from moderator\n- /users_admin - List all admins\n- /users_moderator - List all moderators',
+      name: 'adminCommands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `- /settings_app - Show current application settings\n- /set <parameter> <value> - Change application setting`
+  String get moderatorCommands {
+    return Intl.message(
+      '- /settings_app - Show current application settings\n- /set <parameter> <value> - Change application setting',
+      name: 'moderatorCommands',
       desc: '',
       args: [],
     );
   }
 }
 
-class AppLocalizationDelegate {
-  const AppLocalizationDelegate();
-
-  List<String> get supportedLocales {
-    return const <String>[
-      'en',
-      'ru',
-    ];
-  }
-
-  bool isSupported(String locale) => _isSupported(locale);
-  Future<S> load(String locale) => S.load(locale);
-  bool shouldReload(AppLocalizationDelegate old) => false;
-
-  bool _isSupported(String locale) {
-    for (var supportedLocale in supportedLocales) {
-      if (supportedLocale == locale) {
-        return true;
-      }
-    }
-    return false;
-  }
-}

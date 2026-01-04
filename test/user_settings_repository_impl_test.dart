@@ -14,8 +14,9 @@ void main() {
 
   setUp(() {
     mockLocalDataSource = MockUserSettingsLocalDataSource();
-    repository =
-        UserSettingsRepositoryImpl(localDataSource: mockLocalDataSource);
+    repository = UserSettingsRepositoryImpl(
+      localDataSource: mockLocalDataSource,
+    );
   });
 
   final tUserId = '1';
@@ -30,8 +31,9 @@ void main() {
   group('getSettings', () {
     test('should return user settings from the data source', () async {
       // Arrange
-      when(mockLocalDataSource.getSettings(any))
-          .thenAnswer((_) async => tUserSettings);
+      when(
+        mockLocalDataSource.getSettings(any),
+      ).thenAnswer((_) async => tUserSettings);
 
       // Act
       final result = await repository.getSettings(tUserId);
@@ -46,8 +48,7 @@ void main() {
   group('saveSettings', () {
     test('should call the save method on the data source', () async {
       // Arrange
-      when(mockLocalDataSource.saveSettings(any))
-          .thenAnswer((_) async => null);
+      when(mockLocalDataSource.saveSettings(any)).thenAnswer((_) async => null);
 
       // Act
       await repository.saveSettings(tUserSettings);
@@ -62,8 +63,9 @@ void main() {
     test('should return a list of user ids from the data source', () async {
       // Arrange
       final tUserIds = ['1', '2'];
-      when(mockLocalDataSource.getAllUserIds())
-          .thenAnswer((_) async => tUserIds);
+      when(
+        mockLocalDataSource.getAllUserIds(),
+      ).thenAnswer((_) async => tUserIds);
 
       // Act
       final result = await repository.getAllUserIds();

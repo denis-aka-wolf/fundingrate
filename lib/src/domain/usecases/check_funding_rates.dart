@@ -10,15 +10,18 @@ class CheckFundingRates {
     final notifications = <FundingRate>[];
 
     for (final rate in rates) {
-
-      final fundingTime = DateTime.fromMillisecondsSinceEpoch(rate.fundingTime, isUtc: true);
+      final fundingTime = DateTime.fromMillisecondsSinceEpoch(
+        rate.fundingTime,
+        isUtc: true,
+      );
       final difference = fundingTime.difference(now);
 
       if (difference.isNegative) {
         continue;
       }
 
-      final shouldNotify = difference.inMinutes <= settings.minutesBeforeExpiration &&
+      final shouldNotify =
+          difference.inMinutes <= settings.minutesBeforeExpiration &&
           rate.fundingRate.abs() >= settings.fundingRateThreshold;
 
       if (shouldNotify) {

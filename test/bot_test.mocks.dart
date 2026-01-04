@@ -3,26 +3,34 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
-import 'dart:io' as _i14;
+import 'dart:async' as _i8;
+import 'dart:io' as _i18;
 
-import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i11;
-import 'package:fundingrate/src/domain/entities/user_settings.dart' as _i7;
+import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i13;
+import 'package:fundingrate/src/domain/entities/user.dart' as _i16;
+import 'package:fundingrate/src/domain/entities/user_settings.dart' as _i9;
 import 'package:fundingrate/src/domain/repositories/bybit_repository.dart'
     as _i3;
+import 'package:fundingrate/src/domain/repositories/config_repository.dart'
+    as _i4;
+import 'package:fundingrate/src/domain/repositories/roles_repository.dart'
+    as _i5;
 import 'package:fundingrate/src/domain/repositories/user_settings_repository.dart'
     as _i2;
 import 'package:fundingrate/src/domain/usecases/check_funding_rates.dart'
-    as _i12;
-import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart' as _i9;
-import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart' as _i10;
-import 'package:fundingrate/src/domain/usecases/get_user_settings.dart' as _i5;
-import 'package:fundingrate/src/domain/usecases/save_user_settings.dart' as _i8;
+    as _i14;
+import 'package:fundingrate/src/domain/usecases/config_and_roles_usecases.dart'
+    as _i15;
+import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart' as _i11;
+import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart' as _i12;
+import 'package:fundingrate/src/domain/usecases/get_user_settings.dart' as _i7;
+import 'package:fundingrate/src/domain/usecases/save_user_settings.dart'
+    as _i10;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i15;
-import 'package:teledart/src/teledart/model/message.dart' as _i16;
-import 'package:teledart/src/telegram/model.dart' as _i4;
-import 'package:teledart/src/telegram/telegram.dart' as _i13;
+import 'package:mockito/src/dummies.dart' as _i19;
+import 'package:teledart/src/teledart/model/message.dart' as _i20;
+import 'package:teledart/src/telegram/model.dart' as _i6;
+import 'package:teledart/src/telegram/telegram.dart' as _i17;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -51,111 +59,123 @@ class _FakeBybitRepository_1 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeWebhookInfo_2 extends _i1.SmartFake implements _i4.WebhookInfo {
-  _FakeWebhookInfo_2(Object parent, Invocation parentInvocation)
+class _FakeConfigRepository_2 extends _i1.SmartFake
+    implements _i4.ConfigRepository {
+  _FakeConfigRepository_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUser_3 extends _i1.SmartFake implements _i4.User {
-  _FakeUser_3(Object parent, Invocation parentInvocation)
+class _FakeRolesRepository_3 extends _i1.SmartFake
+    implements _i5.RolesRepository {
+  _FakeRolesRepository_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMessage_4 extends _i1.SmartFake implements _i4.Message {
-  _FakeMessage_4(Object parent, Invocation parentInvocation)
+class _FakeWebhookInfo_4 extends _i1.SmartFake implements _i6.WebhookInfo {
+  _FakeWebhookInfo_4(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMessageId_5 extends _i1.SmartFake implements _i4.MessageId {
-  _FakeMessageId_5(Object parent, Invocation parentInvocation)
+class _FakeUser_5 extends _i1.SmartFake implements _i6.User {
+  _FakeUser_5(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUserProfilePhotos_6 extends _i1.SmartFake
-    implements _i4.UserProfilePhotos {
-  _FakeUserProfilePhotos_6(Object parent, Invocation parentInvocation)
+class _FakeMessage_6 extends _i1.SmartFake implements _i6.Message {
+  _FakeMessage_6(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFile_7 extends _i1.SmartFake implements _i4.File {
-  _FakeFile_7(Object parent, Invocation parentInvocation)
+class _FakeMessageId_7 extends _i1.SmartFake implements _i6.MessageId {
+  _FakeMessageId_7(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeChatInviteLink_8 extends _i1.SmartFake
-    implements _i4.ChatInviteLink {
-  _FakeChatInviteLink_8(Object parent, Invocation parentInvocation)
+class _FakeUserProfilePhotos_8 extends _i1.SmartFake
+    implements _i6.UserProfilePhotos {
+  _FakeUserProfilePhotos_8(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeChat_9 extends _i1.SmartFake implements _i4.Chat {
-  _FakeChat_9(Object parent, Invocation parentInvocation)
+class _FakeFile_9 extends _i1.SmartFake implements _i6.File {
+  _FakeFile_9(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeChatMember_10 extends _i1.SmartFake implements _i4.ChatMember {
-  _FakeChatMember_10(Object parent, Invocation parentInvocation)
+class _FakeChatInviteLink_10 extends _i1.SmartFake
+    implements _i6.ChatInviteLink {
+  _FakeChatInviteLink_10(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeForumTopic_11 extends _i1.SmartFake implements _i4.ForumTopic {
-  _FakeForumTopic_11(Object parent, Invocation parentInvocation)
+class _FakeChat_11 extends _i1.SmartFake implements _i6.Chat {
+  _FakeChat_11(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBotName_12 extends _i1.SmartFake implements _i4.BotName {
-  _FakeBotName_12(Object parent, Invocation parentInvocation)
+class _FakeChatMember_12 extends _i1.SmartFake implements _i6.ChatMember {
+  _FakeChatMember_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBotDescription_13 extends _i1.SmartFake
-    implements _i4.BotDescription {
-  _FakeBotDescription_13(Object parent, Invocation parentInvocation)
+class _FakeForumTopic_13 extends _i1.SmartFake implements _i6.ForumTopic {
+  _FakeForumTopic_13(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBotShortDescription_14 extends _i1.SmartFake
-    implements _i4.BotShortDescription {
-  _FakeBotShortDescription_14(Object parent, Invocation parentInvocation)
+class _FakeBotName_14 extends _i1.SmartFake implements _i6.BotName {
+  _FakeBotName_14(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMenuButton_15 extends _i1.SmartFake implements _i4.MenuButton {
-  _FakeMenuButton_15(Object parent, Invocation parentInvocation)
+class _FakeBotDescription_15 extends _i1.SmartFake
+    implements _i6.BotDescription {
+  _FakeBotDescription_15(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeChatAdministratorRights_16 extends _i1.SmartFake
-    implements _i4.ChatAdministratorRights {
-  _FakeChatAdministratorRights_16(Object parent, Invocation parentInvocation)
+class _FakeBotShortDescription_16 extends _i1.SmartFake
+    implements _i6.BotShortDescription {
+  _FakeBotShortDescription_16(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakePoll_17 extends _i1.SmartFake implements _i4.Poll {
-  _FakePoll_17(Object parent, Invocation parentInvocation)
+class _FakeMenuButton_17 extends _i1.SmartFake implements _i6.MenuButton {
+  _FakeMenuButton_17(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeStickerSet_18 extends _i1.SmartFake implements _i4.StickerSet {
-  _FakeStickerSet_18(Object parent, Invocation parentInvocation)
+class _FakeChatAdministratorRights_18 extends _i1.SmartFake
+    implements _i6.ChatAdministratorRights {
+  _FakeChatAdministratorRights_18(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSentWebAppMessage_19 extends _i1.SmartFake
-    implements _i4.SentWebAppMessage {
-  _FakeSentWebAppMessage_19(Object parent, Invocation parentInvocation)
+class _FakePoll_19 extends _i1.SmartFake implements _i6.Poll {
+  _FakePoll_19(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDateTime_20 extends _i1.SmartFake implements DateTime {
-  _FakeDateTime_20(Object parent, Invocation parentInvocation)
+class _FakeStickerSet_20 extends _i1.SmartFake implements _i6.StickerSet {
+  _FakeStickerSet_20(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeSentWebAppMessage_21 extends _i1.SmartFake
+    implements _i6.SentWebAppMessage {
+  _FakeSentWebAppMessage_21(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDateTime_22 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_22(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 /// A class which mocks [GetUserSettings].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetUserSettings extends _i1.Mock implements _i5.GetUserSettings {
+class MockGetUserSettings extends _i1.Mock implements _i7.GetUserSettings {
   MockGetUserSettings() {
     _i1.throwOnMissingStub(this);
   }
@@ -172,18 +192,18 @@ class MockGetUserSettings extends _i1.Mock implements _i5.GetUserSettings {
           as _i2.UserSettingsRepository);
 
   @override
-  _i6.Future<_i7.UserSettings?> call(String? userId) =>
+  _i8.Future<_i9.UserSettings?> call(String? userId) =>
       (super.noSuchMethod(
             Invocation.method(#call, [userId]),
-            returnValue: _i6.Future<_i7.UserSettings?>.value(),
+            returnValue: _i8.Future<_i9.UserSettings?>.value(),
           )
-          as _i6.Future<_i7.UserSettings?>);
+          as _i8.Future<_i9.UserSettings?>);
 }
 
 /// A class which mocks [SaveUserSettings].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockSaveUserSettings extends _i1.Mock implements _i8.SaveUserSettings {
+class MockSaveUserSettings extends _i1.Mock implements _i10.SaveUserSettings {
   MockSaveUserSettings() {
     _i1.throwOnMissingStub(this);
   }
@@ -200,19 +220,19 @@ class MockSaveUserSettings extends _i1.Mock implements _i8.SaveUserSettings {
           as _i2.UserSettingsRepository);
 
   @override
-  _i6.Future<void> call(_i7.UserSettings? settings) =>
+  _i8.Future<void> call(_i9.UserSettings? settings) =>
       (super.noSuchMethod(
             Invocation.method(#call, [settings]),
-            returnValue: _i6.Future<void>.value(),
-            returnValueForMissingStub: _i6.Future<void>.value(),
+            returnValue: _i8.Future<void>.value(),
+            returnValueForMissingStub: _i8.Future<void>.value(),
           )
-          as _i6.Future<void>);
+          as _i8.Future<void>);
 }
 
 /// A class which mocks [GetAllUserIds].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetAllUserIds extends _i1.Mock implements _i9.GetAllUserIds {
+class MockGetAllUserIds extends _i1.Mock implements _i11.GetAllUserIds {
   MockGetAllUserIds() {
     _i1.throwOnMissingStub(this);
   }
@@ -229,18 +249,18 @@ class MockGetAllUserIds extends _i1.Mock implements _i9.GetAllUserIds {
           as _i2.UserSettingsRepository);
 
   @override
-  _i6.Future<List<String>> call() =>
+  _i8.Future<List<String>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i6.Future<List<String>>.value(<String>[]),
+            returnValue: _i8.Future<List<String>>.value(<String>[]),
           )
-          as _i6.Future<List<String>>);
+          as _i8.Future<List<String>>);
 }
 
 /// A class which mocks [GetFundingRates].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetFundingRates extends _i1.Mock implements _i10.GetFundingRates {
+class MockGetFundingRates extends _i1.Mock implements _i12.GetFundingRates {
   MockGetFundingRates() {
     _i1.throwOnMissingStub(this);
   }
@@ -257,46 +277,246 @@ class MockGetFundingRates extends _i1.Mock implements _i10.GetFundingRates {
           as _i3.BybitRepository);
 
   @override
-  _i6.Future<List<_i11.FundingRate>> call() =>
+  _i8.Future<List<_i13.FundingRate>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i6.Future<List<_i11.FundingRate>>.value(
-              <_i11.FundingRate>[],
+            returnValue: _i8.Future<List<_i13.FundingRate>>.value(
+              <_i13.FundingRate>[],
             ),
           )
-          as _i6.Future<List<_i11.FundingRate>>);
+          as _i8.Future<List<_i13.FundingRate>>);
 }
 
 /// A class which mocks [CheckFundingRates].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCheckFundingRates extends _i1.Mock implements _i12.CheckFundingRates {
+class MockCheckFundingRates extends _i1.Mock implements _i14.CheckFundingRates {
   MockCheckFundingRates() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i11.FundingRate> call({
-    required List<_i11.FundingRate>? rates,
-    required _i7.UserSettings? settings,
+  List<_i13.FundingRate> call({
+    required List<_i13.FundingRate>? rates,
+    required _i9.UserSettings? settings,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#call, [], {#rates: rates, #settings: settings}),
-            returnValue: <_i11.FundingRate>[],
+            returnValue: <_i13.FundingRate>[],
           )
-          as List<_i11.FundingRate>);
+          as List<_i13.FundingRate>);
+}
+
+/// A class which mocks [GetConfig].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetConfig extends _i1.Mock implements _i15.GetConfig {
+  MockGetConfig() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.ConfigRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeConfigRepository_2(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i4.ConfigRepository);
+
+  @override
+  _i8.Future<Map<String, dynamic>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i8.Future<Map<String, dynamic>>.value(
+              <String, dynamic>{},
+            ),
+          )
+          as _i8.Future<Map<String, dynamic>>);
+}
+
+/// A class which mocks [SetConfig].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSetConfig extends _i1.Mock implements _i15.SetConfig {
+  MockSetConfig() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.ConfigRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeConfigRepository_2(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i4.ConfigRepository);
+
+  @override
+  _i8.Future<bool> call(String? key, dynamic value) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [key, value]),
+            returnValue: _i8.Future<bool>.value(false),
+          )
+          as _i8.Future<bool>);
+}
+
+/// A class which mocks [GetRole].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetRole extends _i1.Mock implements _i15.GetRole {
+  MockGetRole() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.RolesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeRolesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.RolesRepository);
+
+  @override
+  _i8.Future<_i16.UserRole?> call(int? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [userId]),
+            returnValue: _i8.Future<_i16.UserRole?>.value(),
+          )
+          as _i8.Future<_i16.UserRole?>);
+}
+
+/// A class which mocks [AddRole].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAddRole extends _i1.Mock implements _i15.AddRole {
+  MockAddRole() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.RolesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeRolesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.RolesRepository);
+
+  @override
+  _i8.Future<void> call(int? userId, _i16.UserRole? role) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [userId, role]),
+            returnValue: _i8.Future<void>.value(),
+            returnValueForMissingStub: _i8.Future<void>.value(),
+          )
+          as _i8.Future<void>);
+}
+
+/// A class which mocks [RemoveRole].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRemoveRole extends _i1.Mock implements _i15.RemoveRole {
+  MockRemoveRole() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.RolesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeRolesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.RolesRepository);
+
+  @override
+  _i8.Future<void> call(int? userId, _i16.UserRole? role) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [userId, role]),
+            returnValue: _i8.Future<void>.value(),
+            returnValueForMissingStub: _i8.Future<void>.value(),
+          )
+          as _i8.Future<void>);
+}
+
+/// A class which mocks [GetAdminIds].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetAdminIds extends _i1.Mock implements _i15.GetAdminIds {
+  MockGetAdminIds() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.RolesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeRolesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.RolesRepository);
+
+  @override
+  _i8.Future<List<int>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i8.Future<List<int>>.value(<int>[]),
+          )
+          as _i8.Future<List<int>>);
+}
+
+/// A class which mocks [GetModeratorIds].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockGetModeratorIds extends _i1.Mock implements _i15.GetModeratorIds {
+  MockGetModeratorIds() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.RolesRepository get repository =>
+      (super.noSuchMethod(
+            Invocation.getter(#repository),
+            returnValue: _FakeRolesRepository_3(
+              this,
+              Invocation.getter(#repository),
+            ),
+          )
+          as _i5.RolesRepository);
+
+  @override
+  _i8.Future<List<int>> call() =>
+      (super.noSuchMethod(
+            Invocation.method(#call, []),
+            returnValue: _i8.Future<List<int>>.value(<int>[]),
+          )
+          as _i8.Future<List<int>>);
 }
 
 /// A class which mocks [Telegram].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTelegram extends _i1.Mock implements _i13.Telegram {
+class MockTelegram extends _i1.Mock implements _i17.Telegram {
   MockTelegram() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i6.Future<List<_i4.Update>> getUpdates({
+  _i8.Future<List<_i6.Update>> getUpdates({
     int? offset,
     int? limit,
     int? timeout,
@@ -309,15 +529,15 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #timeout: timeout,
               #allowedUpdates: allowedUpdates,
             }),
-            returnValue: _i6.Future<List<_i4.Update>>.value(<_i4.Update>[]),
+            returnValue: _i8.Future<List<_i6.Update>>.value(<_i6.Update>[]),
           )
-          as _i6.Future<List<_i4.Update>>);
+          as _i8.Future<List<_i6.Update>>);
 
   @override
-  _i6.Future<bool> setWebhook(
+  _i8.Future<bool> setWebhook(
     String? url, {
     String? ipAddress,
-    _i14.File? certificate,
+    _i18.File? certificate,
     int? maxConnections,
     List<String>? allowedUpdates,
     bool? dropPendingUpdates,
@@ -336,69 +556,69 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #secretToken: secretToken,
               },
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteWebhook({bool? dropPendingUpdates}) =>
+  _i8.Future<bool> deleteWebhook({bool? dropPendingUpdates}) =>
       (super.noSuchMethod(
             Invocation.method(#deleteWebhook, [], {
               #dropPendingUpdates: dropPendingUpdates,
             }),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.WebhookInfo> getWebhookInfo() =>
+  _i8.Future<_i6.WebhookInfo> getWebhookInfo() =>
       (super.noSuchMethod(
             Invocation.method(#getWebhookInfo, []),
-            returnValue: _i6.Future<_i4.WebhookInfo>.value(
-              _FakeWebhookInfo_2(this, Invocation.method(#getWebhookInfo, [])),
+            returnValue: _i8.Future<_i6.WebhookInfo>.value(
+              _FakeWebhookInfo_4(this, Invocation.method(#getWebhookInfo, [])),
             ),
           )
-          as _i6.Future<_i4.WebhookInfo>);
+          as _i8.Future<_i6.WebhookInfo>);
 
   @override
-  _i6.Future<_i4.User> getMe() =>
+  _i8.Future<_i6.User> getMe() =>
       (super.noSuchMethod(
             Invocation.method(#getMe, []),
-            returnValue: _i6.Future<_i4.User>.value(
-              _FakeUser_3(this, Invocation.method(#getMe, [])),
+            returnValue: _i8.Future<_i6.User>.value(
+              _FakeUser_5(this, Invocation.method(#getMe, [])),
             ),
           )
-          as _i6.Future<_i4.User>);
+          as _i8.Future<_i6.User>);
 
   @override
-  _i6.Future<bool> logOut() =>
+  _i8.Future<bool> logOut() =>
       (super.noSuchMethod(
             Invocation.method(#logOut, []),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> close() =>
+  _i8.Future<bool> close() =>
       (super.noSuchMethod(
             Invocation.method(#close, []),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.Message> sendMessage(
+  _i8.Future<_i6.Message> sendMessage(
     dynamic chatId,
     String? text, {
     int? messageThreadId,
     String? parseMode,
-    List<_i4.MessageEntity>? entities,
+    List<_i6.MessageEntity>? entities,
     bool? disableWebPagePreview,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -416,8 +636,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendMessage,
@@ -437,10 +657,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> forwardMessage(
+  _i8.Future<_i6.Message> forwardMessage(
     dynamic chatId,
     int? fromChatId,
     int? messageId, {
@@ -458,8 +678,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #protectContent: protectContent,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #forwardMessage,
@@ -473,22 +693,22 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.MessageId> copyMessage(
+  _i8.Future<_i6.MessageId> copyMessage(
     dynamic chatId,
     int? fromChatId,
     int? messageId, {
     int? messageThreadId,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -506,8 +726,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.MessageId>.value(
-              _FakeMessageId_5(
+            returnValue: _i8.Future<_i6.MessageId>.value(
+              _FakeMessageId_7(
                 this,
                 Invocation.method(
                   #copyMessage,
@@ -527,22 +747,22 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.MessageId>);
+          as _i8.Future<_i6.MessageId>);
 
   @override
-  _i6.Future<_i4.Message> sendPhoto(
+  _i8.Future<_i6.Message> sendPhoto(
     dynamic chatId,
     dynamic photo, {
     int? messageThreadId,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -561,8 +781,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendPhoto,
@@ -583,16 +803,16 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendAudio(
+  _i8.Future<_i6.Message> sendAudio(
     dynamic chatId,
     dynamic audio, {
     int? messageThreadId,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     int? duration,
     String? performer,
     String? title,
@@ -601,7 +821,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -623,8 +843,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendAudio,
@@ -648,23 +868,23 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendDocument(
+  _i8.Future<_i6.Message> sendDocument(
     dynamic chatId,
     dynamic document, {
     int? messageThreadId,
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? disableContentTypeDetection,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -684,8 +904,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendDocument,
@@ -707,10 +927,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendVideo(
+  _i8.Future<_i6.Message> sendVideo(
     dynamic chatId,
     dynamic video, {
     int? messageThreadId,
@@ -720,14 +940,14 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? supportsStreaming,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -751,8 +971,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendVideo,
@@ -778,10 +998,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendAnimation(
+  _i8.Future<_i6.Message> sendAnimation(
     dynamic chatId,
     dynamic animation, {
     int? messageThreadId,
@@ -791,13 +1011,13 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -820,8 +1040,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendAnimation,
@@ -846,22 +1066,22 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendVoice(
+  _i8.Future<_i6.Message> sendVoice(
     dynamic chatId,
     dynamic voice, {
     int? messageThreadId,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     int? duration,
     bool? disableNotification,
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -880,8 +1100,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendVoice,
@@ -902,10 +1122,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendVideoNote(
+  _i8.Future<_i6.Message> sendVideoNote(
     dynamic chatId,
     dynamic videoNote, {
     int? messageThreadId,
@@ -916,7 +1136,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -934,8 +1154,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendVideoNote,
@@ -955,12 +1175,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<List<_i4.Message>> sendMediaGroup(
+  _i8.Future<List<_i6.Message>> sendMediaGroup(
     dynamic chatId,
-    List<_i4.InputMedia>? media, {
+    List<_i6.InputMedia>? media, {
     int? messageThreadId,
     bool? disableNotification,
     bool? protectContent,
@@ -979,12 +1199,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #allowSendingWithoutReply: allowSendingWithoutReply,
               },
             ),
-            returnValue: _i6.Future<List<_i4.Message>>.value(<_i4.Message>[]),
+            returnValue: _i8.Future<List<_i6.Message>>.value(<_i6.Message>[]),
           )
-          as _i6.Future<List<_i4.Message>>);
+          as _i8.Future<List<_i6.Message>>);
 
   @override
-  _i6.Future<_i4.Message> sendLocation(
+  _i8.Future<_i6.Message> sendLocation(
     dynamic chatId,
     double? latitude,
     double? longitude, {
@@ -997,7 +1217,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1016,8 +1236,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendLocation,
@@ -1038,10 +1258,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> editMessageLiveLocation(
+  _i8.Future<_i6.Message> editMessageLiveLocation(
     double? latitude,
     double? longitude, {
     dynamic chatId,
@@ -1050,7 +1270,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     double? horizontalAccuracy,
     int? heading,
     int? proximityAlertRadius,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1066,8 +1286,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #editMessageLiveLocation,
@@ -1085,14 +1305,14 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> stopMessageLiveLocation({
+  _i8.Future<_i6.Message> stopMessageLiveLocation({
     dynamic chatId,
     int? messageId,
     String? inlineMessageId,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#stopMessageLiveLocation, [], {
@@ -1101,8 +1321,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #inlineMessageId: inlineMessageId,
               #replyMarkup: replyMarkup,
             }),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(#stopMessageLiveLocation, [], {
                   #chatId: chatId,
@@ -1113,10 +1333,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendVenue(
+  _i8.Future<_i6.Message> sendVenue(
     dynamic chatId,
     double? latitude,
     double? longitude,
@@ -1131,7 +1351,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1150,8 +1370,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendVenue,
@@ -1172,10 +1392,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendContact(
+  _i8.Future<_i6.Message> sendContact(
     dynamic chatId,
     String? phoneNumber,
     String? firstName, {
@@ -1186,7 +1406,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1203,8 +1423,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendContact,
@@ -1223,10 +1443,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendPoll(
+  _i8.Future<_i6.Message> sendPoll(
     dynamic chatId,
     String? question,
     List<String>? options, {
@@ -1237,7 +1457,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     int? correctOptionId,
     String? explanation,
     String? explanationParseMode,
-    List<_i4.MessageEntity>? explanationEntities,
+    List<_i6.MessageEntity>? explanationEntities,
     int? openPeriod,
     int? closeDate,
     bool? isClosed,
@@ -1245,7 +1465,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1270,8 +1490,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendPoll,
@@ -1298,10 +1518,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> sendDice(
+  _i8.Future<_i6.Message> sendDice(
     dynamic chatId, {
     int? messageThreadId,
     String? emoji = '🎲',
@@ -1309,7 +1529,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -1325,8 +1545,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendDice,
@@ -1344,10 +1564,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<bool> sendChatAction(
+  _i8.Future<bool> sendChatAction(
     dynamic chatId,
     String? action, {
     int? messageThreadId,
@@ -1358,12 +1578,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, action],
               {#messageThreadId: messageThreadId},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.UserProfilePhotos> getUserProfilePhotos(
+  _i8.Future<_i6.UserProfilePhotos> getUserProfilePhotos(
     int? userId, {
     int? offset,
     int? limit,
@@ -1374,8 +1594,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [userId],
               {#offset: offset, #limit: limit},
             ),
-            returnValue: _i6.Future<_i4.UserProfilePhotos>.value(
-              _FakeUserProfilePhotos_6(
+            returnValue: _i8.Future<_i6.UserProfilePhotos>.value(
+              _FakeUserProfilePhotos_8(
                 this,
                 Invocation.method(
                   #getUserProfilePhotos,
@@ -1385,20 +1605,20 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.UserProfilePhotos>);
+          as _i8.Future<_i6.UserProfilePhotos>);
 
   @override
-  _i6.Future<_i4.File> getFile(String? fileId) =>
+  _i8.Future<_i6.File> getFile(String? fileId) =>
       (super.noSuchMethod(
             Invocation.method(#getFile, [fileId]),
-            returnValue: _i6.Future<_i4.File>.value(
-              _FakeFile_7(this, Invocation.method(#getFile, [fileId])),
+            returnValue: _i8.Future<_i6.File>.value(
+              _FakeFile_9(this, Invocation.method(#getFile, [fileId])),
             ),
           )
-          as _i6.Future<_i4.File>);
+          as _i8.Future<_i6.File>);
 
   @override
-  _i6.Future<bool> banChatMember(
+  _i8.Future<bool> banChatMember(
     dynamic chatId,
     int? userId, {
     int? untilDate,
@@ -1410,12 +1630,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, userId],
               {#untilDate: untilDate, #revokeMessages: revokeMessages},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unbanChatMember(
+  _i8.Future<bool> unbanChatMember(
     dynamic chatId,
     int? userId, {
     bool? onlyIfBanned,
@@ -1426,15 +1646,15 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, userId],
               {#onlyIfBanned: onlyIfBanned},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> restrictChatMember(
+  _i8.Future<bool> restrictChatMember(
     dynamic chatId,
     int? userId,
-    _i4.ChatPermissions? permissions, {
+    _i6.ChatPermissions? permissions, {
     bool? useIndependentChatPermissions,
     int? untilDate,
   }) =>
@@ -1447,12 +1667,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #untilDate: untilDate,
               },
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> promoteChatMember(
+  _i8.Future<bool> promoteChatMember(
     dynamic chatId,
     int? userId, {
     bool? isAnonymous,
@@ -1487,12 +1707,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #canManageTopics: canManageTopics,
               },
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setChatAdministratorCustomTitle(
+  _i8.Future<bool> setChatAdministratorCustomTitle(
     dynamic chatId,
     int? userId,
     String? customTitle,
@@ -1503,30 +1723,30 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               userId,
               customTitle,
             ]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> banChatSenderChat(dynamic chatId, int? senderChatId) =>
+  _i8.Future<bool> banChatSenderChat(dynamic chatId, int? senderChatId) =>
       (super.noSuchMethod(
             Invocation.method(#banChatSenderChat, [chatId, senderChatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unbanChatSenderChat(dynamic chatId, int? senderChatId) =>
+  _i8.Future<bool> unbanChatSenderChat(dynamic chatId, int? senderChatId) =>
       (super.noSuchMethod(
             Invocation.method(#unbanChatSenderChat, [chatId, senderChatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setChatPermissions(
+  _i8.Future<bool> setChatPermissions(
     dynamic chatId,
-    _i4.ChatPermissions? permissions, {
+    _i6.ChatPermissions? permissions, {
     bool? useIndependentChatPermissions,
   }) =>
       (super.noSuchMethod(
@@ -1535,25 +1755,25 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, permissions],
               {#useIndependentChatPermissions: useIndependentChatPermissions},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<String> exportChatInviteLink(dynamic chatId) =>
+  _i8.Future<String> exportChatInviteLink(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#exportChatInviteLink, [chatId]),
-            returnValue: _i6.Future<String>.value(
-              _i15.dummyValue<String>(
+            returnValue: _i8.Future<String>.value(
+              _i19.dummyValue<String>(
                 this,
                 Invocation.method(#exportChatInviteLink, [chatId]),
               ),
             ),
           )
-          as _i6.Future<String>);
+          as _i8.Future<String>);
 
   @override
-  _i6.Future<_i4.ChatInviteLink> createChatInviteLink(
+  _i8.Future<_i6.ChatInviteLink> createChatInviteLink(
     dynamic chatId, {
     String? name,
     int? expireDate,
@@ -1571,8 +1791,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #createsJoinRequest: createsJoinRequest,
               },
             ),
-            returnValue: _i6.Future<_i4.ChatInviteLink>.value(
-              _FakeChatInviteLink_8(
+            returnValue: _i8.Future<_i6.ChatInviteLink>.value(
+              _FakeChatInviteLink_10(
                 this,
                 Invocation.method(
                   #createChatInviteLink,
@@ -1587,10 +1807,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.ChatInviteLink>);
+          as _i8.Future<_i6.ChatInviteLink>);
 
   @override
-  _i6.Future<_i4.ChatInviteLink> editChatInviteLink(
+  _i8.Future<_i6.ChatInviteLink> editChatInviteLink(
     dynamic chatId,
     String? inviteLink, {
     String? name,
@@ -1609,8 +1829,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #createsJoinRequest: createsJoinRequest,
               },
             ),
-            returnValue: _i6.Future<_i4.ChatInviteLink>.value(
-              _FakeChatInviteLink_8(
+            returnValue: _i8.Future<_i6.ChatInviteLink>.value(
+              _FakeChatInviteLink_10(
                 this,
                 Invocation.method(
                   #editChatInviteLink,
@@ -1625,78 +1845,78 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.ChatInviteLink>);
+          as _i8.Future<_i6.ChatInviteLink>);
 
   @override
-  _i6.Future<_i4.ChatInviteLink> revokeChatInviteLink(
+  _i8.Future<_i6.ChatInviteLink> revokeChatInviteLink(
     dynamic chatId,
     String? inviteLink,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#revokeChatInviteLink, [chatId, inviteLink]),
-            returnValue: _i6.Future<_i4.ChatInviteLink>.value(
-              _FakeChatInviteLink_8(
+            returnValue: _i8.Future<_i6.ChatInviteLink>.value(
+              _FakeChatInviteLink_10(
                 this,
                 Invocation.method(#revokeChatInviteLink, [chatId, inviteLink]),
               ),
             ),
           )
-          as _i6.Future<_i4.ChatInviteLink>);
+          as _i8.Future<_i6.ChatInviteLink>);
 
   @override
-  _i6.Future<bool> approveChatJoinRequest(dynamic chatId, int? userId) =>
+  _i8.Future<bool> approveChatJoinRequest(dynamic chatId, int? userId) =>
       (super.noSuchMethod(
             Invocation.method(#approveChatJoinRequest, [chatId, userId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> declineChatJoinRequest(dynamic chatId, int? userId) =>
+  _i8.Future<bool> declineChatJoinRequest(dynamic chatId, int? userId) =>
       (super.noSuchMethod(
             Invocation.method(#declineChatJoinRequest, [chatId, userId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setChatPhoto(dynamic chatId, _i14.File? photo) =>
+  _i8.Future<bool> setChatPhoto(dynamic chatId, _i18.File? photo) =>
       (super.noSuchMethod(
             Invocation.method(#setChatPhoto, [chatId, photo]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteChatPhoto(dynamic chatId) =>
+  _i8.Future<bool> deleteChatPhoto(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteChatPhoto, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setChatTitle(dynamic chatId, String? title) =>
+  _i8.Future<bool> setChatTitle(dynamic chatId, String? title) =>
       (super.noSuchMethod(
             Invocation.method(#setChatTitle, [chatId, title]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setChatDescription(dynamic chatId, {String? description}) =>
+  _i8.Future<bool> setChatDescription(dynamic chatId, {String? description}) =>
       (super.noSuchMethod(
             Invocation.method(
               #setChatDescription,
               [chatId],
               {#description: description},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> pinChatMessage(
+  _i8.Future<bool> pinChatMessage(
     dynamic chatId,
     int? messageId, {
     bool? disableNotification,
@@ -1707,105 +1927,105 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, messageId],
               {#disableNotification: disableNotification},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unpinChatMessage(dynamic chatId, {int? messageId}) =>
+  _i8.Future<bool> unpinChatMessage(dynamic chatId, {int? messageId}) =>
       (super.noSuchMethod(
             Invocation.method(
               #unpinChatMessage,
               [chatId],
               {#messageId: messageId},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unpinAllChatMessages(dynamic chatId) =>
+  _i8.Future<bool> unpinAllChatMessages(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#unpinAllChatMessages, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> leaveChat(dynamic chatId) =>
+  _i8.Future<bool> leaveChat(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#leaveChat, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.Chat> getChat(dynamic chatId) =>
+  _i8.Future<_i6.Chat> getChat(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#getChat, [chatId]),
-            returnValue: _i6.Future<_i4.Chat>.value(
-              _FakeChat_9(this, Invocation.method(#getChat, [chatId])),
+            returnValue: _i8.Future<_i6.Chat>.value(
+              _FakeChat_11(this, Invocation.method(#getChat, [chatId])),
             ),
           )
-          as _i6.Future<_i4.Chat>);
+          as _i8.Future<_i6.Chat>);
 
   @override
-  _i6.Future<List<_i4.ChatMember>> getChatAdministrators(dynamic chatId) =>
+  _i8.Future<List<_i6.ChatMember>> getChatAdministrators(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#getChatAdministrators, [chatId]),
-            returnValue: _i6.Future<List<_i4.ChatMember>>.value(
-              <_i4.ChatMember>[],
+            returnValue: _i8.Future<List<_i6.ChatMember>>.value(
+              <_i6.ChatMember>[],
             ),
           )
-          as _i6.Future<List<_i4.ChatMember>>);
+          as _i8.Future<List<_i6.ChatMember>>);
 
   @override
-  _i6.Future<int> getChatMemberCount(dynamic chatId) =>
+  _i8.Future<int> getChatMemberCount(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#getChatMemberCount, [chatId]),
-            returnValue: _i6.Future<int>.value(0),
+            returnValue: _i8.Future<int>.value(0),
           )
-          as _i6.Future<int>);
+          as _i8.Future<int>);
 
   @override
-  _i6.Future<_i4.ChatMember> getChatMember(dynamic chatId, int? userId) =>
+  _i8.Future<_i6.ChatMember> getChatMember(dynamic chatId, int? userId) =>
       (super.noSuchMethod(
             Invocation.method(#getChatMember, [chatId, userId]),
-            returnValue: _i6.Future<_i4.ChatMember>.value(
-              _FakeChatMember_10(
+            returnValue: _i8.Future<_i6.ChatMember>.value(
+              _FakeChatMember_12(
                 this,
                 Invocation.method(#getChatMember, [chatId, userId]),
               ),
             ),
           )
-          as _i6.Future<_i4.ChatMember>);
+          as _i8.Future<_i6.ChatMember>);
 
   @override
-  _i6.Future<bool> setChatStickerSet(dynamic chatId, String? stickerSetName) =>
+  _i8.Future<bool> setChatStickerSet(dynamic chatId, String? stickerSetName) =>
       (super.noSuchMethod(
             Invocation.method(#setChatStickerSet, [chatId, stickerSetName]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteChatStickerSet(dynamic chatId) =>
+  _i8.Future<bool> deleteChatStickerSet(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteChatStickerSet, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<List<_i4.Sticker>> getForumTopicIconStickers() =>
+  _i8.Future<List<_i6.Sticker>> getForumTopicIconStickers() =>
       (super.noSuchMethod(
             Invocation.method(#getForumTopicIconStickers, []),
-            returnValue: _i6.Future<List<_i4.Sticker>>.value(<_i4.Sticker>[]),
+            returnValue: _i8.Future<List<_i6.Sticker>>.value(<_i6.Sticker>[]),
           )
-          as _i6.Future<List<_i4.Sticker>>);
+          as _i8.Future<List<_i6.Sticker>>);
 
   @override
-  _i6.Future<_i4.ForumTopic> createForumTopic(
+  _i8.Future<_i6.ForumTopic> createForumTopic(
     dynamic chatId,
     String? name, {
     int? iconColor,
@@ -1817,8 +2037,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [chatId, name],
               {#iconColor: iconColor, #iconCustomEmojiId: iconCustomEmojiId},
             ),
-            returnValue: _i6.Future<_i4.ForumTopic>.value(
-              _FakeForumTopic_11(
+            returnValue: _i8.Future<_i6.ForumTopic>.value(
+              _FakeForumTopic_13(
                 this,
                 Invocation.method(
                   #createForumTopic,
@@ -1831,10 +2051,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.ForumTopic>);
+          as _i8.Future<_i6.ForumTopic>);
 
   @override
-  _i6.Future<bool> editForumTopic(
+  _i8.Future<bool> editForumTopic(
     dynamic chatId,
     String? messageThreadId,
     String? name,
@@ -1847,36 +2067,36 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               name,
               iconCustomEmojiId,
             ]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> closeForumTopic(dynamic chatId, String? messageThreadId) =>
+  _i8.Future<bool> closeForumTopic(dynamic chatId, String? messageThreadId) =>
       (super.noSuchMethod(
             Invocation.method(#closeForumTopic, [chatId, messageThreadId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> reopenForumTopic(dynamic chatId, String? messageThreadId) =>
+  _i8.Future<bool> reopenForumTopic(dynamic chatId, String? messageThreadId) =>
       (super.noSuchMethod(
             Invocation.method(#reopenForumTopic, [chatId, messageThreadId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteForumTopic(dynamic chatId, String? messageThreadId) =>
+  _i8.Future<bool> deleteForumTopic(dynamic chatId, String? messageThreadId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteForumTopic, [chatId, messageThreadId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unpinAllForumTopicMessages(
+  _i8.Future<bool> unpinAllForumTopicMessages(
     dynamic chatId,
     String? messageThreadId,
   ) =>
@@ -1885,60 +2105,60 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               chatId,
               messageThreadId,
             ]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> editGeneralForumTopic(dynamic chatId, String? name) =>
+  _i8.Future<bool> editGeneralForumTopic(dynamic chatId, String? name) =>
       (super.noSuchMethod(
             Invocation.method(#editGeneralForumTopic, [chatId, name]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> closeGeneralForumTopic(dynamic chatId) =>
+  _i8.Future<bool> closeGeneralForumTopic(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#closeGeneralForumTopic, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> reopenGeneralForumTopic(dynamic chatId) =>
+  _i8.Future<bool> reopenGeneralForumTopic(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#reopenGeneralForumTopic, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> hideGeneralForumTopic(dynamic chatId) =>
+  _i8.Future<bool> hideGeneralForumTopic(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#hideGeneralForumTopic, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unhideGeneralForumTopic(dynamic chatId) =>
+  _i8.Future<bool> unhideGeneralForumTopic(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#unhideGeneralForumTopic, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> unpinAllGeneralForumTopicMessages(dynamic chatId) =>
+  _i8.Future<bool> unpinAllGeneralForumTopicMessages(dynamic chatId) =>
       (super.noSuchMethod(
             Invocation.method(#unpinAllGeneralForumTopicMessages, [chatId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> answerCallbackQuery(
+  _i8.Future<bool> answerCallbackQuery(
     String? callbackQueryId, {
     String? text,
     bool? showAlert,
@@ -1956,14 +2176,14 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #cacheTime: cacheTime,
               },
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setMyCommands(
-    List<_i4.BotCommand>? commands, {
-    _i4.BotCommandScope? scope,
+  _i8.Future<bool> setMyCommands(
+    List<_i6.BotCommand>? commands, {
+    _i6.BotCommandScope? scope,
     String? languageCode,
   }) =>
       (super.noSuchMethod(
@@ -1972,13 +2192,13 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [commands],
               {#scope: scope, #languageCode: languageCode},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteMyCommands({
-    _i4.BotCommandScope? scope,
+  _i8.Future<bool> deleteMyCommands({
+    _i6.BotCommandScope? scope,
     String? languageCode,
   }) =>
       (super.noSuchMethod(
@@ -1986,13 +2206,13 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #scope: scope,
               #languageCode: languageCode,
             }),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<List<_i4.BotCommand>> getMyCommands({
-    _i4.BotCommandScope? scope,
+  _i8.Future<List<_i6.BotCommand>> getMyCommands({
+    _i6.BotCommandScope? scope,
     String? languageCode,
   }) =>
       (super.noSuchMethod(
@@ -2000,59 +2220,59 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #scope: scope,
               #languageCode: languageCode,
             }),
-            returnValue: _i6.Future<List<_i4.BotCommand>>.value(
-              <_i4.BotCommand>[],
+            returnValue: _i8.Future<List<_i6.BotCommand>>.value(
+              <_i6.BotCommand>[],
             ),
           )
-          as _i6.Future<List<_i4.BotCommand>>);
+          as _i8.Future<List<_i6.BotCommand>>);
 
   @override
-  _i6.Future<bool> setMyName(String? name, String? languageCode) =>
+  _i8.Future<bool> setMyName(String? name, String? languageCode) =>
       (super.noSuchMethod(
             Invocation.method(#setMyName, [name, languageCode]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.BotName> getMyName(String? languageCode) =>
+  _i8.Future<_i6.BotName> getMyName(String? languageCode) =>
       (super.noSuchMethod(
             Invocation.method(#getMyName, [languageCode]),
-            returnValue: _i6.Future<_i4.BotName>.value(
-              _FakeBotName_12(
+            returnValue: _i8.Future<_i6.BotName>.value(
+              _FakeBotName_14(
                 this,
                 Invocation.method(#getMyName, [languageCode]),
               ),
             ),
           )
-          as _i6.Future<_i4.BotName>);
+          as _i8.Future<_i6.BotName>);
 
   @override
-  _i6.Future<bool> setMyDescription(
+  _i8.Future<bool> setMyDescription(
     String? description,
     String? languageCode,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setMyDescription, [description, languageCode]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.BotDescription> getMyDescription(String? languageCode) =>
+  _i8.Future<_i6.BotDescription> getMyDescription(String? languageCode) =>
       (super.noSuchMethod(
             Invocation.method(#getMyDescription, [languageCode]),
-            returnValue: _i6.Future<_i4.BotDescription>.value(
-              _FakeBotDescription_13(
+            returnValue: _i8.Future<_i6.BotDescription>.value(
+              _FakeBotDescription_15(
                 this,
                 Invocation.method(#getMyDescription, [languageCode]),
               ),
             ),
           )
-          as _i6.Future<_i4.BotDescription>);
+          as _i8.Future<_i6.BotDescription>);
 
   @override
-  _i6.Future<bool> setMyShortDescription(
+  _i8.Future<bool> setMyShortDescription(
     String? shortDescription,
     String? languageCode,
   ) =>
@@ -2061,49 +2281,49 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               shortDescription,
               languageCode,
             ]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.BotShortDescription> getMyShortDescription(
+  _i8.Future<_i6.BotShortDescription> getMyShortDescription(
     String? languageCode,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getMyShortDescription, [languageCode]),
-            returnValue: _i6.Future<_i4.BotShortDescription>.value(
-              _FakeBotShortDescription_14(
+            returnValue: _i8.Future<_i6.BotShortDescription>.value(
+              _FakeBotShortDescription_16(
                 this,
                 Invocation.method(#getMyShortDescription, [languageCode]),
               ),
             ),
           )
-          as _i6.Future<_i4.BotShortDescription>);
+          as _i8.Future<_i6.BotShortDescription>);
 
   @override
-  _i6.Future<bool> setChatMenuButton(int? chatId, _i4.MenuButton? menuButton) =>
+  _i8.Future<bool> setChatMenuButton(int? chatId, _i6.MenuButton? menuButton) =>
       (super.noSuchMethod(
             Invocation.method(#setChatMenuButton, [chatId, menuButton]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.MenuButton> getChatMenuButton(int? chatId) =>
+  _i8.Future<_i6.MenuButton> getChatMenuButton(int? chatId) =>
       (super.noSuchMethod(
             Invocation.method(#getChatMenuButton, [chatId]),
-            returnValue: _i6.Future<_i4.MenuButton>.value(
-              _FakeMenuButton_15(
+            returnValue: _i8.Future<_i6.MenuButton>.value(
+              _FakeMenuButton_17(
                 this,
                 Invocation.method(#getChatMenuButton, [chatId]),
               ),
             ),
           )
-          as _i6.Future<_i4.MenuButton>);
+          as _i8.Future<_i6.MenuButton>);
 
   @override
-  _i6.Future<bool> setMyDefaultAdministratorRights(
-    _i4.ChatAdministratorRights? rights,
+  _i8.Future<bool> setMyDefaultAdministratorRights(
+    _i6.ChatAdministratorRights? rights,
     bool? forChannels,
   ) =>
       (super.noSuchMethod(
@@ -2111,18 +2331,18 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               rights,
               forChannels,
             ]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.ChatAdministratorRights> getMyDefaultAdministratorRights(
+  _i8.Future<_i6.ChatAdministratorRights> getMyDefaultAdministratorRights(
     bool? forChannels,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getMyDefaultAdministratorRights, [forChannels]),
-            returnValue: _i6.Future<_i4.ChatAdministratorRights>.value(
-              _FakeChatAdministratorRights_16(
+            returnValue: _i8.Future<_i6.ChatAdministratorRights>.value(
+              _FakeChatAdministratorRights_18(
                 this,
                 Invocation.method(#getMyDefaultAdministratorRights, [
                   forChannels,
@@ -2130,17 +2350,17 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.ChatAdministratorRights>);
+          as _i8.Future<_i6.ChatAdministratorRights>);
 
   @override
-  _i6.Future<_i4.Message> editMessageText(
+  _i8.Future<_i6.Message> editMessageText(
     String? text, {
     dynamic chatId,
     int? messageId,
     String? inlineMessageId,
     String? parseMode,
     bool? disableWebPagePreview,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -2155,8 +2375,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #editMessageText,
@@ -2173,16 +2393,16 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> editMessageCaption({
+  _i8.Future<_i6.Message> editMessageCaption({
     dynamic chatId,
     int? messageId,
     String? inlineMessageId,
     String? caption,
     String? parseMode,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#editMessageCaption, [], {
@@ -2193,8 +2413,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #parseMode: parseMode,
               #replyMarkup: replyMarkup,
             }),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(#editMessageCaption, [], {
                   #chatId: chatId,
@@ -2207,16 +2427,16 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> editMessageMedia({
+  _i8.Future<_i6.Message> editMessageMedia({
     dynamic chatId,
     int? messageId,
     String? inlineMessageId,
-    _i4.InputMedia? media,
+    _i6.InputMedia? media,
     String? parseMode,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#editMessageMedia, [], {
@@ -2227,8 +2447,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #parseMode: parseMode,
               #replyMarkup: replyMarkup,
             }),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(#editMessageMedia, [], {
                   #chatId: chatId,
@@ -2241,14 +2461,14 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> editMessageReplyMarkup({
+  _i8.Future<_i6.Message> editMessageReplyMarkup({
     dynamic chatId,
     int? messageId,
     String? inlineMessageId,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#editMessageReplyMarkup, [], {
@@ -2257,8 +2477,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               #inlineMessageId: inlineMessageId,
               #replyMarkup: replyMarkup,
             }),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(#editMessageReplyMarkup, [], {
                   #chatId: chatId,
@@ -2269,35 +2489,35 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Poll> stopPoll(
+  _i8.Future<_i6.Poll> stopPoll(
     dynamic chatId,
     int? messageId,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#stopPoll, [chatId, messageId, replyMarkup]),
-            returnValue: _i6.Future<_i4.Poll>.value(
-              _FakePoll_17(
+            returnValue: _i8.Future<_i6.Poll>.value(
+              _FakePoll_19(
                 this,
                 Invocation.method(#stopPoll, [chatId, messageId, replyMarkup]),
               ),
             ),
           )
-          as _i6.Future<_i4.Poll>);
+          as _i8.Future<_i6.Poll>);
 
   @override
-  _i6.Future<bool> deleteMessage(dynamic chatId, int? messageId) =>
+  _i8.Future<bool> deleteMessage(dynamic chatId, int? messageId) =>
       (super.noSuchMethod(
             Invocation.method(#deleteMessage, [chatId, messageId]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.Message> sendSticker(
+  _i8.Future<_i6.Message> sendSticker(
     dynamic chatId,
     dynamic sticker, {
     int? messageThreadId,
@@ -2306,7 +2526,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -2322,8 +2542,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendSticker,
@@ -2341,35 +2561,35 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.StickerSet> getStickerSet(String? name) =>
+  _i8.Future<_i6.StickerSet> getStickerSet(String? name) =>
       (super.noSuchMethod(
             Invocation.method(#getStickerSet, [name]),
-            returnValue: _i6.Future<_i4.StickerSet>.value(
-              _FakeStickerSet_18(
+            returnValue: _i8.Future<_i6.StickerSet>.value(
+              _FakeStickerSet_20(
                 this,
                 Invocation.method(#getStickerSet, [name]),
               ),
             ),
           )
-          as _i6.Future<_i4.StickerSet>);
+          as _i8.Future<_i6.StickerSet>);
 
   @override
-  _i6.Future<List<_i4.Sticker>> getCustomEmojiStickers(
+  _i8.Future<List<_i6.Sticker>> getCustomEmojiStickers(
     List<String>? customEmojiIds,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getCustomEmojiStickers, [customEmojiIds]),
-            returnValue: _i6.Future<List<_i4.Sticker>>.value(<_i4.Sticker>[]),
+            returnValue: _i8.Future<List<_i6.Sticker>>.value(<_i6.Sticker>[]),
           )
-          as _i6.Future<List<_i4.Sticker>>);
+          as _i8.Future<List<_i6.Sticker>>);
 
   @override
-  _i6.Future<_i4.File> uploadStickerFile(
+  _i8.Future<_i6.File> uploadStickerFile(
     int? userId,
-    _i14.File? sticker,
+    _i18.File? sticker,
     String? stickerFormat,
   ) =>
       (super.noSuchMethod(
@@ -2378,8 +2598,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               sticker,
               stickerFormat,
             ]),
-            returnValue: _i6.Future<_i4.File>.value(
-              _FakeFile_7(
+            returnValue: _i8.Future<_i6.File>.value(
+              _FakeFile_9(
                 this,
                 Invocation.method(#uploadStickerFile, [
                   userId,
@@ -2389,14 +2609,14 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.File>);
+          as _i8.Future<_i6.File>);
 
   @override
-  _i6.Future<bool> createNewStickerSet(
+  _i8.Future<bool> createNewStickerSet(
     int? userId,
     String? name,
     String? title,
-    List<_i4.InputSticker>? stickers,
+    List<_i6.InputSticker>? stickers,
     String? stickerFormat, {
     String? stickerType,
     bool? needsRepainting,
@@ -2407,81 +2627,81 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [userId, name, title, stickers, stickerFormat],
               {#stickerType: stickerType, #needsRepainting: needsRepainting},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> addStickerToSet(
+  _i8.Future<bool> addStickerToSet(
     int? userId,
     String? name,
-    _i4.InputSticker? sticker,
+    _i6.InputSticker? sticker,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#addStickerToSet, [userId, name, sticker]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerPositionInSet(String? sticker, int? position) =>
+  _i8.Future<bool> setStickerPositionInSet(String? sticker, int? position) =>
       (super.noSuchMethod(
             Invocation.method(#setStickerPositionInSet, [sticker, position]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteStickerFromSet(String? sticker) =>
+  _i8.Future<bool> deleteStickerFromSet(String? sticker) =>
       (super.noSuchMethod(
             Invocation.method(#deleteStickerFromSet, [sticker]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerEmojiList(
+  _i8.Future<bool> setStickerEmojiList(
     String? sticker,
     List<String>? emojiList,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setStickerEmojiList, [sticker, emojiList]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerKeywords(
+  _i8.Future<bool> setStickerKeywords(
     String? sticker,
     List<String>? keywords,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setStickerKeywords, [sticker, keywords]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerMaskPosition(
+  _i8.Future<bool> setStickerMaskPosition(
     String? sticker,
-    _i4.MaskPosition? maskPosition,
+    _i6.MaskPosition? maskPosition,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setStickerMaskPosition, [sticker, maskPosition]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerSetTitle(String? name, String? title) =>
+  _i8.Future<bool> setStickerSetTitle(String? name, String? title) =>
       (super.noSuchMethod(
             Invocation.method(#setStickerSetTitle, [name, title]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setStickerSetThumbnail(
+  _i8.Future<bool> setStickerSetThumbnail(
     String? name,
     int? userId, {
     dynamic thumbnail,
@@ -2492,12 +2712,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [name, userId],
               {#thumbnail: thumbnail},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setCustomEmojiStickerSetThumbnail(
+  _i8.Future<bool> setCustomEmojiStickerSetThumbnail(
     String? name, {
     String? customEmojiId,
   }) =>
@@ -2507,26 +2727,26 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [name],
               {#customEmojiId: customEmojiId},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> deleteStickerSet(String? name) =>
+  _i8.Future<bool> deleteStickerSet(String? name) =>
       (super.noSuchMethod(
             Invocation.method(#deleteStickerSet, [name]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> answerInlineQuery(
+  _i8.Future<bool> answerInlineQuery(
     String? inlineQueryId,
-    List<_i4.InlineQueryResult>? results, {
+    List<_i6.InlineQueryResult>? results, {
     int? cacheTime,
     bool? isPersonal,
     String? nextOffset,
-    _i4.InlineQueryResultsButton? button,
+    _i6.InlineQueryResultsButton? button,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -2539,35 +2759,35 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #button: button,
               },
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.SentWebAppMessage> answerWebAppQuery(
+  _i8.Future<_i6.SentWebAppMessage> answerWebAppQuery(
     String? webAppQueryId,
-    _i4.InlineQueryResult? result,
+    _i6.InlineQueryResult? result,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#answerWebAppQuery, [webAppQueryId, result]),
-            returnValue: _i6.Future<_i4.SentWebAppMessage>.value(
-              _FakeSentWebAppMessage_19(
+            returnValue: _i8.Future<_i6.SentWebAppMessage>.value(
+              _FakeSentWebAppMessage_21(
                 this,
                 Invocation.method(#answerWebAppQuery, [webAppQueryId, result]),
               ),
             ),
           )
-          as _i6.Future<_i4.SentWebAppMessage>);
+          as _i8.Future<_i6.SentWebAppMessage>);
 
   @override
-  _i6.Future<_i4.Message> sendInvoice(
+  _i8.Future<_i6.Message> sendInvoice(
     dynamic chatId,
     String? title,
     String? description,
     String? payload,
     String? providerToken,
     String? currency,
-    List<_i4.LabeledPrice>? prices, {
+    List<_i6.LabeledPrice>? prices, {
     int? messageThreadId,
     int? maxTipAmount,
     List<int>? suggestedTipAmounts,
@@ -2588,7 +2808,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -2626,8 +2846,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendInvoice,
@@ -2667,16 +2887,16 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<String> createInvoiceLink(
+  _i8.Future<String> createInvoiceLink(
     String? title,
     String? description,
     String? payload,
     String? providerToken,
     String? currency,
-    List<_i4.LabeledPrice>? prices, {
+    List<_i6.LabeledPrice>? prices, {
     int? maxTipAmount,
     List<int>? suggestedTipAmounts,
     String? providerData,
@@ -2713,8 +2933,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #isFlexible: isFlexible,
               },
             ),
-            returnValue: _i6.Future<String>.value(
-              _i15.dummyValue<String>(
+            returnValue: _i8.Future<String>.value(
+              _i19.dummyValue<String>(
                 this,
                 Invocation.method(
                   #createInvoiceLink,
@@ -2746,13 +2966,13 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<String>);
+          as _i8.Future<String>);
 
   @override
-  _i6.Future<bool> answerShippingQuery(
+  _i8.Future<bool> answerShippingQuery(
     String? shippingQueryId,
     bool? ok, {
-    List<_i4.ShippingOption>? shippingOptions,
+    List<_i6.ShippingOption>? shippingOptions,
     String? errorMessage,
   }) =>
       (super.noSuchMethod(
@@ -2761,12 +2981,12 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [shippingQueryId, ok],
               {#shippingOptions: shippingOptions, #errorMessage: errorMessage},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> answerPreCheckoutQuery(
+  _i8.Future<bool> answerPreCheckoutQuery(
     String? preCheckoutQueryId,
     bool? ok, {
     String? errorMessage,
@@ -2777,23 +2997,23 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               [preCheckoutQueryId, ok],
               {#errorMessage: errorMessage},
             ),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<bool> setPassportDataErrors(
+  _i8.Future<bool> setPassportDataErrors(
     int? userId,
-    List<_i4.PassportElementError>? errors,
+    List<_i6.PassportElementError>? errors,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setPassportDataErrors, [userId, errors]),
-            returnValue: _i6.Future<bool>.value(false),
+            returnValue: _i8.Future<bool>.value(false),
           )
-          as _i6.Future<bool>);
+          as _i8.Future<bool>);
 
   @override
-  _i6.Future<_i4.Message> sendGame(
+  _i8.Future<_i6.Message> sendGame(
     dynamic chatId,
     String? gameShortName, {
     int? messageThreadId,
@@ -2801,7 +3021,7 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
     bool? protectContent,
     int? replyToMessageId,
     bool? allowSendingWithoutReply,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -2816,8 +3036,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #sendGame,
@@ -2834,10 +3054,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> setGameScore(
+  _i8.Future<_i6.Message> setGameScore(
     int? userId,
     int? score, {
     bool? force,
@@ -2858,8 +3078,8 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #inlineMessageId: inlineMessageId,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #setGameScore,
@@ -2875,10 +3095,10 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<List<_i4.GameHighScore>> getGameHighScores(
+  _i8.Future<List<_i6.GameHighScore>> getGameHighScores(
     int? userId, {
     dynamic chatId,
     int? messageId,
@@ -2894,17 +3114,17 @@ class MockTelegram extends _i1.Mock implements _i13.Telegram {
                 #inlineMessageId: inlineMessageId,
               },
             ),
-            returnValue: _i6.Future<List<_i4.GameHighScore>>.value(
-              <_i4.GameHighScore>[],
+            returnValue: _i8.Future<List<_i6.GameHighScore>>.value(
+              <_i6.GameHighScore>[],
             ),
           )
-          as _i6.Future<List<_i4.GameHighScore>>);
+          as _i8.Future<List<_i6.GameHighScore>>);
 }
 
 /// A class which mocks [Message].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMessage extends _i1.Mock implements _i4.Message {
+class MockMessage extends _i1.Mock implements _i6.Message {
   MockMessage() {
     _i1.throwOnMissingStub(this);
   }
@@ -2919,18 +3139,18 @@ class MockMessage extends _i1.Mock implements _i4.Message {
       (super.noSuchMethod(Invocation.getter(#date), returnValue: 0) as int);
 
   @override
-  _i4.Chat get chat =>
+  _i6.Chat get chat =>
       (super.noSuchMethod(
             Invocation.getter(#chat),
-            returnValue: _FakeChat_9(this, Invocation.getter(#chat)),
+            returnValue: _FakeChat_11(this, Invocation.getter(#chat)),
           )
-          as _i4.Chat);
+          as _i6.Chat);
 
   @override
   DateTime get date_ =>
       (super.noSuchMethod(
             Invocation.getter(#date_),
-            returnValue: _FakeDateTime_20(this, Invocation.getter(#date_)),
+            returnValue: _FakeDateTime_22(this, Invocation.getter(#date_)),
           )
           as DateTime);
 
@@ -2947,13 +3167,13 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set from(_i4.User? value) => super.noSuchMethod(
+  set from(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#from, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set senderChat(_i4.Chat? value) => super.noSuchMethod(
+  set senderChat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#senderChat, value),
     returnValueForMissingStub: null,
   );
@@ -2965,19 +3185,19 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set chat(_i4.Chat? value) => super.noSuchMethod(
+  set chat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#chat, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forwardFrom(_i4.User? value) => super.noSuchMethod(
+  set forwardFrom(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#forwardFrom, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forwardFromChat(_i4.Chat? value) => super.noSuchMethod(
+  set forwardFromChat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#forwardFromChat, value),
     returnValueForMissingStub: null,
   );
@@ -3019,13 +3239,13 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set replyToMessage(_i4.Message? value) => super.noSuchMethod(
+  set replyToMessage(_i6.Message? value) => super.noSuchMethod(
     Invocation.setter(#replyToMessage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set viaBot(_i4.User? value) => super.noSuchMethod(
+  set viaBot(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#viaBot, value),
     returnValueForMissingStub: null,
   );
@@ -3061,61 +3281,61 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set entities(List<_i4.MessageEntity>? value) => super.noSuchMethod(
+  set entities(List<_i6.MessageEntity>? value) => super.noSuchMethod(
     Invocation.setter(#entities, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set animation(_i4.Animation? value) => super.noSuchMethod(
+  set animation(_i6.Animation? value) => super.noSuchMethod(
     Invocation.setter(#animation, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set audio(_i4.Audio? value) => super.noSuchMethod(
+  set audio(_i6.Audio? value) => super.noSuchMethod(
     Invocation.setter(#audio, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set document(_i4.Document? value) => super.noSuchMethod(
+  set document(_i6.Document? value) => super.noSuchMethod(
     Invocation.setter(#document, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set photo(List<_i4.PhotoSize>? value) => super.noSuchMethod(
+  set photo(List<_i6.PhotoSize>? value) => super.noSuchMethod(
     Invocation.setter(#photo, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set sticker(_i4.Sticker? value) => super.noSuchMethod(
+  set sticker(_i6.Sticker? value) => super.noSuchMethod(
     Invocation.setter(#sticker, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set story(_i4.Story? value) => super.noSuchMethod(
+  set story(_i6.Story? value) => super.noSuchMethod(
     Invocation.setter(#story, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set video(_i4.Video? value) => super.noSuchMethod(
+  set video(_i6.Video? value) => super.noSuchMethod(
     Invocation.setter(#video, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoNote(_i4.VideoNote? value) => super.noSuchMethod(
+  set videoNote(_i6.VideoNote? value) => super.noSuchMethod(
     Invocation.setter(#videoNote, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set voice(_i4.Voice? value) => super.noSuchMethod(
+  set voice(_i6.Voice? value) => super.noSuchMethod(
     Invocation.setter(#voice, value),
     returnValueForMissingStub: null,
   );
@@ -3127,7 +3347,7 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set captionEntities(List<_i4.MessageEntity>? value) => super.noSuchMethod(
+  set captionEntities(List<_i6.MessageEntity>? value) => super.noSuchMethod(
     Invocation.setter(#captionEntities, value),
     returnValueForMissingStub: null,
   );
@@ -3139,49 +3359,49 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set contact(_i4.Contact? value) => super.noSuchMethod(
+  set contact(_i6.Contact? value) => super.noSuchMethod(
     Invocation.setter(#contact, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set dice(_i4.Dice? value) => super.noSuchMethod(
+  set dice(_i6.Dice? value) => super.noSuchMethod(
     Invocation.setter(#dice, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set game(_i4.Game? value) => super.noSuchMethod(
+  set game(_i6.Game? value) => super.noSuchMethod(
     Invocation.setter(#game, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set poll(_i4.Poll? value) => super.noSuchMethod(
+  set poll(_i6.Poll? value) => super.noSuchMethod(
     Invocation.setter(#poll, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set venue(_i4.Venue? value) => super.noSuchMethod(
+  set venue(_i6.Venue? value) => super.noSuchMethod(
     Invocation.setter(#venue, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set location(_i4.Location? value) => super.noSuchMethod(
+  set location(_i6.Location? value) => super.noSuchMethod(
     Invocation.setter(#location, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set newChatMembers(List<_i4.User>? value) => super.noSuchMethod(
+  set newChatMembers(List<_i6.User>? value) => super.noSuchMethod(
     Invocation.setter(#newChatMembers, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set leftChatMember(_i4.User? value) => super.noSuchMethod(
+  set leftChatMember(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#leftChatMember, value),
     returnValueForMissingStub: null,
   );
@@ -3193,7 +3413,7 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set newChatPhoto(List<_i4.PhotoSize>? value) => super.noSuchMethod(
+  set newChatPhoto(List<_i6.PhotoSize>? value) => super.noSuchMethod(
     Invocation.setter(#newChatPhoto, value),
     returnValueForMissingStub: null,
   );
@@ -3223,7 +3443,7 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set messageAutoDeleteTimerChanged(_i4.MessageAutoDeleteTimerChanged? value) =>
+  set messageAutoDeleteTimerChanged(_i6.MessageAutoDeleteTimerChanged? value) =>
       super.noSuchMethod(
         Invocation.setter(#messageAutoDeleteTimerChanged, value),
         returnValueForMissingStub: null,
@@ -3242,31 +3462,31 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set pinnedMessage(_i4.Message? value) => super.noSuchMethod(
+  set pinnedMessage(_i6.Message? value) => super.noSuchMethod(
     Invocation.setter(#pinnedMessage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set invoice(_i4.Invoice? value) => super.noSuchMethod(
+  set invoice(_i6.Invoice? value) => super.noSuchMethod(
     Invocation.setter(#invoice, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set successfulPayment(_i4.SuccessfulPayment? value) => super.noSuchMethod(
+  set successfulPayment(_i6.SuccessfulPayment? value) => super.noSuchMethod(
     Invocation.setter(#successfulPayment, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set userShared(_i4.UserShared? value) => super.noSuchMethod(
+  set userShared(_i6.UserShared? value) => super.noSuchMethod(
     Invocation.setter(#userShared, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set chatShared(_i4.ChatShared? value) => super.noSuchMethod(
+  set chatShared(_i6.ChatShared? value) => super.noSuchMethod(
     Invocation.setter(#chatShared, value),
     returnValueForMissingStub: null,
   );
@@ -3278,95 +3498,95 @@ class MockMessage extends _i1.Mock implements _i4.Message {
   );
 
   @override
-  set writeAccessAllowed(_i4.WriteAccessAllowed? value) => super.noSuchMethod(
+  set writeAccessAllowed(_i6.WriteAccessAllowed? value) => super.noSuchMethod(
     Invocation.setter(#writeAccessAllowed, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set passportData(_i4.PassportData? value) => super.noSuchMethod(
+  set passportData(_i6.PassportData? value) => super.noSuchMethod(
     Invocation.setter(#passportData, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set proximityAlertTriggered(_i4.ProximityAlertTriggered? value) =>
+  set proximityAlertTriggered(_i6.ProximityAlertTriggered? value) =>
       super.noSuchMethod(
         Invocation.setter(#proximityAlertTriggered, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set forumTopicCreated(_i4.ForumTopicCreated? value) => super.noSuchMethod(
+  set forumTopicCreated(_i6.ForumTopicCreated? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicCreated, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicEdited(_i4.ForumTopicEdited? value) => super.noSuchMethod(
+  set forumTopicEdited(_i6.ForumTopicEdited? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicEdited, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicClosed(_i4.ForumTopicClosed? value) => super.noSuchMethod(
+  set forumTopicClosed(_i6.ForumTopicClosed? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicClosed, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicReopened(_i4.ForumTopicReopened? value) => super.noSuchMethod(
+  set forumTopicReopened(_i6.ForumTopicReopened? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicReopened, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set generalForumTopicHidden(_i4.GeneralForumTopicHidden? value) =>
+  set generalForumTopicHidden(_i6.GeneralForumTopicHidden? value) =>
       super.noSuchMethod(
         Invocation.setter(#generalForumTopicHidden, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set generalForumTopicUnhidden(_i4.GeneralForumTopicUnhidden? value) =>
+  set generalForumTopicUnhidden(_i6.GeneralForumTopicUnhidden? value) =>
       super.noSuchMethod(
         Invocation.setter(#generalForumTopicUnhidden, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set videoChatScheduled(_i4.VoiceChatScheduled? value) => super.noSuchMethod(
+  set videoChatScheduled(_i6.VoiceChatScheduled? value) => super.noSuchMethod(
     Invocation.setter(#videoChatScheduled, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatStarted(_i4.VoiceChatStarted? value) => super.noSuchMethod(
+  set videoChatStarted(_i6.VoiceChatStarted? value) => super.noSuchMethod(
     Invocation.setter(#videoChatStarted, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatEnded(_i4.VoiceChatEnded? value) => super.noSuchMethod(
+  set videoChatEnded(_i6.VoiceChatEnded? value) => super.noSuchMethod(
     Invocation.setter(#videoChatEnded, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatParticipantsInvited(_i4.VoiceChatParticipantsInvited? value) =>
+  set videoChatParticipantsInvited(_i6.VoiceChatParticipantsInvited? value) =>
       super.noSuchMethod(
         Invocation.setter(#videoChatParticipantsInvited, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set webAppData(_i4.WebAppData? value) => super.noSuchMethod(
+  set webAppData(_i6.WebAppData? value) => super.noSuchMethod(
     Invocation.setter(#webAppData, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set replyMarkup(_i4.InlineKeyboardMarkup? value) => super.noSuchMethod(
+  set replyMarkup(_i6.InlineKeyboardMarkup? value) => super.noSuchMethod(
     Invocation.setter(#replyMarkup, value),
     returnValueForMissingStub: null,
   );
@@ -3409,7 +3629,7 @@ class MockMessage extends _i1.Mock implements _i4.Message {
 /// A class which mocks [Chat].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockChat extends _i1.Mock implements _i4.Chat {
+class MockChat extends _i1.Mock implements _i6.Chat {
   MockChat() {
     _i1.throwOnMissingStub(this);
   }
@@ -3422,7 +3642,7 @@ class MockChat extends _i1.Mock implements _i4.Chat {
   String get type =>
       (super.noSuchMethod(
             Invocation.getter(#type),
-            returnValue: _i15.dummyValue<String>(
+            returnValue: _i19.dummyValue<String>(
               this,
               Invocation.getter(#type),
             ),
@@ -3472,7 +3692,7 @@ class MockChat extends _i1.Mock implements _i4.Chat {
   );
 
   @override
-  set photo(_i4.ChatPhoto? value) => super.noSuchMethod(
+  set photo(_i6.ChatPhoto? value) => super.noSuchMethod(
     Invocation.setter(#photo, value),
     returnValueForMissingStub: null,
   );
@@ -3538,13 +3758,13 @@ class MockChat extends _i1.Mock implements _i4.Chat {
   );
 
   @override
-  set pinnedMessage(_i4.Message? value) => super.noSuchMethod(
+  set pinnedMessage(_i6.Message? value) => super.noSuchMethod(
     Invocation.setter(#pinnedMessage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set permissions(_i4.ChatPermissions? value) => super.noSuchMethod(
+  set permissions(_i6.ChatPermissions? value) => super.noSuchMethod(
     Invocation.setter(#permissions, value),
     returnValueForMissingStub: null,
   );
@@ -3598,7 +3818,7 @@ class MockChat extends _i1.Mock implements _i4.Chat {
   );
 
   @override
-  set location(_i4.ChatLocation? value) => super.noSuchMethod(
+  set location(_i6.ChatLocation? value) => super.noSuchMethod(
     Invocation.setter(#location, value),
     returnValueForMissingStub: null,
   );
@@ -3615,7 +3835,7 @@ class MockChat extends _i1.Mock implements _i4.Chat {
 /// A class which mocks [User].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUser extends _i1.Mock implements _i4.User {
+class MockUser extends _i1.Mock implements _i6.User {
   MockUser() {
     _i1.throwOnMissingStub(this);
   }
@@ -3633,7 +3853,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   String get firstName =>
       (super.noSuchMethod(
             Invocation.getter(#firstName),
-            returnValue: _i15.dummyValue<String>(
+            returnValue: _i19.dummyValue<String>(
               this,
               Invocation.getter(#firstName),
             ),
@@ -3718,7 +3938,7 @@ class MockUser extends _i1.Mock implements _i4.User {
 /// A class which mocks [TeleDartMessage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
+class MockTeleDartMessage extends _i1.Mock implements _i20.TeleDartMessage {
   MockTeleDartMessage() {
     _i1.throwOnMissingStub(this);
   }
@@ -3733,18 +3953,18 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
       (super.noSuchMethod(Invocation.getter(#date), returnValue: 0) as int);
 
   @override
-  _i4.Chat get chat =>
+  _i6.Chat get chat =>
       (super.noSuchMethod(
             Invocation.getter(#chat),
-            returnValue: _FakeChat_9(this, Invocation.getter(#chat)),
+            returnValue: _FakeChat_11(this, Invocation.getter(#chat)),
           )
-          as _i4.Chat);
+          as _i6.Chat);
 
   @override
   DateTime get date_ =>
       (super.noSuchMethod(
             Invocation.getter(#date_),
-            returnValue: _FakeDateTime_20(this, Invocation.getter(#date_)),
+            returnValue: _FakeDateTime_22(this, Invocation.getter(#date_)),
           )
           as DateTime);
 
@@ -3761,13 +3981,13 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set from(_i4.User? value) => super.noSuchMethod(
+  set from(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#from, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set senderChat(_i4.Chat? value) => super.noSuchMethod(
+  set senderChat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#senderChat, value),
     returnValueForMissingStub: null,
   );
@@ -3779,19 +3999,19 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set chat(_i4.Chat? value) => super.noSuchMethod(
+  set chat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#chat, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forwardFrom(_i4.User? value) => super.noSuchMethod(
+  set forwardFrom(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#forwardFrom, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forwardFromChat(_i4.Chat? value) => super.noSuchMethod(
+  set forwardFromChat(_i6.Chat? value) => super.noSuchMethod(
     Invocation.setter(#forwardFromChat, value),
     returnValueForMissingStub: null,
   );
@@ -3833,13 +4053,13 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set replyToMessage(_i4.Message? value) => super.noSuchMethod(
+  set replyToMessage(_i6.Message? value) => super.noSuchMethod(
     Invocation.setter(#replyToMessage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set viaBot(_i4.User? value) => super.noSuchMethod(
+  set viaBot(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#viaBot, value),
     returnValueForMissingStub: null,
   );
@@ -3875,61 +4095,61 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set entities(List<_i4.MessageEntity>? value) => super.noSuchMethod(
+  set entities(List<_i6.MessageEntity>? value) => super.noSuchMethod(
     Invocation.setter(#entities, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set animation(_i4.Animation? value) => super.noSuchMethod(
+  set animation(_i6.Animation? value) => super.noSuchMethod(
     Invocation.setter(#animation, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set audio(_i4.Audio? value) => super.noSuchMethod(
+  set audio(_i6.Audio? value) => super.noSuchMethod(
     Invocation.setter(#audio, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set document(_i4.Document? value) => super.noSuchMethod(
+  set document(_i6.Document? value) => super.noSuchMethod(
     Invocation.setter(#document, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set photo(List<_i4.PhotoSize>? value) => super.noSuchMethod(
+  set photo(List<_i6.PhotoSize>? value) => super.noSuchMethod(
     Invocation.setter(#photo, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set sticker(_i4.Sticker? value) => super.noSuchMethod(
+  set sticker(_i6.Sticker? value) => super.noSuchMethod(
     Invocation.setter(#sticker, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set story(_i4.Story? value) => super.noSuchMethod(
+  set story(_i6.Story? value) => super.noSuchMethod(
     Invocation.setter(#story, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set video(_i4.Video? value) => super.noSuchMethod(
+  set video(_i6.Video? value) => super.noSuchMethod(
     Invocation.setter(#video, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoNote(_i4.VideoNote? value) => super.noSuchMethod(
+  set videoNote(_i6.VideoNote? value) => super.noSuchMethod(
     Invocation.setter(#videoNote, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set voice(_i4.Voice? value) => super.noSuchMethod(
+  set voice(_i6.Voice? value) => super.noSuchMethod(
     Invocation.setter(#voice, value),
     returnValueForMissingStub: null,
   );
@@ -3941,7 +4161,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set captionEntities(List<_i4.MessageEntity>? value) => super.noSuchMethod(
+  set captionEntities(List<_i6.MessageEntity>? value) => super.noSuchMethod(
     Invocation.setter(#captionEntities, value),
     returnValueForMissingStub: null,
   );
@@ -3953,49 +4173,49 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set contact(_i4.Contact? value) => super.noSuchMethod(
+  set contact(_i6.Contact? value) => super.noSuchMethod(
     Invocation.setter(#contact, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set dice(_i4.Dice? value) => super.noSuchMethod(
+  set dice(_i6.Dice? value) => super.noSuchMethod(
     Invocation.setter(#dice, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set game(_i4.Game? value) => super.noSuchMethod(
+  set game(_i6.Game? value) => super.noSuchMethod(
     Invocation.setter(#game, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set poll(_i4.Poll? value) => super.noSuchMethod(
+  set poll(_i6.Poll? value) => super.noSuchMethod(
     Invocation.setter(#poll, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set venue(_i4.Venue? value) => super.noSuchMethod(
+  set venue(_i6.Venue? value) => super.noSuchMethod(
     Invocation.setter(#venue, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set location(_i4.Location? value) => super.noSuchMethod(
+  set location(_i6.Location? value) => super.noSuchMethod(
     Invocation.setter(#location, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set newChatMembers(List<_i4.User>? value) => super.noSuchMethod(
+  set newChatMembers(List<_i6.User>? value) => super.noSuchMethod(
     Invocation.setter(#newChatMembers, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set leftChatMember(_i4.User? value) => super.noSuchMethod(
+  set leftChatMember(_i6.User? value) => super.noSuchMethod(
     Invocation.setter(#leftChatMember, value),
     returnValueForMissingStub: null,
   );
@@ -4007,7 +4227,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set newChatPhoto(List<_i4.PhotoSize>? value) => super.noSuchMethod(
+  set newChatPhoto(List<_i6.PhotoSize>? value) => super.noSuchMethod(
     Invocation.setter(#newChatPhoto, value),
     returnValueForMissingStub: null,
   );
@@ -4037,7 +4257,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set messageAutoDeleteTimerChanged(_i4.MessageAutoDeleteTimerChanged? value) =>
+  set messageAutoDeleteTimerChanged(_i6.MessageAutoDeleteTimerChanged? value) =>
       super.noSuchMethod(
         Invocation.setter(#messageAutoDeleteTimerChanged, value),
         returnValueForMissingStub: null,
@@ -4056,31 +4276,31 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set pinnedMessage(_i4.Message? value) => super.noSuchMethod(
+  set pinnedMessage(_i6.Message? value) => super.noSuchMethod(
     Invocation.setter(#pinnedMessage, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set invoice(_i4.Invoice? value) => super.noSuchMethod(
+  set invoice(_i6.Invoice? value) => super.noSuchMethod(
     Invocation.setter(#invoice, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set successfulPayment(_i4.SuccessfulPayment? value) => super.noSuchMethod(
+  set successfulPayment(_i6.SuccessfulPayment? value) => super.noSuchMethod(
     Invocation.setter(#successfulPayment, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set userShared(_i4.UserShared? value) => super.noSuchMethod(
+  set userShared(_i6.UserShared? value) => super.noSuchMethod(
     Invocation.setter(#userShared, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set chatShared(_i4.ChatShared? value) => super.noSuchMethod(
+  set chatShared(_i6.ChatShared? value) => super.noSuchMethod(
     Invocation.setter(#chatShared, value),
     returnValueForMissingStub: null,
   );
@@ -4092,95 +4312,95 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  set writeAccessAllowed(_i4.WriteAccessAllowed? value) => super.noSuchMethod(
+  set writeAccessAllowed(_i6.WriteAccessAllowed? value) => super.noSuchMethod(
     Invocation.setter(#writeAccessAllowed, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set passportData(_i4.PassportData? value) => super.noSuchMethod(
+  set passportData(_i6.PassportData? value) => super.noSuchMethod(
     Invocation.setter(#passportData, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set proximityAlertTriggered(_i4.ProximityAlertTriggered? value) =>
+  set proximityAlertTriggered(_i6.ProximityAlertTriggered? value) =>
       super.noSuchMethod(
         Invocation.setter(#proximityAlertTriggered, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set forumTopicCreated(_i4.ForumTopicCreated? value) => super.noSuchMethod(
+  set forumTopicCreated(_i6.ForumTopicCreated? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicCreated, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicEdited(_i4.ForumTopicEdited? value) => super.noSuchMethod(
+  set forumTopicEdited(_i6.ForumTopicEdited? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicEdited, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicClosed(_i4.ForumTopicClosed? value) => super.noSuchMethod(
+  set forumTopicClosed(_i6.ForumTopicClosed? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicClosed, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set forumTopicReopened(_i4.ForumTopicReopened? value) => super.noSuchMethod(
+  set forumTopicReopened(_i6.ForumTopicReopened? value) => super.noSuchMethod(
     Invocation.setter(#forumTopicReopened, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set generalForumTopicHidden(_i4.GeneralForumTopicHidden? value) =>
+  set generalForumTopicHidden(_i6.GeneralForumTopicHidden? value) =>
       super.noSuchMethod(
         Invocation.setter(#generalForumTopicHidden, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set generalForumTopicUnhidden(_i4.GeneralForumTopicUnhidden? value) =>
+  set generalForumTopicUnhidden(_i6.GeneralForumTopicUnhidden? value) =>
       super.noSuchMethod(
         Invocation.setter(#generalForumTopicUnhidden, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set videoChatScheduled(_i4.VoiceChatScheduled? value) => super.noSuchMethod(
+  set videoChatScheduled(_i6.VoiceChatScheduled? value) => super.noSuchMethod(
     Invocation.setter(#videoChatScheduled, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatStarted(_i4.VoiceChatStarted? value) => super.noSuchMethod(
+  set videoChatStarted(_i6.VoiceChatStarted? value) => super.noSuchMethod(
     Invocation.setter(#videoChatStarted, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatEnded(_i4.VoiceChatEnded? value) => super.noSuchMethod(
+  set videoChatEnded(_i6.VoiceChatEnded? value) => super.noSuchMethod(
     Invocation.setter(#videoChatEnded, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set videoChatParticipantsInvited(_i4.VoiceChatParticipantsInvited? value) =>
+  set videoChatParticipantsInvited(_i6.VoiceChatParticipantsInvited? value) =>
       super.noSuchMethod(
         Invocation.setter(#videoChatParticipantsInvited, value),
         returnValueForMissingStub: null,
       );
 
   @override
-  set webAppData(_i4.WebAppData? value) => super.noSuchMethod(
+  set webAppData(_i6.WebAppData? value) => super.noSuchMethod(
     Invocation.setter(#webAppData, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set replyMarkup(_i4.InlineKeyboardMarkup? value) => super.noSuchMethod(
+  set replyMarkup(_i6.InlineKeyboardMarkup? value) => super.noSuchMethod(
     Invocation.setter(#replyMarkup, value),
     returnValueForMissingStub: null,
   );
@@ -4204,15 +4424,15 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
   );
 
   @override
-  _i6.Future<_i4.Message> reply(
+  _i8.Future<_i6.Message> reply(
     String? text, {
     bool? withQuote = false,
     String? parseMode,
-    List<_i4.MessageEntity>? entities,
+    List<_i6.MessageEntity>? entities,
     bool? disableWebPagePreview,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4228,8 +4448,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #reply,
@@ -4247,19 +4467,19 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyPhoto(
+  _i8.Future<_i6.Message> replyPhoto(
     dynamic photo, {
     bool? withQuote = false,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4276,8 +4496,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyPhoto,
@@ -4296,22 +4516,22 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyAudio(
+  _i8.Future<_i6.Message> replyAudio(
     dynamic audio, {
     bool? withQuote = false,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     int? duration,
     String? performer,
     String? title,
     dynamic thumbnail,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4331,8 +4551,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyAudio,
@@ -4354,19 +4574,19 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyDocument(
+  _i8.Future<_i6.Message> replyDocument(
     dynamic document, {
     bool? withQuote = false,
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4383,8 +4603,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyDocument,
@@ -4403,10 +4623,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyVideo(
+  _i8.Future<_i6.Message> replyVideo(
     dynamic video, {
     bool? withQuote = false,
     int? duration,
@@ -4415,12 +4635,12 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? supportsStreaming,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4442,8 +4662,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyVideo,
@@ -4467,10 +4687,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyAnimation(
+  _i8.Future<_i6.Message> replyAnimation(
     dynamic animation, {
     bool? withQuote = false,
     int? duration,
@@ -4479,11 +4699,11 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     dynamic thumbnail,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? hasSpoiler,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4504,8 +4724,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyAnimation,
@@ -4528,18 +4748,18 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyVoice(
+  _i8.Future<_i6.Message> replyVoice(
     dynamic voice, {
     bool? withQuote = false,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4555,8 +4775,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyVoice,
@@ -4574,10 +4794,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyVideoNote(
+  _i8.Future<_i6.Message> replyVideoNote(
     dynamic videoNote, {
     bool? withQuote = false,
     int? duration,
@@ -4585,7 +4805,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     dynamic thumbnail,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4601,8 +4821,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyVideoNote,
@@ -4620,11 +4840,11 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<List<_i4.Message>> replyMediaGroup(
-    List<_i4.InputMedia>? media, {
+  _i8.Future<List<_i6.Message>> replyMediaGroup(
+    List<_i6.InputMedia>? media, {
     bool? withQuote = false,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
@@ -4639,12 +4859,12 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #allowSendingWithoutReply: allowSendingWithoutReply,
               },
             ),
-            returnValue: _i6.Future<List<_i4.Message>>.value(<_i4.Message>[]),
+            returnValue: _i8.Future<List<_i6.Message>>.value(<_i6.Message>[]),
           )
-          as _i6.Future<List<_i4.Message>>);
+          as _i8.Future<List<_i6.Message>>);
 
   @override
-  _i6.Future<_i4.Message> replyLocation(
+  _i8.Future<_i6.Message> replyLocation(
     double? latitude,
     double? longitude, {
     bool? withQuote = false,
@@ -4654,7 +4874,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     int? proximityAlertRadius,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4671,8 +4891,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyLocation,
@@ -4691,10 +4911,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyVenue(
+  _i8.Future<_i6.Message> replyVenue(
     double? latitude,
     double? longitude,
     String? title,
@@ -4706,7 +4926,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     String? googlePlaceType,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4723,8 +4943,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyVenue,
@@ -4743,10 +4963,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyContact(
+  _i8.Future<_i6.Message> replyContact(
     String? phoneNumber,
     String? firstName, {
     bool? withQuote = false,
@@ -4754,7 +4974,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     String? vcard,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4769,8 +4989,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyContact,
@@ -4787,10 +5007,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyPoll(
+  _i8.Future<_i6.Message> replyPoll(
     String? question,
     List<String>? options, {
     bool? withQuote = false,
@@ -4800,13 +5020,13 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     int? correctOptionId,
     String? explanation,
     String? explanationParseMode,
-    List<_i4.MessageEntity>? explanationEntities,
+    List<_i6.MessageEntity>? explanationEntities,
     int? openPeriod,
     int? closeDate,
     bool? isClosed,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4829,8 +5049,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyPoll,
@@ -4855,16 +5075,16 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyDice({
+  _i8.Future<_i6.Message> replyDice({
     int? messageThreadId,
     bool? withQuote = false,
     String? emoji = '🎲',
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#replyDice, [], {
@@ -4875,8 +5095,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               #allowSendingWithoutReply: allowSendingWithoutReply,
               #replyMarkup: replyMarkup,
             }),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(#replyDice, [], {
                   #messageThreadId: messageThreadId,
@@ -4889,16 +5109,16 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyInvoice(
+  _i8.Future<_i6.Message> replyInvoice(
     String? title,
     String? description,
     String? payload,
     String? providerToken,
     String? currency,
-    List<_i4.LabeledPrice>? prices, {
+    List<_i6.LabeledPrice>? prices, {
     bool? withQuote = false,
     int? maxTipAmount,
     List<int>? suggestedTipAmounts,
@@ -4918,7 +5138,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
     bool? disableNotification,
     bool? protectContent,
     bool? allowSendingWithoutReply,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -4947,8 +5167,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyInvoice,
@@ -4986,16 +5206,16 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replyGame(
+  _i8.Future<_i6.Message> replyGame(
     String? gameShortName, {
     bool? withQuote = false,
     bool? disableNotification,
     bool? protectContent,
     bool? allowSendingWithoutReply,
-    _i4.InlineKeyboardMarkup? replyMarkup,
+    _i6.InlineKeyboardMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -5009,8 +5229,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replyGame,
@@ -5026,15 +5246,15 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.Message> replySticker(
+  _i8.Future<_i6.Message> replySticker(
     dynamic sticker, {
     bool? withQuote = false,
     bool? disableNotification,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -5047,8 +5267,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #replySticker,
@@ -5063,20 +5283,20 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
-  _i6.Future<_i4.MessageId> copyTo(
+  _i8.Future<_i6.MessageId> copyTo(
     int? chatId, {
     int? messageThreadId,
     int? replyToMessageId,
     String? caption,
     String? parseMode,
-    List<_i4.MessageEntity>? captionEntities,
+    List<_i6.MessageEntity>? captionEntities,
     bool? disableNotification,
     bool? protectContent,
     bool? allowSendingWithoutReply,
-    _i4.ReplyMarkup? replyMarkup,
+    _i6.ReplyMarkup? replyMarkup,
   }) =>
       (super.noSuchMethod(
             Invocation.method(
@@ -5094,8 +5314,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #replyMarkup: replyMarkup,
               },
             ),
-            returnValue: _i6.Future<_i4.MessageId>.value(
-              _FakeMessageId_5(
+            returnValue: _i8.Future<_i6.MessageId>.value(
+              _FakeMessageId_7(
                 this,
                 Invocation.method(
                   #copyTo,
@@ -5115,10 +5335,10 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.MessageId>);
+          as _i8.Future<_i6.MessageId>);
 
   @override
-  _i6.Future<_i4.Message> forwardTo(
+  _i8.Future<_i6.Message> forwardTo(
     int? chatId, {
     int? messageThreadId,
     bool? disableNotification,
@@ -5134,8 +5354,8 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
                 #protectContent: protectContent,
               },
             ),
-            returnValue: _i6.Future<_i4.Message>.value(
-              _FakeMessage_4(
+            returnValue: _i8.Future<_i6.Message>.value(
+              _FakeMessage_6(
                 this,
                 Invocation.method(
                   #forwardTo,
@@ -5149,7 +5369,7 @@ class MockTeleDartMessage extends _i1.Mock implements _i16.TeleDartMessage {
               ),
             ),
           )
-          as _i6.Future<_i4.Message>);
+          as _i8.Future<_i6.Message>);
 
   @override
   Map<String, dynamic> toJson() =>

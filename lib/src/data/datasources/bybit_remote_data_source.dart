@@ -44,16 +44,20 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
         final data = response.data;
         final List<dynamic> tickers = data['result']['list'];
         return tickers
-            .where((ticker) =>
-                ticker['fundingRate'] != null &&
-                ticker['nextFundingTime'] != null)
-            .map((ticker) => FundingRate(
-                  symbol: ticker['symbol'],
-                  fundingRate:
-                      double.tryParse(ticker['fundingRate'] ?? '0.0') ?? 0.0,
-                  fundingTime:
-                      int.tryParse(ticker['nextFundingTime'] ?? '0') ?? 0,
-                ))
+            .where(
+              (ticker) =>
+                  ticker['fundingRate'] != null &&
+                  ticker['nextFundingTime'] != null,
+            )
+            .map(
+              (ticker) => FundingRate(
+                symbol: ticker['symbol'],
+                fundingRate:
+                    double.tryParse(ticker['fundingRate'] ?? '0.0') ?? 0.0,
+                fundingTime:
+                    int.tryParse(ticker['nextFundingTime'] ?? '0') ?? 0,
+              ),
+            )
             .where((rate) => rate.fundingTime != 0)
             .toList();
       } else {

@@ -15,10 +15,13 @@ class UserSettings {
 
   factory UserSettings.fromJson(Map<String, dynamic> json) {
     return UserSettings(
-      userId: json['user_id'],
-      fundingRateThreshold: (json['funding_rate_threshold'] as num).toDouble(),
-      minutesBeforeExpiration: json['minutes_before_expiration'],
-      lastUpdated: DateTime.parse(json['last_updated']),
+      userId: json['user_id'] ?? '',
+      fundingRateThreshold:
+          (json['funding_rate_threshold'] as num?)?.toDouble() ?? 0.01,
+      minutesBeforeExpiration: json['minutes_before_expiration'] ?? 30,
+      lastUpdated: json['last_updated'] != null
+          ? DateTime.parse(json['last_updated'])
+          : DateTime.now(),
       languageCode: json['language_code'] ?? 'en',
     );
   }

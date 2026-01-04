@@ -18,36 +18,45 @@ void main() {
   });
 
   group('getFundingRates', () {
-    test('should return a list of funding rates from the data source',
-        () async {
-      // Arrange
-      final tRates = [
-        FundingRate(
-            symbol: 'BTCUSDT', fundingRate: 0.01, fundingTime: 1234567890)
-      ];
-      when(mockRemoteDataSource.getFundingRates())
-          .thenAnswer((_) async => tRates);
+    test(
+      'should return a list of funding rates from the data source',
+      () async {
+        // Arrange
+        final tRates = [
+          FundingRate(
+            symbol: 'BTCUSDT',
+            fundingRate: 0.01,
+            fundingTime: 1234567890,
+          ),
+        ];
+        when(
+          mockRemoteDataSource.getFundingRates(),
+        ).thenAnswer((_) async => tRates);
 
-      // Act
-      final result = await repository.getFundingRates();
+        // Act
+        final result = await repository.getFundingRates();
 
-      // Assert
-      expect(result, tRates);
-      verify(mockRemoteDataSource.getFundingRates());
-      verifyNoMoreInteractions(mockRemoteDataSource);
-    });
+        // Assert
+        expect(result, tRates);
+        verify(mockRemoteDataSource.getFundingRates());
+        verifyNoMoreInteractions(mockRemoteDataSource);
+      },
+    );
 
-    test('should throw an exception when the data source throws an exception',
-        () async {
-      // Arrange
-      when(mockRemoteDataSource.getFundingRates())
-          .thenThrow(Exception('Failed to fetch rates'));
+    test(
+      'should throw an exception when the data source throws an exception',
+      () async {
+        // Arrange
+        when(
+          mockRemoteDataSource.getFundingRates(),
+        ).thenThrow(Exception('Failed to fetch rates'));
 
-      // Act
-      final call = repository.getFundingRates;
+        // Act
+        final call = repository.getFundingRates;
 
-      // Assert
-      expect(() => call(), throwsA(isA<Exception>()));
-    });
+        // Assert
+        expect(() => call(), throwsA(isA<Exception>()));
+      },
+    );
   });
 }

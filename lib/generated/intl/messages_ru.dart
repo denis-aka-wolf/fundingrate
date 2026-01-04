@@ -20,48 +20,82 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(symbol, rate) =>
-      "Оповещение о ставке финансирования для ${symbol}: ${rate}";
+  static String m0(userIds) => "Администраторы: ${userIds}";
 
-  static String m1(lang) => "Язык изменен на ${lang}";
+  static String m1(symbol, fundingRate) =>
+      "Высокая ставка финансирования для ${symbol}: ${fundingRate}";
+
+  static String m2(lang) => "Язык изменен на ${lang}";
+
+  static String m3(userIds) => "Модераторы: ${userIds}";
+
+  static String m6(userId) => "Пользователь ${userId} больше не администратор.";
+
+  static String m7(userId) => "Пользователь ${userId} больше не модератор.";
+
+  static String m8(userId) => "Пользователь ${userId} теперь администратор.";
+
+  static String m9(userId) => "Пользователь ${userId} теперь модератор.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "botStatus": MessageLookupByLibrary.simpleMessage("Я жив и работаю!"),
-    "checkIntervalUpdated": MessageLookupByLibrary.simpleMessage(
-      "Интервал проверки обновлен.",
+    "accessDenied": MessageLookupByLibrary.simpleMessage("Доступ запрещен."),
+    "adminCommands": MessageLookupByLibrary.simpleMessage(
+      "- /add_admin <user_id> - назначить пользователя администратором\n- /add_moderator <user_id> - назначить пользователя модератором\n- /del_admin <user_id> - лишить пользователя прав администратора\n- /del_moderator <user_id> - лишить пользователя прав модератора\n- /users_admin - список всех администраторов\n- /users_moderator - список всех модераторов",
     ),
-    "checkIntervalUsage": MessageLookupByLibrary.simpleMessage(
-      "Использование: /set_check_interval <value>",
+    "adminsList": m0,
+    "availableCommands": MessageLookupByLibrary.simpleMessage(
+      "Доступные команды:",
     ),
-    "fundingRateAlert": m0,
+    "botStatus": MessageLookupByLibrary.simpleMessage("Бот запущен."),
+    "fundingRateAlert": m1,
     "fundingRateThresholdUpdated": MessageLookupByLibrary.simpleMessage(
       "Порог ставки финансирования обновлен.",
     ),
     "fundingRateThresholdUsage": MessageLookupByLibrary.simpleMessage(
-      "Использование: /set_funding_rate_threshold <value>",
+      "Использование: /set_funding_rate_threshold <значение>",
     ),
     "langUsage": MessageLookupByLibrary.simpleMessage(
-      "Использование: /lang <language_code>",
+      "Использование: /lang <код_языка>",
     ),
-    "languageChanged": m1,
+    "languageChanged": m2,
     "minutesBeforeExpirationUpdated": MessageLookupByLibrary.simpleMessage(
       "Количество минут до истечения срока обновлено.",
     ),
     "minutesBeforeExpirationUsage": MessageLookupByLibrary.simpleMessage(
-      "Использование: /set_minutes_before_expiration <value>",
+      "Использование: /set_minutes_before_expiration <значение>",
+    ),
+    "moderatorCommands": MessageLookupByLibrary.simpleMessage(
+      "- /settings_app - показать текущие настройки приложения\n- /set <parameter> <value> - изменить настройку приложения",
+    ),
+    "moderatorsList": m3,
+    "setUsage": MessageLookupByLibrary.simpleMessage(
+      "Использование: /set <KEY> <VALUE>",
     ),
     "settingsNotFound": MessageLookupByLibrary.simpleMessage(
-      "Настройки не найдены. Пожалуйста, используйте команду /start, чтобы начать.",
+      "Настройки не найдены. Пожалуйста, используйте /start для инициализации.",
+    ),
+    "specifyUser": MessageLookupByLibrary.simpleMessage(
+      "Пожалуйста, укажите ID пользователя или ответьте на сообщение.",
     ),
     "unsupportedLanguage": MessageLookupByLibrary.simpleMessage(
       "Неподдерживаемый язык.",
     ),
+    "userCommands": MessageLookupByLibrary.simpleMessage(
+      "- /start - начать работу с ботом\n- /settings - посмотреть текущие настройки\n- /status - проверить статус бота\n- /lang <language_code> - изменить язык\n- /set_funding_rate_threshold <value> - установить порог ставки финансирования\n- /set_minutes_before_expiration <value> - установить количество минут до истечения срока",
+    ),
+    "userDemotedFromAdmin": m6,
+    "userDemotedFromModerator": m7,
+    "userPromotedToAdmin": m8,
+    "userPromotedToModerator": m9,
     "welcomeBackMessage": MessageLookupByLibrary.simpleMessage(
-      "С возвращением! Вы уже настроены.",
+      "С возвращением!",
     ),
     "welcomeMessage": MessageLookupByLibrary.simpleMessage(
-      "Добро пожаловать! Я буду уведомлять вас о ставках финансирования.",
+      "Добро пожаловать! Я буду уведомлять вас о высоких ставках финансирования.",
+    ),
+    "welcomeMessageDetailed": MessageLookupByLibrary.simpleMessage(
+      "Привет! Я бот, который отслеживает ставки финансирования для различных криптовалютных пар на Binance. Я могу уведомлять вас, когда ставки превышают заданный порог.",
     ),
   };
 }
