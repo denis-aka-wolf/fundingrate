@@ -9,5 +9,5 @@ build/
 *.ipr
 *.iws
 .vscode/
-/settings
+settings/
 /bybit_responses
