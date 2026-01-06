@@ -52,21 +52,23 @@ class FundingRateBot {
  }) : _injectedTeleDart = teledart;
 
  Future<void> start() async {
-    if (_injectedTeleDart != null) {
-      teledart = _injectedTeleDart!;
-    } else {
-      final env = DotEnv(includePlatformEnvironment: true)..load();
-      final botToken = env['TELEGRAM_BOT_TOKEN']!;
-      final username = (await Telegram(botToken).getMe()).username;
-      teledart = TeleDart(botToken, Event(username!));
-    }
+   print('Starting bot...');
+   if (_injectedTeleDart != null) {
+     teledart = _injectedTeleDart!;
+   } else {
+     final env = DotEnv(includePlatformEnvironment: true)..load();
+     final botToken = env['TELEGRAM_BOT_TOKEN']!;
+     final username = (await Telegram(botToken).getMe()).username;
+     teledart = TeleDart(botToken, Event(username!));
+   }
 
-    if (_injectedTeleDart == null) {
-      teledart.start();
-    }
+   if (_injectedTeleDart == null) {
+     teledart.start();
+   }
 
-    _registerCommandHandlers();
-    teledart.onCallbackQuery().listen((callbackQuery) async {
+   print('Registering command handlers...');
+   _registerCommandHandlers();
+   teledart.onCallbackQuery().listen((callbackQuery) async {
       final command = callbackQuery.data;
       if (command != null) {
         final message = callbackQuery.message;
@@ -110,10 +112,11 @@ class FundingRateBot {
   }
 
   void _registerCommandHandlers() {
+    print('Registering command handlers...');
     teledart.onCommand('start').listen((message) async {
       final userId = message.chat.id.toString();
-      final telegramLang = message.from?.languageCode ?? 'en';
       var settings = await getUserSettings(userId);
+      final telegramLang = message.from?.languageCode ?? 'en';
 
       if (settings == null) {
         settings = UserSettings(
@@ -124,22 +127,9 @@ class FundingRateBot {
           languageCode: telegramLang,
         );
         await saveUserSettings(settings);
-      } else {
-        // Check if Telegram language is different from saved settings
-        if (settings.languageCode != telegramLang) {
-          // Update settings with new language from Telegram
-          settings = UserSettings(
-            userId: settings.userId,
-            fundingRateThreshold: settings.fundingRateThreshold,
-            minutesBeforeExpiration: settings.minutesBeforeExpiration,
-            lastUpdated: DateTime.now(),
-            languageCode: telegramLang,
-          );
-          await saveUserSettings(settings);
-        }
       }
 
-      // Load the language based on Telegram settings or saved settings
+      // Load the language from saved settings
       await S.load(settings.languageCode);
 
       final userRole = await getRole(int.parse(userId));
@@ -180,18 +170,40 @@ class FundingRateBot {
       await S.load(
         settings?.languageCode ?? message.from?.languageCode ?? 'en',
       );
-      await message.reply(S.current.botStatus);
+      try {
+        await message.reply(S.current.botStatus);
+      } catch (e) {
+        await message.reply('Bot is running.');
+      }
     });
 
     teledart.onCommand('lang').listen((message) async {
       final userId = message.chat.id.toString();
-      final settings = await getUserSettings(userId);
+      print('LANG command received from user $userId');
+      var settings = await getUserSettings(userId);
       final text = message.text;
+      print('Settings: $settings, Text: $text');
 
-      if (settings != null && text != null) {
+      if (text != null) {
         final parts = text.split(' ');
+        print('Command parts: $parts');
         if (parts.length == 2) {
           final lang = parts[1];
+          print('Requested language: $lang, Supported locales: ${S.supportedLocales}');
+          
+          // If user doesn't have settings, create default ones
+          if (settings == null) {
+            print('Creating default settings for user $userId');
+            settings = UserSettings(
+              userId: userId,
+              fundingRateThreshold: 0.01,
+              minutesBeforeExpiration: 30,
+              lastUpdated: DateTime.now(),
+              languageCode: 'en', // Use default language before changing to requested
+            );
+            await saveUserSettings(settings);
+          }
+          
           if (S.supportedLocales.contains(lang)) {
             final newSettings = UserSettings(
               userId: settings.userId,
@@ -201,16 +213,53 @@ class FundingRateBot {
               languageCode: lang,
             );
             await saveUserSettings(newSettings);
+            print('Settings saved for user $userId with language $lang');
             await S.load(lang);
-            await message.reply(S.current.languageChanged(lang));
+            print('Language $lang loaded for user $userId');
+            // Send language change confirmation
+            try {
+              await message.reply(S.current.languageChanged(lang));
+              print('Language changed to $lang for user $userId');
+            } catch (e) {
+              print('Error sending localized message: $e');
+              await message.reply('Language changed to $lang');
+              print('Language changed to $lang for user $userId (fallback message)');
+            }
+            
+            // Send the welcome message like /start command does
+            final userRole = await getRole(int.parse(userId));
+            final welcomeMessage = S.current.welcomeMessageDetailed;
+            final availableCommands = S.current.availableCommands;
+            var commandsList = S.current.userCommands;
+
+            InlineKeyboardMarkup? keyboard;
+
+            if (userRole == UserRole.admin) {
+              commandsList += '\n\n${S.current.adminCommands}';
+              keyboard = _adminInlineKeyboard();
+            } else if (userRole == UserRole.moderator) {
+              commandsList += '\n\n${S.current.moderatorCommands}';
+              keyboard = _moderatorInlineKeyboard();
+            }
+
+            await message.reply(
+              '$welcomeMessage\n\n$availableCommands\n$commandsList',
+              replyMarkup: keyboard,
+            );
           } else {
             await S.load(settings.languageCode);
             await message.reply(S.current.unsupportedLanguage);
+            print('Unsupported language $lang requested by user $userId, kept $settings.languageCode');
           }
         } else {
-          await S.load(settings.languageCode);
+          await S.load(settings?.languageCode ?? 'en');
           await message.reply(S.current.langUsage);
+          print('Invalid lang command format from user $userId');
         }
+      } else {
+        print('Text is null for user $userId');
+        await S.load(settings?.languageCode ?? 'en');
+        await message.reply(S.current.langUsage);
       }
     });
 
