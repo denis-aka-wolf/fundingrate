@@ -24,6 +24,7 @@ class S {
     return _current!;
   }
 
+
   static const List<String> supportedLocales = ['en', 'ru'];
 
   static Future<S> load(String locale) {
@@ -268,10 +269,10 @@ class S {
     );
   }
 
-  /// `Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.`
+  /// `Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Bybit. I can notify you when rates exceed a specified threshold.`
   String get welcomeMessageDetailed {
     return Intl.message(
-      'Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.',
+      'Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Bybit. I can notify you when rates exceed a specified threshold.',
       name: 'welcomeMessageDetailed',
       desc: '',
       args: [],

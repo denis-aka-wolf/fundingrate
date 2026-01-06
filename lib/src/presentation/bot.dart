@@ -112,8 +112,8 @@ class FundingRateBot {
   void _registerCommandHandlers() {
     teledart.onCommand('start').listen((message) async {
       final userId = message.chat.id.toString();
+      final telegramLang = message.from?.languageCode ?? 'en';
       var settings = await getUserSettings(userId);
-      final lang = message.from?.languageCode ?? 'en';
 
       if (settings == null) {
         settings = UserSettings(
@@ -121,11 +121,25 @@ class FundingRateBot {
           fundingRateThreshold: 0.01,
           minutesBeforeExpiration: 30,
           lastUpdated: DateTime.now(),
-          languageCode: lang,
+          languageCode: telegramLang,
         );
         await saveUserSettings(settings);
+      } else {
+        // Check if Telegram language is different from saved settings
+        if (settings.languageCode != telegramLang) {
+          // Update settings with new language from Telegram
+          settings = UserSettings(
+            userId: settings.userId,
+            fundingRateThreshold: settings.fundingRateThreshold,
+            minutesBeforeExpiration: settings.minutesBeforeExpiration,
+            lastUpdated: DateTime.now(),
+            languageCode: telegramLang,
+          );
+          await saveUserSettings(settings);
+        }
       }
 
+      // Load the language based on Telegram settings or saved settings
       await S.load(settings.languageCode);
 
       final userRole = await getRole(int.parse(userId));

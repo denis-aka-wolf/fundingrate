@@ -99,7 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Welcome! I will notify you about high funding rates.",
     ),
     "welcomeMessageDetailed": MessageLookupByLibrary.simpleMessage(
-      "Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.",
+      "Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Bybit. I can notify you when rates exceed a specified threshold.",
     ),
   };
 }

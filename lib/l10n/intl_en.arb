@@ -23,7 +23,7 @@
   "settingUpdated": "Setting {key} updated to {value}.",
   "settingUpdateFailed": "Failed to update setting {key}.",
   "setUsage": "Usage: /set <KEY> <VALUE>",
-  "welcomeMessageDetailed": "Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Binance. I can notify you when rates exceed a specified threshold.",
+  "welcomeMessageDetailed": "Hello! I am a bot that tracks funding rates for various cryptocurrency pairs on Bybit. I can notify you when rates exceed a specified threshold.",
   "availableCommands": "Available commands:",
   "userCommands": "- /start - Start the bot\n- /settings - View current settings\n- /status - Check bot status\n- /lang <language_code> - Change language\n- /set_funding_rate_threshold <value> - Set funding rate threshold\n- /set_minutes_before_expiration <value> - Set minutes before expiration",
   "adminCommands": "- /add_admin <user_id> - Promote user to admin\n- /add_moderator <user_id> - Promote user to moderator\n- /del_admin <user_id> - Demote user from admin\n- /del_moderator <user_id> - Demote user from moderator\n- /users_admin - List all admins\n- /users_moderator - List all moderators",
