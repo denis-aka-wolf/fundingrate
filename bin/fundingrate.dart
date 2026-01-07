@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fundingrate/generated/l10n.dart';
 import 'package:fundingrate/src/presentation/bot.dart';
 import 'package:fundingrate/src/core/service_locator.dart' as sl;
@@ -14,4 +16,7 @@ void main(List<String> arguments) async {
 
   // Start the bot
   bot.start();
+
+  // Keep the main isolate alive
+  await Completer().future;
 }
