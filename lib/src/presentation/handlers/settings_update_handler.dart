@@ -8,6 +8,8 @@ import '../../domain/usecases/save_user_settings.dart';
 import '../commands/bot_command.dart';
 import '../commands/command_registry.dart';
 
+typedef MessageProvider = String Function();
+
 void registerSettingsUpdateCommands(CommandRegistry registry) {
   _registerUpdateCommand<double>(
     registry: registry,
@@ -21,8 +23,8 @@ void registerSettingsUpdateCommands(CommandRegistry registry) {
       lastUpdated: DateTime.now(),
       languageCode: settings.languageCode,
     ),
-    successMessage: S.current.fundingRateThresholdUpdated,
-    usageMessage: S.current.fundingRateThresholdUsage,
+    successMessageProvider: () => S.current.fundingRateThresholdUpdated,
+    usageMessageProvider: () => S.current.fundingRateThresholdUsage,
   );
 
   _registerUpdateCommand<int>(
@@ -37,8 +39,8 @@ void registerSettingsUpdateCommands(CommandRegistry registry) {
       lastUpdated: DateTime.now(),
       languageCode: settings.languageCode,
     ),
-    successMessage: S.current.minutesBeforeExpirationUpdated,
-    usageMessage: S.current.minutesBeforeExpirationUsage,
+    successMessageProvider: () => S.current.minutesBeforeExpirationUpdated,
+    usageMessageProvider: () => S.current.minutesBeforeExpirationUsage,
   );
 }
 
@@ -48,8 +50,8 @@ void _registerUpdateCommand<T>({
   required String description,
   required T Function(String) parser,
   required UserSettings Function(UserSettings, T) updater,
-  required String successMessage,
-  required String usageMessage,
+  required MessageProvider successMessageProvider,
+  required MessageProvider usageMessageProvider,
 }) {
   registry.register(
     BotCommand(
@@ -70,14 +72,14 @@ void _registerUpdateCommand<T>({
               final newSettings = updater(settings, value);
               await saveUserSettings(newSettings);
               await S.load(newSettings.languageCode);
-              await message.reply(successMessage);
+              await message.reply(successMessageProvider());
             } catch (e) {
               await S.load(settings.languageCode);
-              await message.reply(usageMessage);
+              await message.reply(usageMessageProvider());
             }
           } else {
             await S.load(settings.languageCode);
-            await message.reply(usageMessage);
+            await message.reply(usageMessageProvider());
           }
         }
       },
