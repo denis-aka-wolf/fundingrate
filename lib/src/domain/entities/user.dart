@@ -1,10 +1,11 @@
 enum UserRole {
   admin,
-  moderator;
+  moderator,
+  user;
 
-  static UserRole? fromString(String? role) {
+  static UserRole fromString(String? role) {
     if (role == 'admin') return UserRole.admin;
     if (role == 'moderator') return UserRole.moderator;
-    return null;
+    return UserRole.user;
   }
 }

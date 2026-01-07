@@ -1,3 +1,6 @@
+import 'package:dartz/dartz.dart';
+
+import '../../core/error/failures.dart';
 import '../entities/funding_rate.dart';
 import '../repositories/bybit_repository.dart';
 
@@ -6,7 +9,7 @@ class GetFundingRates {
 
   GetFundingRates(this.repository);
 
-  Future<List<FundingRate>> call() {
+  Future<Either<Failure, List<FundingRate>>> call() {
     return repository.getFundingRates();
   }
 }

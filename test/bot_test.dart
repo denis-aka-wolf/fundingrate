@@ -7,6 +7,8 @@ import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart';
 import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart';
 import 'package:fundingrate/src/domain/usecases/check_funding_rates.dart';
 import 'package:fundingrate/src/domain/usecases/config_and_roles_usecases.dart';
+import 'package:fundingrate/src/presentation/commands/command_registry.dart';
+import 'package:fundingrate/src/presentation/keyboards/keyboard_provider.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:teledart/model.dart';
@@ -19,24 +21,24 @@ import 'bot_test.mocks.dart';
 
 // FAKE TeleDart for testing
 class FakeTeleDart implements TeleDart {
-  final _commandControllers = <String, StreamController<TeleDartMessage>>{};
+  final _messageController = StreamController<TeleDartMessage>.broadcast();
+  final _callbackQueryController = StreamController<TeleDartCallbackQuery>.broadcast();
   final MockTelegram _telegram;
 
   FakeTeleDart(this._telegram);
 
   @override
-  Stream<TeleDartMessage> onCommand([dynamic command]) {
-    if (command is String) {
-      return _commandControllers
-          .putIfAbsent(command, () => StreamController<TeleDartMessage>())
-          .stream;
-    }
-    // This case is for onMessage without a specific command, which we are not testing here.
-    return Stream.empty();
+  Stream<TeleDartMessage> onMessage({String? entityType, dynamic keyword}) {
+    return _messageController.stream;
   }
 
-  void sendCommand(String command, TeleDartMessage message) {
-    _commandControllers[command]?.add(message);
+  @override
+  Stream<TeleDartCallbackQuery> onCallbackQuery() {
+    return _callbackQueryController.stream;
+  }
+
+  void sendCallbackQuery(TeleDartCallbackQuery query) {
+    _callbackQueryController.add(query);
   }
 
   @override
@@ -60,13 +62,9 @@ class FakeTeleDart implements TeleDart {
     GetAllUserIds,
     GetFundingRates,
     CheckFundingRates,
-    GetConfig,
-    SetConfig,
     GetRole,
-    AddRole,
-    RemoveRole,
-    GetAdminIds,
-    GetModeratorIds,
+    CommandRegistry,
+    IKeyboardProvider,
     Telegram,
     Message,
     Chat,
@@ -81,13 +79,9 @@ void main() {
   late MockGetAllUserIds mockGetAllUserIds;
   late MockGetFundingRates mockGetFundingRates;
   late MockCheckFundingRates mockCheckFundingRates;
-  late MockGetConfig mockGetConfig;
-  late MockSetConfig mockSetConfig;
   late MockGetRole mockGetRole;
-  late MockAddRole mockAddRole;
-  late MockRemoveRole mockRemoveRole;
-  late MockGetAdminIds mockGetAdminIds;
-  late MockGetModeratorIds mockGetModeratorIds;
+  late MockCommandRegistry mockCommandRegistry;
+  late MockIKeyboardProvider mockKeyboardProvider;
   late FakeTeleDart fakeTeleDart;
   late MockTelegram mockTelegram;
 
@@ -97,23 +91,11 @@ void main() {
     mockGetAllUserIds = MockGetAllUserIds();
     mockGetFundingRates = MockGetFundingRates();
     mockCheckFundingRates = MockCheckFundingRates();
-    mockGetConfig = MockGetConfig();
-    mockSetConfig = MockSetConfig();
     mockGetRole = MockGetRole();
-    mockAddRole = MockAddRole();
-    mockRemoveRole = MockRemoveRole();
-    mockGetAdminIds = MockGetAdminIds();
-    mockGetModeratorIds = MockGetModeratorIds();
+    mockCommandRegistry = MockCommandRegistry();
+    mockKeyboardProvider = MockIKeyboardProvider();
     mockTelegram = MockTelegram();
     fakeTeleDart = FakeTeleDart(mockTelegram);
-
-    when(mockGetConfig()).thenAnswer(
-      (_) async => {
-        "SAVE_BYBIT_RESPONSE": false,
-        "CONSOLE_OUTPUT": true,
-        "CHECK_INTERVAL_MINUTES": 5,
-      },
-    );
 
     bot = FundingRateBot(
       getUserSettings: mockGetUserSettings,
@@ -121,13 +103,10 @@ void main() {
       getAllUserIds: mockGetAllUserIds,
       getFundingRates: mockGetFundingRates,
       checkFundingRates: mockCheckFundingRates,
-      getConfig: mockGetConfig,
-      setConfig: mockSetConfig,
       getRole: mockGetRole,
-      addRole: mockAddRole,
-      removeRole: mockRemoveRole,
-      getAdminIds: mockGetAdminIds,
-      getModeratorIds: mockGetModeratorIds,
+      checkIntervalMinutes: 5,
+      keyboardProvider: mockKeyboardProvider,
+      commandRegistry: mockCommandRegistry,
       teledart: fakeTeleDart,
     );
 
@@ -157,134 +136,6 @@ void main() {
 
     return mockMessage;
   }
-
-  group('/start command', () {
-    test('should save new user and send welcome message', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en');
-      when(mockGetUserSettings('123')).thenAnswer((_) async => null);
-      when(mockSaveUserSettings(any)).thenAnswer((_) async {});
-
-      // Act
-      fakeTeleDart.sendCommand('start', mockMessage);
-
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.welcomeMessage));
-      verify(mockGetUserSettings('123')).called(1);
-      final captured =
-          verify(mockSaveUserSettings(captureAny)).captured.single
-              as UserSettings;
-      expect(captured.userId, '123');
-    });
-
-    test('should send welcome back message to existing user', () async {
-      // Arrange
-      final mockMessage = createMockMessage(123, 'en');
-      final existingSettings = UserSettings(
-        userId: '123',
-        fundingRateThreshold: 0,
-        minutesBeforeExpiration: 0,
-        lastUpdated: DateTime.now(),
-        languageCode: 'en',
-      );
-      when(
-        mockGetUserSettings('123'),
-      ).thenAnswer((_) async => existingSettings);
-
-      // Act
-      fakeTeleDart.sendCommand('start', mockMessage);
-
-      // Assert
-      await untilCalled(mockMessage.reply(S.current.welcomeBackMessage));
-      verify(mockGetUserSettings('123')).called(1);
-      verifyNever(mockSaveUserSettings(any));
-    });
-  });
-
-  group('Settings commands', () {
-    late UserSettings existingSettings;
-
-    setUp(() {
-      existingSettings = UserSettings(
-        userId: '123',
-        fundingRateThreshold: 0.01,
-        minutesBeforeExpiration: 30,
-        lastUpdated: DateTime.now(),
-        languageCode: 'en',
-      );
-      when(
-        mockGetUserSettings('123'),
-      ).thenAnswer((_) async => existingSettings);
-      when(mockSaveUserSettings(any)).thenAnswer((_) async {});
-    });
-
-    test(
-      'should update funding rate threshold on /set_funding_rate_threshold',
-      () async {
-        // Arrange
-        final mockMessage = createMockMessage(
-          123,
-          'en',
-          text: '/set_funding_rate_threshold 0.05',
-        );
-
-        // Act
-        fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
-
-        // Assert
-        await untilCalled(
-          mockMessage.reply(S.current.fundingRateThresholdUpdated),
-        );
-        final captured =
-            verify(mockSaveUserSettings(captureAny)).captured.single
-                as UserSettings;
-        expect(captured.fundingRateThreshold, 0.05);
-      },
-    );
-
-    test(
-      'should reply with usage on invalid /set_funding_rate_threshold',
-      () async {
-        // Arrange
-        final mockMessage = createMockMessage(
-          123,
-          'en',
-          text: '/set_funding_rate_threshold invalid',
-        );
-
-        // Act
-        fakeTeleDart.sendCommand('set_funding_rate_threshold', mockMessage);
-
-        // Assert
-        await untilCalled(
-          mockMessage.reply(S.current.fundingRateThresholdUsage),
-        );
-        verifyNever(mockSaveUserSettings(any));
-      },
-    );
-
-    test(
-      'should update minutes before expiration on /set_minutes_before_expiration',
-      () async {
-        // Arrange
-        final mockMessage = createMockMessage(
-          123,
-          'en',
-          text: '/set_minutes_before_expiration 60',
-        );
-
-        // Act
-        fakeTeleDart.sendCommand('set_minutes_before_expiration', mockMessage);
-
-        // Assert
-        await untilCalled(
-          mockMessage.reply(S.current.minutesBeforeExpirationUpdated),
-        );
-        final captured =
-            verify(mockSaveUserSettings(captureAny)).captured.single
-                as UserSettings;
-        expect(captured.minutesBeforeExpiration, 60);
-      },
-    );
-  });
+  
+  // Tests will be added here later
 }

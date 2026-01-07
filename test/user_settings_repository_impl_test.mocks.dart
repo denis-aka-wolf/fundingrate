@@ -58,4 +58,13 @@ class MockUserSettingsLocalDataSource extends _i1.Mock
             returnValue: _i3.Future<List<String>>.value(<String>[]),
           )
           as _i3.Future<List<String>>);
+
+  @override
+  _i3.Future<void> deleteSettings(String? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteSettings, [userId]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 }

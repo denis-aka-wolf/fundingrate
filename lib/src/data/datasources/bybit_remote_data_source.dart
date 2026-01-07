@@ -1,7 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:dotenv/dotenv.dart';
+import 'package:logger/logger.dart';
+
+import '../../core/service_locator.dart';
+import '../../core/error/exceptions.dart';
 import '../../domain/entities/funding_rate.dart';
 
 abstract class BybitRemoteDataSource {
@@ -16,31 +17,15 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
 
   @override
   Future<List<FundingRate>> getFundingRates() async {
-    final env = DotEnv(includePlatformEnvironment: true)..load();
     final url = '$_baseUrl/v5/market/tickers?category=linear';
-    print('Requesting data from: $url');
-
+    
     try {
       final response = await dio.get(
         url,
         options: Options(receiveTimeout: Duration(seconds: 30)),
       );
-      print('Response status code: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        if (env['CONSOLE_OUTPUT'] == 'true') {
-          print(response.data);
-        }
-        if (env['SAVE_BYBIT_RESPONSE'] == 'true') {
-          final now = DateTime.now().toIso8601String().replaceAll(':', '-');
-          final directory = Directory('bybit_responses');
-          if (!await directory.exists()) {
-            await directory.create();
-          }
-          final file = File('bybit_responses/response_$now.json');
-          await file.writeAsString(json.encode(response.data));
-        }
-
         final data = response.data;
         final List<dynamic> tickers = data['result']['list'];
         return tickers
@@ -53,19 +38,25 @@ class BybitRemoteDataSourceImpl implements BybitRemoteDataSource {
               (ticker) => FundingRate(
                 symbol: ticker['symbol'],
                 fundingRate:
-                    double.tryParse(ticker['fundingRate'] ?? '0.0') ?? 0.0,
+                    double.tryParse(ticker['fundingRate']?.toString() ?? '0.0') ?? 0.0,
                 fundingTime:
-                    int.tryParse(ticker['nextFundingTime'] ?? '0') ?? 0,
+                    int.tryParse(ticker['nextFundingTime']?.toString() ?? '0') ?? 0,
               ),
             )
             .where((rate) => rate.fundingTime != 0)
             .toList();
       } else {
-        throw Exception('Failed to load funding rates');
+        // Specific exception for HTTP errors
+        throw ServerException(message: 'Failed to load funding rates: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Error during HTTP request: $e');
-      throw Exception('Failed to load funding rates: $e');
+    } on DioException catch (e, s) {
+        // Specific exception for network/Dio errors
+        sl<Logger>().e('Error during HTTP request', error: e, stackTrace: s);
+        throw ServerException(message: 'Failed to load funding rates: $e');
+    } catch (e, s) {
+        // Catch any other errors (e.g., parsing)
+        sl<Logger>().e('An unexpected error occurred', error: e, stackTrace: s);
+        throw ServerException(message: 'Failed to process funding rates: $e');
     }
   }
 }

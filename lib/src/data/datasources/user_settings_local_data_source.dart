@@ -1,7 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:path/path.dart' as path;
-
+import '../../core/data/json_local_data_source.dart';
 import '../../domain/entities/user_settings.dart';
 
 abstract class UserSettingsLocalDataSource {
@@ -12,48 +9,34 @@ abstract class UserSettingsLocalDataSource {
 }
 
 class UserSettingsLocalDataSourceImpl implements UserSettingsLocalDataSource {
-  final Directory settingsDirectory;
+  late final JsonLocalDataSource<UserSettings> _dataSource;
+  static const String _usersDir = 'settings/users';
 
-  UserSettingsLocalDataSourceImpl(this.settingsDirectory);
-
-  File _getSettingsFile(String userId) {
-    return File(path.join(settingsDirectory.path, '$userId.json'));
+  UserSettingsLocalDataSourceImpl() {
+    _dataSource = JsonLocalDataSourceImpl<UserSettings>(
+      directoryPath: _usersDir,
+      fromJson: UserSettings.fromJson,
+      toJson: (userSettings) => userSettings.toJson(),
+    );
   }
 
   @override
-  Future<UserSettings?> getSettings(String userId) async {
-    final file = _getSettingsFile(userId);
-    if (await file.exists()) {
-      final jsonString = await file.readAsString();
-      return UserSettings.fromJson(jsonDecode(jsonString));
-    }
-    return null;
+  Future<UserSettings?> getSettings(String userId) {
+    return _dataSource.get(userId);
   }
 
   @override
-  Future<void> saveSettings(UserSettings settings) async {
-    final file = _getSettingsFile(settings.userId);
-    await file.writeAsString(jsonEncode(settings.toJson()));
+  Future<void> saveSettings(UserSettings settings) {
+    return _dataSource.save(settings.userId, settings);
   }
 
   @override
-  Future<List<String>> getAllUserIds() async {
-    if (!await settingsDirectory.exists()) {
-      return [];
-    }
-    final files = await settingsDirectory.list().toList();
-    return files
-        .where((file) => file is File && path.extension(file.path) == '.json')
-        .map((file) => path.basenameWithoutExtension(file.path))
-        .where((fileName) => fileName != 'config' && fileName != 'roles')
-        .toList();
+  Future<List<String>> getAllUserIds() {
+    return _dataSource.getAllIds();
   }
 
   @override
-  Future<void> deleteSettings(String userId) async {
-    final file = _getSettingsFile(userId);
-    if (await file.exists()) {
-      await file.delete();
-    }
+  Future<void> deleteSettings(String userId) {
+    return _dataSource.delete(userId);
   }
 }

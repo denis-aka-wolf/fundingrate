@@ -4,33 +4,37 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i8;
-import 'dart:io' as _i18;
+import 'dart:io' as _i22;
 
-import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i13;
-import 'package:fundingrate/src/domain/entities/user.dart' as _i16;
+import 'package:dartz/dartz.dart' as _i4;
+import 'package:fundingrate/src/core/error/failures.dart' as _i13;
+import 'package:fundingrate/src/domain/entities/funding_rate.dart' as _i14;
+import 'package:fundingrate/src/domain/entities/user.dart' as _i17;
 import 'package:fundingrate/src/domain/entities/user_settings.dart' as _i9;
 import 'package:fundingrate/src/domain/repositories/bybit_repository.dart'
     as _i3;
-import 'package:fundingrate/src/domain/repositories/config_repository.dart'
-    as _i4;
 import 'package:fundingrate/src/domain/repositories/roles_repository.dart'
     as _i5;
 import 'package:fundingrate/src/domain/repositories/user_settings_repository.dart'
     as _i2;
 import 'package:fundingrate/src/domain/usecases/check_funding_rates.dart'
-    as _i14;
-import 'package:fundingrate/src/domain/usecases/config_and_roles_usecases.dart'
     as _i15;
+import 'package:fundingrate/src/domain/usecases/config_and_roles_usecases.dart'
+    as _i16;
 import 'package:fundingrate/src/domain/usecases/get_all_user_ids.dart' as _i11;
 import 'package:fundingrate/src/domain/usecases/get_funding_rates.dart' as _i12;
 import 'package:fundingrate/src/domain/usecases/get_user_settings.dart' as _i7;
 import 'package:fundingrate/src/domain/usecases/save_user_settings.dart'
     as _i10;
+import 'package:fundingrate/src/presentation/commands/bot_command.dart' as _i19;
+import 'package:fundingrate/src/presentation/commands/command_registry.dart'
+    as _i18;
+import 'package:fundingrate/src/presentation/keyboards/keyboard_provider.dart'
+    as _i20;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i19;
-import 'package:teledart/src/teledart/model/message.dart' as _i20;
-import 'package:teledart/src/telegram/model.dart' as _i6;
-import 'package:teledart/src/telegram/telegram.dart' as _i17;
+import 'package:mockito/src/dummies.dart' as _i23;
+import 'package:teledart/model.dart' as _i6;
+import 'package:teledart/src/telegram/telegram.dart' as _i21;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -59,9 +63,8 @@ class _FakeBybitRepository_1 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeConfigRepository_2 extends _i1.SmartFake
-    implements _i4.ConfigRepository {
-  _FakeConfigRepository_2(Object parent, Invocation parentInvocation)
+class _FakeEither_2<L, R> extends _i1.SmartFake implements _i4.Either<L, R> {
+  _FakeEither_2(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -277,98 +280,46 @@ class MockGetFundingRates extends _i1.Mock implements _i12.GetFundingRates {
           as _i3.BybitRepository);
 
   @override
-  _i8.Future<List<_i13.FundingRate>> call() =>
+  _i8.Future<_i4.Either<_i13.Failure, List<_i14.FundingRate>>> call() =>
       (super.noSuchMethod(
             Invocation.method(#call, []),
-            returnValue: _i8.Future<List<_i13.FundingRate>>.value(
-              <_i13.FundingRate>[],
-            ),
+            returnValue:
+                _i8.Future<
+                  _i4.Either<_i13.Failure, List<_i14.FundingRate>>
+                >.value(
+                  _FakeEither_2<_i13.Failure, List<_i14.FundingRate>>(
+                    this,
+                    Invocation.method(#call, []),
+                  ),
+                ),
           )
-          as _i8.Future<List<_i13.FundingRate>>);
+          as _i8.Future<_i4.Either<_i13.Failure, List<_i14.FundingRate>>>);
 }
 
 /// A class which mocks [CheckFundingRates].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCheckFundingRates extends _i1.Mock implements _i14.CheckFundingRates {
+class MockCheckFundingRates extends _i1.Mock implements _i15.CheckFundingRates {
   MockCheckFundingRates() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  List<_i13.FundingRate> call({
-    required List<_i13.FundingRate>? rates,
+  List<_i14.FundingRate> call({
+    required List<_i14.FundingRate>? rates,
     required _i9.UserSettings? settings,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#call, [], {#rates: rates, #settings: settings}),
-            returnValue: <_i13.FundingRate>[],
+            returnValue: <_i14.FundingRate>[],
           )
-          as List<_i13.FundingRate>);
-}
-
-/// A class which mocks [GetConfig].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetConfig extends _i1.Mock implements _i15.GetConfig {
-  MockGetConfig() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i4.ConfigRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeConfigRepository_2(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i4.ConfigRepository);
-
-  @override
-  _i8.Future<Map<String, dynamic>> call() =>
-      (super.noSuchMethod(
-            Invocation.method(#call, []),
-            returnValue: _i8.Future<Map<String, dynamic>>.value(
-              <String, dynamic>{},
-            ),
-          )
-          as _i8.Future<Map<String, dynamic>>);
-}
-
-/// A class which mocks [SetConfig].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockSetConfig extends _i1.Mock implements _i15.SetConfig {
-  MockSetConfig() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i4.ConfigRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeConfigRepository_2(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i4.ConfigRepository);
-
-  @override
-  _i8.Future<bool> call(String? key, dynamic value) =>
-      (super.noSuchMethod(
-            Invocation.method(#call, [key, value]),
-            returnValue: _i8.Future<bool>.value(false),
-          )
-          as _i8.Future<bool>);
+          as List<_i14.FundingRate>);
 }
 
 /// A class which mocks [GetRole].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetRole extends _i1.Mock implements _i15.GetRole {
+class MockGetRole extends _i1.Mock implements _i16.GetRole {
   MockGetRole() {
     _i1.throwOnMissingStub(this);
   }
@@ -385,132 +336,75 @@ class MockGetRole extends _i1.Mock implements _i15.GetRole {
           as _i5.RolesRepository);
 
   @override
-  _i8.Future<_i16.UserRole?> call(int? userId) =>
+  _i8.Future<_i17.UserRole?> call(int? userId) =>
       (super.noSuchMethod(
             Invocation.method(#call, [userId]),
-            returnValue: _i8.Future<_i16.UserRole?>.value(),
+            returnValue: _i8.Future<_i17.UserRole?>.value(),
           )
-          as _i8.Future<_i16.UserRole?>);
+          as _i8.Future<_i17.UserRole?>);
 }
 
-/// A class which mocks [AddRole].
+/// A class which mocks [CommandRegistry].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAddRole extends _i1.Mock implements _i15.AddRole {
-  MockAddRole() {
+class MockCommandRegistry extends _i1.Mock implements _i18.CommandRegistry {
+  MockCommandRegistry() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.RolesRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeRolesRepository_3(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i5.RolesRepository);
+  void register(_i19.BotCommand? command) => super.noSuchMethod(
+    Invocation.method(#register, [command]),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i8.Future<void> call(int? userId, _i16.UserRole? role) =>
+  _i19.BotCommand? findByCommand(String? command) =>
+      (super.noSuchMethod(Invocation.method(#findByCommand, [command]))
+          as _i19.BotCommand?);
+
+  @override
+  _i19.BotCommand? findByCallbackData(String? callbackData) =>
       (super.noSuchMethod(
-            Invocation.method(#call, [userId, role]),
-            returnValue: _i8.Future<void>.value(),
-            returnValueForMissingStub: _i8.Future<void>.value(),
+            Invocation.method(#findByCallbackData, [callbackData]),
           )
-          as _i8.Future<void>);
+          as _i19.BotCommand?);
+
+  @override
+  List<_i19.BotCommand> getCommandsForRole(_i17.UserRole? role) =>
+      (super.noSuchMethod(
+            Invocation.method(#getCommandsForRole, [role]),
+            returnValue: <_i19.BotCommand>[],
+          )
+          as List<_i19.BotCommand>);
+
+  @override
+  List<_i19.BotCommand> getKeyboardCommandsForRole(_i17.UserRole? role) =>
+      (super.noSuchMethod(
+            Invocation.method(#getKeyboardCommandsForRole, [role]),
+            returnValue: <_i19.BotCommand>[],
+          )
+          as List<_i19.BotCommand>);
 }
 
-/// A class which mocks [RemoveRole].
+/// A class which mocks [IKeyboardProvider].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRemoveRole extends _i1.Mock implements _i15.RemoveRole {
-  MockRemoveRole() {
+class MockIKeyboardProvider extends _i1.Mock implements _i20.IKeyboardProvider {
+  MockIKeyboardProvider() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.RolesRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeRolesRepository_3(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i5.RolesRepository);
-
-  @override
-  _i8.Future<void> call(int? userId, _i16.UserRole? role) =>
-      (super.noSuchMethod(
-            Invocation.method(#call, [userId, role]),
-            returnValue: _i8.Future<void>.value(),
-            returnValueForMissingStub: _i8.Future<void>.value(),
-          )
-          as _i8.Future<void>);
-}
-
-/// A class which mocks [GetAdminIds].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetAdminIds extends _i1.Mock implements _i15.GetAdminIds {
-  MockGetAdminIds() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.RolesRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeRolesRepository_3(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i5.RolesRepository);
-
-  @override
-  _i8.Future<List<int>> call() =>
-      (super.noSuchMethod(
-            Invocation.method(#call, []),
-            returnValue: _i8.Future<List<int>>.value(<int>[]),
-          )
-          as _i8.Future<List<int>>);
-}
-
-/// A class which mocks [GetModeratorIds].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockGetModeratorIds extends _i1.Mock implements _i15.GetModeratorIds {
-  MockGetModeratorIds() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.RolesRepository get repository =>
-      (super.noSuchMethod(
-            Invocation.getter(#repository),
-            returnValue: _FakeRolesRepository_3(
-              this,
-              Invocation.getter(#repository),
-            ),
-          )
-          as _i5.RolesRepository);
-
-  @override
-  _i8.Future<List<int>> call() =>
-      (super.noSuchMethod(
-            Invocation.method(#call, []),
-            returnValue: _i8.Future<List<int>>.value(<int>[]),
-          )
-          as _i8.Future<List<int>>);
+  _i6.InlineKeyboardMarkup? getKeyboard(_i17.UserRole? role) =>
+      (super.noSuchMethod(Invocation.method(#getKeyboard, [role]))
+          as _i6.InlineKeyboardMarkup?);
 }
 
 /// A class which mocks [Telegram].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTelegram extends _i1.Mock implements _i17.Telegram {
+class MockTelegram extends _i1.Mock implements _i21.Telegram {
   MockTelegram() {
     _i1.throwOnMissingStub(this);
   }
@@ -537,7 +431,7 @@ class MockTelegram extends _i1.Mock implements _i17.Telegram {
   _i8.Future<bool> setWebhook(
     String? url, {
     String? ipAddress,
-    _i18.File? certificate,
+    _i22.File? certificate,
     int? maxConnections,
     List<String>? allowedUpdates,
     bool? dropPendingUpdates,
@@ -1764,7 +1658,7 @@ class MockTelegram extends _i1.Mock implements _i17.Telegram {
       (super.noSuchMethod(
             Invocation.method(#exportChatInviteLink, [chatId]),
             returnValue: _i8.Future<String>.value(
-              _i19.dummyValue<String>(
+              _i23.dummyValue<String>(
                 this,
                 Invocation.method(#exportChatInviteLink, [chatId]),
               ),
@@ -1880,7 +1774,7 @@ class MockTelegram extends _i1.Mock implements _i17.Telegram {
           as _i8.Future<bool>);
 
   @override
-  _i8.Future<bool> setChatPhoto(dynamic chatId, _i18.File? photo) =>
+  _i8.Future<bool> setChatPhoto(dynamic chatId, _i22.File? photo) =>
       (super.noSuchMethod(
             Invocation.method(#setChatPhoto, [chatId, photo]),
             returnValue: _i8.Future<bool>.value(false),
@@ -2589,7 +2483,7 @@ class MockTelegram extends _i1.Mock implements _i17.Telegram {
   @override
   _i8.Future<_i6.File> uploadStickerFile(
     int? userId,
-    _i18.File? sticker,
+    _i22.File? sticker,
     String? stickerFormat,
   ) =>
       (super.noSuchMethod(
@@ -2934,7 +2828,7 @@ class MockTelegram extends _i1.Mock implements _i17.Telegram {
               },
             ),
             returnValue: _i8.Future<String>.value(
-              _i19.dummyValue<String>(
+              _i23.dummyValue<String>(
                 this,
                 Invocation.method(
                   #createInvoiceLink,
@@ -3642,7 +3536,7 @@ class MockChat extends _i1.Mock implements _i6.Chat {
   String get type =>
       (super.noSuchMethod(
             Invocation.getter(#type),
-            returnValue: _i19.dummyValue<String>(
+            returnValue: _i23.dummyValue<String>(
               this,
               Invocation.getter(#type),
             ),
@@ -3853,7 +3747,7 @@ class MockUser extends _i1.Mock implements _i6.User {
   String get firstName =>
       (super.noSuchMethod(
             Invocation.getter(#firstName),
-            returnValue: _i19.dummyValue<String>(
+            returnValue: _i23.dummyValue<String>(
               this,
               Invocation.getter(#firstName),
             ),
@@ -3938,7 +3832,7 @@ class MockUser extends _i1.Mock implements _i6.User {
 /// A class which mocks [TeleDartMessage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTeleDartMessage extends _i1.Mock implements _i20.TeleDartMessage {
+class MockTeleDartMessage extends _i1.Mock implements _i6.TeleDartMessage {
   MockTeleDartMessage() {
     _i1.throwOnMissingStub(this);
   }
