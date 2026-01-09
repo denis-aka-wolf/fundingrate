@@ -53,17 +53,26 @@ class FundingRateBot {
 
   Future<void> start() async {
     sl<Logger>().i('Starting bot...');
-    if (_injectedTeleDart != null) {
-      teledart = _injectedTeleDart!;
-    } else {
-      final env = sl<DotEnv>();
-      final botToken = env['TELEGRAM_BOT_TOKEN']!;
-      final username = (await Telegram(botToken).getMe()).username;
-      teledart = TeleDart(botToken, Event(username!));
-    }
+    try {
+      if (_injectedTeleDart != null) {
+        teledart = _injectedTeleDart!;
+      } else {
+        final env = sl<DotEnv>();
+        final botToken = env['TELEGRAM_BOT_TOKEN']!;
+        final username = (await Telegram(botToken).getMe()).username;
+        teledart = TeleDart(botToken, Event(username!));
+        sl.registerSingleton<TeleDart>(teledart);
+      }
 
-    if (_injectedTeleDart == null) {
-      teledart.start();
+      if (_injectedTeleDart == null) {
+        sl<Logger>().i('Starting teledart polling...');
+        teledart.start();
+        sl<Logger>().i('Teledart polling started successfully.');
+      }
+      
+    } catch (e, s) {
+      sl<Logger>().e('FATAL: Failed to start bot', error: e, stackTrace: s);
+      return;
     }
 
     sl<Logger>().i('Registering command handlers...');
@@ -75,45 +84,56 @@ class FundingRateBot {
   }
 
   void _registerCommandHandlers() {
-    sl<Logger>().i('Registering command handlers...');
+    final logger = sl<Logger>();
+    logger.i('Registering command handlers using onCommand...');
 
-    // Handle text messages/commands
-    teledart.onMessage().listen((message) async {
-      if (message.text == null || !message.text!.startsWith('/')) return;
-      final userRole = await getRole(message.from!.id) ?? UserRole.user;
-
-      try {
-        final botCommand = commandRegistry.findByCommand(message.text!);
-        if (botCommand != null) {
-          if (botCommand.canExecute(userRole)) {
-            await botCommand.handler?.call(message, userRole);
-          } else {
-            await message.reply(S.current.accessDenied);
+    // Register all commands from the registry
+    for (final botCommand in commandRegistry.getAllCommands()) {
+      if (botCommand.handler != null) {
+        teledart.onCommand(botCommand.command).listen((message) async {
+          logger.i('Command received: /${botCommand.command} from user ${message.from?.id}');
+          try {
+            final userRole = await getRole(message.from!.id) ?? UserRole.user;
+            if (botCommand.canExecute(userRole)) {
+              await botCommand.handler!(message, userRole);
+            } else {
+              logger.w('Access denied for user ${message.from?.id} for command /${botCommand.command}');
+              await sl.get<TeleDart>().sendMessage(message.chat.id, S.current.accessDenied);
+            }
+          } catch (e, s) {
+            logger.e('Error executing command /${botCommand.command}', error: e, stackTrace: s);
           }
-        }
-      } catch (e) {
-        sl<Logger>().w('Command not found for message: ${message.text}');
+        });
+      }
+    }
+
+    // Handle non-command text messages
+    teledart.onMessage().listen((message) {
+      // This listener will only receive messages that are not commands.
+      if (message.text != null) {
+        logger.i('Received non-command text message: "${message.text}"');
+        // Add logic here to handle non-command messages if needed
       }
     });
 
     // Handle callback queries from inline keyboards
     teledart.onCallbackQuery().listen((query) async {
       if (query.data == null) return;
-      final userRole = await getRole(query.from.id) ?? UserRole.user;
-
+      logger.i('Callback query received: ${query.data} from user ${query.from.id}');
       try {
+        final userRole = await getRole(query.from.id) ?? UserRole.user;
         final botCommand = commandRegistry.findByCallbackData(query.data!);
         if (botCommand != null) {
           if (botCommand.canExecute(userRole)) {
             await botCommand.callbackHandler?.call(query, userRole);
           } else {
-            await teledart.answerCallbackQuery(query.id,
-                text: S.current.accessDenied);
+            await teledart.answerCallbackQuery(query.id, text: S.current.accessDenied);
           }
         }
-      } catch (e) {
-        sl<Logger>().w('Command not found for callback data: ${query.data}');
+      } catch (e, s) {
+        logger.e('Error executing callback query ${query.data}', error: e, stackTrace: s);
       }
+      // Always answer the callback query to remove the "loading" state
       await teledart.answerCallbackQuery(query.id);
     });
   }
@@ -179,5 +199,5 @@ class FundingRateBot {
       Future.delayed(Duration(minutes: checkIntervalMinutes), _checkRates);
     }
   }
-
 }
+

@@ -37,4 +37,8 @@ class CommandRegistry {
         .where((c) => c.showInKeyboard && c.canExecute(role))
         .toList();
   }
+
+  List<BotCommand> getAllCommands() {
+    return List.unmodifiable(_commands);
+  }
 }

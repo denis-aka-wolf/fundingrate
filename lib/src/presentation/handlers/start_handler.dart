@@ -1,4 +1,5 @@
 import 'package:teledart/model.dart' as tele;
+import 'package:teledart/teledart.dart';
 import '../../core/service_locator.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/entities/user_settings.dart';
@@ -14,6 +15,7 @@ void registerStartCommand(CommandRegistry registry) {
     BotCommand(
       command: 'start',
       description: 'Start using the bot',
+      requiredRole: UserRole.user,
       handler: (tele.TeleDartMessage message, userRole) async {
         final getUserSettings = sl<GetUserSettings>();
         final saveUserSettings = sl<SaveUserSettings>();
@@ -47,7 +49,8 @@ void registerStartCommand(CommandRegistry registry) {
 
         final keyboard = keyboardProvider.getKeyboard(userRole);
 
-        await message.reply(
+        await sl<TeleDart>().sendMessage(
+          message.chat.id,
           '$welcomeMessage\n\n$availableCommands\n$commandsList',
           replyMarkup: keyboard,
         );

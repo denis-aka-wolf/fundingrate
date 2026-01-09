@@ -40,9 +40,15 @@ final logger = Logger(
 
 Future<void> init() async {
   // External
-  sl.registerSingleton<DotEnv>(DotEnv(includePlatformEnvironment: true)..load());
+  logger.i('sl.init: Registering external dependencies...');
+  final env = DotEnv(includePlatformEnvironment: true);
+  logger.i('sl.init: DotEnv instance created. Loading .env file...');
+  env.load(['.env']);
+  logger.i('sl.init: .env file loaded. Registering as singleton.');
+  sl.registerSingleton<DotEnv>(env);
   sl.registerSingleton<Dio>(Dio());
   sl.registerSingleton<Logger>(logger);
+  logger.i('sl.init: External dependencies registered.');
 
   // Data sources
   sl.registerLazySingleton<BybitRemoteDataSource>(
@@ -53,22 +59,28 @@ Future<void> init() async {
       () => ConfigLocalDataSourceImpl());
   sl.registerLazySingleton<RolesLocalDataSource>(
       () => RolesLocalDataSourceImpl());
+  logger.i('sl.init: Data sources registered.');
 
   // Repositories
   sl.registerLazySingleton<BybitRepository>(
       () => BybitRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<UserSettingsRepository>(
       () => UserSettingsRepositoryImpl(localDataSource: sl()));
+  logger.i('sl.init: Stateless repositories registered.');
 
   // We need to register ConfigRepository and RolesRepository as singletons that are created asynchronously
   // because they have an `init()` method.
+  logger.i('sl.init: Initializing ConfigRepository...');
   final configRepository = ConfigRepositoryImpl(localDataSource: sl());
   await configRepository.init();
   sl.registerSingleton<ConfigRepository>(configRepository);
+  logger.i('sl.init: ConfigRepository initialized and registered.');
 
+  logger.i('sl.init: Initializing RolesRepository...');
   final rolesRepository = RolesRepositoryImpl(localDataSource: sl(), env: sl());
   await rolesRepository.init();
   sl.registerSingleton<RolesRepository>(rolesRepository);
+  logger.i('sl.init: RolesRepository initialized and registered.');
   
   // Use cases
   sl.registerLazySingleton(() => GetFundingRates(sl()));
@@ -83,11 +95,14 @@ Future<void> init() async {
   sl.registerLazySingleton(() => RemoveRole(sl()));
   sl.registerLazySingleton(() => GetAdminIds(sl()));
   sl.registerLazySingleton(() => GetModeratorIds(sl()));
+  logger.i('sl.init: Use cases registered.');
 
   // Presentation
   // The bot needs the config to be ready for the checkInterval.
+  logger.i('sl.init: Getting config for bot initialization...');
   final config = await sl<GetConfig>()();
   final checkInterval = config['CHECK_INTERVAL_MINUTES'] as int? ?? 10;
+  logger.i('sl.init: Config loaded. Check interval is $checkInterval minutes.');
   
   // Presentation
   // Command Registry
@@ -104,6 +119,7 @@ Future<void> init() async {
   registerSettingsCommand(sl());
   registerStatusHandler(sl());
   registerSettingsUpdateCommands(sl());
+  logger.i('sl.init: Command handlers registered.');
 
   sl.registerLazySingleton(
     () => FundingRateBot(
@@ -118,4 +134,5 @@ Future<void> init() async {
       commandRegistry: sl(),
     ),
   );
+  logger.i('sl.init: FundingRateBot registered.');
 }
